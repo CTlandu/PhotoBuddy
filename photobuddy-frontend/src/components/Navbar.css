@@ -1,0 +1,60 @@
+.navbar {
+  position: fixed; /* Fix the navbar to the top of the page */
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #B692C2; /* Light blue background */
+  /* padding: 5px 10px; */
+  /* border-radius: 0 0 8px 8px; Rounded corners on the bottom only */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Ensure the navbar is above other content */
+  box-sizing: border-box;
+}
+
+.logo {
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-size: 30px;
+  font-weight: bold;
+  color: #FFDFD6; /* Light coral color */
+  font-family: Arial, sans-serif; /* Customize as needed */
+  height: 30px;
+  padding-bottom: 0.5em;
+  margin-left: 40px;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.nav-links {
+  display: flex;
+  gap: 10px; /* Spacing between buttons */
+  margin-right: 4em;
+}
+
+.login-btn, .signup-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.login-btn {
+  background-color: #694F8E; /* Slate blue background */
+  color: white;
+}
+
+.signup-btn {
+  background-color: white;
+  color: #694F8E; /* Slate blue color */
+  border: 1px solid #694F8E;
+}
+
+.login-btn:hover, .signup-btn:hover {
+  background-color: #483d8b; /* Darker shade on hover */
+  color: white;
+}
+
