@@ -3,7 +3,7 @@ import './IntroBlock.css'
 
 const IntroBlock = () => {
   return (
-    <div className="intro-block">
+    <div className="">
       <p>What you expect at PhotoBuddy</p>
     </div>
   );
