@@ -2,7 +2,6 @@
 import React, { Component } from 'react'
 // import { login } from './actions/login'
 import { Navigate } from 'react-router'
-import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar';
 
 
@@ -28,8 +27,8 @@ class Login extends Component {
       return (
         <>
           <Navbar />
-          <div className="min-h-screen flex items-center justify-center bg-gray-100">
-            <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
+          <div className="min-h-screen flex items-center justify-center bg-gray-300">
+            <div className="bg-dark-gray p-8 rounded shadow-2xl w-full max-w-md">
               <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
               <form>
                 <div className="mb-4">
@@ -53,7 +52,7 @@ class Login extends Component {
                   />
                 </div>
                 <button
-                  className="bg-blue-500 text-white px-4 py-2 rounded w-full hover:bg-blue-600"
+                  className="bg-gray text-white px-4 py-2 rounded w-full hover:bg-blue-600"
                   type="submit"
                 >
                   Login

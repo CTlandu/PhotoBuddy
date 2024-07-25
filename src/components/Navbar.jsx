@@ -5,12 +5,12 @@ const Navbar = () => {
   <>
     <div className="navbar bg-base-100">
       <div className="flex-1">
-        <a className="btn btn-ghost text-xl">PhotoBuddy</a>
+        <a className="btn btn-ghost text-xl" href='/' >PhotoBuddy</a>
       </div>
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1">
           <li><a>Sign Up</a></li>
-          <li><a>Log in</a></li>
+          <li><a href='/login'>Log in</a></li>
           <li>
             <details>
               <summary>Parent</summary>

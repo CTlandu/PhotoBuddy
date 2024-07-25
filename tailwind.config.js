@@ -9,7 +9,10 @@ export default {
       'pink-white': "#FFDFD6",
       'pink-purple': "#E3A5C7",
       'light-pupple': "#B692C2",
-      'purple': "#694F8E"
+      'purple': "#694F8E",
+      'gray': "#9ca3af",
+      "dark-gray":"#1f2937",
+      'white':"#f8fafc"
     },
     fontFamily: {
       sans: ['Graphik', 'sans-serif'],
