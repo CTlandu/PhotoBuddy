@@ -12,7 +12,8 @@ export default {
       'purple': "#694F8E",
       'gray': "#9ca3af",
       "dark-gray":"#1f2937",
-      'white':"#f8fafc"
+      'white':"#f8fafc",
+      "green":"#38a169",
     },
     fontFamily: {
       sans: ['Graphik', 'sans-serif'],

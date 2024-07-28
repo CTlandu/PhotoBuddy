@@ -1,9 +1,14 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import './index.css'
 import createStore from 'react-auth-kit/createStore'
 import AuthProvider from 'react-auth-kit/AuthProvider'
 import Login from './pages/Login'
 import Home from './pages/Home'
 import NoPage from './pages/NoPage'
+import SignIn from './pages/SignUp'
+import Register from './pages/Register'
+import ProtectedRoute from './ProtectedRoute'
+import Profile from './pages/Profile'
 
 
 function App() {
@@ -22,10 +27,16 @@ function App() {
     <AuthProvider store={store}>
       <BrowserRouter>
         <Routes>
+           {/* free routes */}
           <Route index element={<Home/>}></Route>
-          <Route path="/home" element={<Home />}/>
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="*" element={<NoPage></NoPage>}></Route>
+          <Route exact path="/home" element={<Home />}/>
+          <Route exact path="/login" element={<Login />}></Route>
+          <Route exact path="/register" element={<Register />}></Route>
+          <Route exact path="/signup" element={<SignIn />}></Route>
+          <Route path="*" element={<NoPage />}></Route>
+
+          {/* protected routes */}
+          <Route path='/profile' element={<ProtectedRoute element={Profile}/>}></Route>
         </Routes>
       </BrowserRouter>
     </AuthProvider>

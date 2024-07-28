@@ -10,14 +10,46 @@ const jwt = require('jsonwebtoken');
 // require database connection
 const dbConnect = require('./db/dbConnect');
 const User = require("./db/userModel");
-
-dbConnect();
+const auth = require('./auth');
 
 // express app
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}))
+
+dbConnect();
+
+/**
+ * CORS 是一种机制，允许来自一个域的网页能够请求另一个域的资源。它通过添加一些特定的 HTTP 头来告诉浏览器允许来自不同源的请求。
+ * CORS 主要用于解决浏览器的同源策略（Same-Origin Policy）限制的问题，这一策略是为了保护用户免受某些类型的攻击（例如 CSRF）。
+ * 
+同源策略（Same-Origin Policy）
+同源策略规定，浏览器只能在同一个源（协议、域名和端口号均相同）下访问资源。具体来说，同源策略限制了一些类型的跨域 HTTP 请求，例如 AJAX 请求。
+如果网页试图请求不同源的资源，浏览器将默认阻止这些请求。
+
+CORS 通过设置服务器响应中的 HTTP 头来告诉浏览器允许特定源的请求。这些头包括：
+Access-Control-Allow-Origin
+Access-Control-Allow-Headers
+Access-Control-Allow-Methods
+ * 
+这段代码是为了在Express应用中设置CORS头部，从而允许来自不同源的请求访问你的服务器资源。这样可以绕过同源策略，实现跨域访问。
+ */
+app.use((req, res, next) => {
+  // 允许来自所有域的请求
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  // 允许客户端使用这些头部字段
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
+  );
+  // 允许客户端使用这些HTTP方法
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, PATCH, OPTIONS"
+  );
+  next();
+})
 
 
 // middleware
@@ -97,7 +129,7 @@ app.post("/login",(request,response) => {
             userId: user._id,
             userEmail: user.email,
           },
-          "RANDOM_TOKEN",
+          "RANDOM-TOKEN",
           { expiresIn: '1h'}
         );
         // return success response
@@ -127,7 +159,7 @@ app.get("/free-endpoint",(request, response) => {
   console.log("This is a free endpoint");
 })
 
-app.get("auth-endpoint", (request, response) => {
+app.get("/auth-endpoint", auth, (request, response) => {
   response.json({message: "You are authorizaed to access me"});
   console.log("This is an authenticated endpoint");
 })
