@@ -1,6 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import axios from "axios";
+import Cookies from 'universal-cookie';
+import { useState } from 'react';
+const cookies = new Cookies();
+
 
 const Navbar = () => {
+  const [hasToken, setHasToken] = useState(false);
+
+  useEffect(() => {
+    // Get token genearted on login
+    try{
+      const token = cookies.get('TOKEN');
+      if(token === undefined) return;
+      setHasToken(true);
+    }catch{
+      console.log("No token found 用户未登录")
+    }
+  }, []);
+    const logout = () =>{
+      //destroy the cookie
+      cookies.remove('TOKEN', {path: '/'});
+      setHasToken(false);
+      // redirect user to the landing page
+      window.location.href = "/";
+    }
+
   return (
   <>
     <div className="navbar bg-base-100">
@@ -12,6 +37,7 @@ const Navbar = () => {
           <li><a href='/register'>Register</a></li>
           <li><a href='/login'>Log in</a></li>
           <li><a href='/profile'>Profile</a></li>
+          {hasToken && <li><button onClick={logout}>Logout</button></li>}
           <li>
             <details>
               <summary>Parent</summary>

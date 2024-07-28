@@ -159,6 +159,7 @@ app.get("/free-endpoint",(request, response) => {
   console.log("This is a free endpoint");
 })
 
+// 多了个auth参数，判断用户是否授权访问这个endpoint
 app.get("/auth-endpoint", auth, (request, response) => {
   response.json({message: "You are authorizaed to access me"});
   console.log("This is an authenticated endpoint");
