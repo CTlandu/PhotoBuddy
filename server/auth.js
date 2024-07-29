@@ -6,7 +6,7 @@ module.exports = async (request, response, next) => {
     // get the token from the authorization header
     const authHeader = request.headers.authorization;
     if (!authHeader) {
-      throw new Error("No authorization header provided");
+      throw new Error("No authorization header provided 没有授权的header提供");
     }
     // get the token from the authorization header
     const token = await request.headers.authorization.split(" ")[1];
