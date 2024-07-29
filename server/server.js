@@ -52,16 +52,6 @@ app.use((req, res, next) => {
 })
 
 
-// middleware
-// const corOptions = {
-//   origin: "*",
-//   Credentials: true,
-//   optionSuccessStatus: 200,
-// }
-// app.use(cors(corOptions));
-// app.use('/',router)
-
-
 // listen for requests
 const port = process.env.PORT || 5000;
 app.listen(port, () => {

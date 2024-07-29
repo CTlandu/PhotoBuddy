@@ -19,21 +19,22 @@ const Navbar = () => {
     }
   }, []);
     const logout = () =>{
+      // redirect to landing page
+      window.location.href = "/"
       //destroy the cookie
       cookies.remove('TOKEN', {path: '/'});
       setHasToken(false);
       // redirect user to the landing page
-      window.location.href = "/";
     }
 
   return (
   <>
-    <div className="navbar bg-base-100">
-      <div className="flex-1">
+    <div className="navbar bg-base-100 mt-4">
+      <div className="flex-1 ml-24">
         <a className="btn btn-ghost text-xl" href='/' >PhotoBuddy</a>
       </div>
       <div className="flex-none">
-        <ul className="menu menu-horizontal px-1">
+        <ul className="menu menu-horizontal px-1 mr-28">
           <li><a href='/register'>Register</a></li>
           <li><a href='/login'>Log in</a></li>
           <li><a href='/profile'>Profile</a></li>

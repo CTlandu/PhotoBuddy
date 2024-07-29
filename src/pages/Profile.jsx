@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import axios from 'axios';
 import Cookies from "universal-cookie"
+import Sidebar from '../components/Sidebar';
+import PersonalForm from '../components/PersonalForm';
 
 
 const Profile = () => {
@@ -21,7 +23,6 @@ const Profile = () => {
         Authorization: `Bearer ${token}`
       }
     }
-
     // make the API call
     axios(configuration)
       .then((result) => {
@@ -37,12 +38,18 @@ const Profile = () => {
 
   return (
     <>
-      <Navbar></Navbar>
-      <h1 className='text-center text-6xl text-pink-purple'>Profile Page</h1>
-      <h3 className="text-center text-danger">{message}</h3>
-    </>
+      <div className="flex flex-col h-screen">
+        <Navbar />
+        <div className="flex flex-1 ml-28 mt-20">
+          <Sidebar />
+          <PersonalForm />
 
-  )
+        </div>
+
+
+      </div>
+    </>
+  );
 };
 
 export default Profile;

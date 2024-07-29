@@ -25,8 +25,6 @@ export default function Register() {
 
     // prevent the form from refreshing the whole page
     e.preventDefault();
-    // make a pop up alert to show the user that he has registered
-    alert(email+"      " + password);
   }
 
   return (

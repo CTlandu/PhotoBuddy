@@ -44,7 +44,6 @@ export default function Login() {
       });
 
     e.preventDefault();
-    alert("Submitted")
     console.log(email, password);
   }
 
