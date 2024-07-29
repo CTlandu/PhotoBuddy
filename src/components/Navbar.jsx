@@ -37,7 +37,7 @@ const Navbar = () => {
         <ul className="menu menu-horizontal px-1 mr-28">
           <li><a href='/register'>Register</a></li>
           <li><a href='/login'>Log in</a></li>
-          <li><a href='/profile'>Profile</a></li>
+          {hasToken && <li><a href='/profile'>Profile</a></li>}
           {hasToken && <li><button onClick={logout}>Logout</button></li>}
           <li>
             <details>

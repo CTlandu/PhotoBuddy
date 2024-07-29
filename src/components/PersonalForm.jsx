@@ -17,7 +17,7 @@ const PersonalForm = () => {
       </div>
       <div className="mb-6">
         {/* 把三个信息并排显示 */}
-        <p className="flex flex-row justify-between items-center">
+        <div className="flex flex-row justify-between items-center">
           <div>
             <label htmlFor="perferedName" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
               Preferred Name
@@ -36,7 +36,7 @@ const PersonalForm = () => {
             </label>
             <input type="text" id="pronouns" className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
           </div>
-        </p>
+        </div>
 
         <div>
           <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
