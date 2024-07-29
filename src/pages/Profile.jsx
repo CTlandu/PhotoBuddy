@@ -23,14 +23,18 @@ const Profile = () => {
         Authorization: `Bearer ${token}`
       }
     }
+
     // make the API call
     axios(configuration)
       .then((result) => {
         // assign the message in our result to the message we initialized above
         setMessage(result.data.message);
       })
-      .catch((error) => {
-        error = new Error();
+      .catch((error) => {// 导航至主页面
+        window.location.href = "/"
+
+        // 若token失效，则清除token
+        cookies.remove('TOKEN');
       });
 
   }, [])

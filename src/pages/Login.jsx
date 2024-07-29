@@ -37,7 +37,7 @@ export default function Login() {
          * Hopefully, that makes sense.
          */
         cookies.set("TOKEN",result.data.token, { path: "/" });
-        window.location.href = "/home";
+        window.location.href = "/profile";
       })
       .catch((error) => {
         error = new Error();
