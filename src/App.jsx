@@ -8,6 +8,7 @@ import NoPage from './pages/NoPage'
 import Register from './pages/Register'
 import ProtectedRoute from './ProtectedRoute'
 import Profile from './pages/Profile'
+import Profile_test from './pages/Profile_test'
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
           <Route exact path="/login" element={<Login />}></Route>
           <Route exact path="/register" element={<Register />}></Route>
           <Route path="*" element={<NoPage />}></Route>
+          <Route path="/profile_test" element={<Profile_test />}></Route>
 
           {/* protected routes */}
           <Route path='/profile' element={<ProtectedRoute element={Profile}/>}></Route>

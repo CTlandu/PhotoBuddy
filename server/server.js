@@ -1,8 +1,6 @@
 require('dotenv').config();
-const cors = require('cors');
 const bodyParser = require('body-parser');
 const express = require('express');
-const router = require("./routes/routes");
 // bcrypt 将用户的明文密码转换为一个加密的哈希值。这个哈希值是不可逆的，即无法从哈希值直接还原出原始密码。
 //当用户尝试登录时，bcrypt 可以将用户输入的明文密码与存储在数据库中的哈希值进行比较，判断密码是否正确。
 const bcrypt = require('bcrypt');
@@ -10,7 +8,9 @@ const jwt = require('jsonwebtoken');
 // require database connection
 const dbConnect = require('./db/dbConnect');
 const User = require("./db/userModel");
-const auth = require('./auth');
+// 老的auth模块
+// const auth = require('./auth');
+const { auth } = require("express-oauth2-jwt-bearer");
 
 // express app
 const app = express();
@@ -60,6 +60,19 @@ app.listen(port, () => {
 // app.get('/api/items', (req, res) => {
 //   res.json({ message: 'This is CORS-enabled for all origins!' });
 // });
+
+const jwtCheck = auth({
+  audience: 'https://photobuddyapitest',
+  issuerBaseURL: 'https://dev-m5ocddyzhqndhe7x.us.auth0.com/',
+  tokenSigningAlg: 'RS256'
+});
+
+app.use(jwtCheck);
+
+app.get('/authorized', function (req, res) {
+  res.send('Secured Resource');
+});
+
 
 
 // create a "register" endpoint
