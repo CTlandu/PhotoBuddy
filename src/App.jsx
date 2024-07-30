@@ -11,19 +11,19 @@ import Profile from './pages/Profile'
 
 
 function App() {
-  const store = createStore(
-    {
-      authName: '_auth',
-      authType: 'cookie',
-      cookieDomain: window.location.hostname,
-      cookieSecure: window.location.protocol === 'https:',
-      cookiePath: '/',
-    }
+  // const store = createStore(
+  //   {
+  //     authName: '_auth',
+  //     authType: 'cookie',
+  //     cookieDomain: window.location.hostname,
+  //     cookieSecure: window.location.protocol === 'https:',
+  //     cookiePath: '/',
+  //   }
   )
 
   return (
     <>
-    <AuthProvider store={store}>
+    {/* <AuthProvider store={store}> */}
       <BrowserRouter>
         <Routes>
            {/* free routes */}
@@ -37,7 +37,7 @@ function App() {
           <Route path='/profile' element={<ProtectedRoute element={Profile}/>}></Route>
         </Routes>
       </BrowserRouter>
-    </AuthProvider>
+    {/* </AuthProvider> */}
     
     </>
   )
