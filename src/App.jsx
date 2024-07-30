@@ -18,8 +18,6 @@ function App() {
   //     cookieDomain: window.location.hostname,
   //     cookieSecure: window.location.protocol === 'https:',
   //     cookiePath: '/',
-  //   }
-  )
 
   return (
     <>
