@@ -133,7 +133,7 @@ app.post("/login",(request,response) => {
             userEmail: user.email,
           },
           "RANDOM-TOKEN",
-          { expiresIn: '1m'}
+          { expiresIn: '1h'}
         );
         // return success response
         response.status(201).send({
