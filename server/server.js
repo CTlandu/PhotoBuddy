@@ -12,13 +12,94 @@ const User = require("./db/userModel");
 // const auth = require('./auth');
 const { auth } = require("express-oauth2-jwt-bearer");
 
+const cors = require("cors");
+const {middleware} = require("supertokens-node/framework/express");
+
+// import supertoken packages
+const supertokens =require("supertokens-node");
+const Session = require("supertokens-node/recipe/session");
+const EmailPassword = require("supertokens-node/recipe/emailpassword");
+const ThirdParty = require("supertokens-node/recipe/thirdparty");
+const { errorHandler } = require("supertokens-node/framework/express");
+const Dashboard = require("supertokens-node/recipe/dashboard");
+
+// 初始化supertokens
+supertokens.init({
+  framework: "express",
+  supertokens: {
+      // https://try.supertokens.com is for demo purposes. Replace this with the address of your core instance (sign up on supertokens.com), or self host a core.
+      // connectionURI: "https://try.supertokens.com",
+      connectionURI: "https://st-dev-66f4ad70-4fb9-11ef-a24d-7fa502ed3c7e.aws.supertokens.io",
+      // apiKey: <API_KEY(if configured)>,
+      apiKey: "5cwWMIhpOn9Gq=IY3BooLy7u3t",
+  },
+  appInfo: {
+      // learn more about this on https://supertokens.com/docs/thirdpartyemailpassword/appinfo
+      appName: "photobuddy",
+      apiDomain: "http://localhost:4000",
+      websiteDomain: "http://localhost:5173",
+      apiBasePath: "/auth",
+      websiteBasePath: "/auth"
+  },
+  recipeList: [
+      Dashboard.init(),
+      EmailPassword.init(),
+      ThirdParty.init({
+        // We have provided you with development keys which you can use for testing.
+        // IMPORTANT: Please replace them with your own OAuth keys for production use.
+        signInAndUpFeature: {
+            providers: [{
+                config: {
+                    thirdPartyId: "google",
+                    clients: [{
+                        clientId: "1060725074195-kmeum4crr01uirfl2op9kd5acmi9jutn.apps.googleusercontent.com",
+                        clientSecret: "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"
+                    }]
+                }
+            }, {
+                config: {
+                    thirdPartyId: "github",
+                    clients: [{
+                        clientId: "467101b197249757c71f",
+                        clientSecret: "e97051221f4b6426e8fe8d51486396703012f5bd"
+                    }]
+                }
+            }, {
+                config: {
+                    thirdPartyId: "apple",
+                    clients: [{
+                        clientId: "4398792-io.supertokens.example.service",
+                        additionalConfig: {
+                            keyId: "7M48Y4RYDL",
+                            privateKey:
+                                "-----BEGIN PRIVATE KEY-----\nMIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgu8gXs+XYkqXD6Ala9Sf/iJXzhbwcoG5dMh1OonpdJUmgCgYIKoZIzj0DAQehRANCAASfrvlFbFCYqn3I2zeknYXLwtH30JuOKestDbSfZYxZNMqhF/OzdZFTV0zc5u5s3eN+oCWbnvl0hM+9IW0UlkdA\n-----END PRIVATE KEY-----",
+                            teamId: "YWQCXGJRJL",
+                        }
+                    }]
+                }
+            }],
+          }
+        }),
+      Session.init() // initializes session features
+    ]
+});
 // express app
 const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}))
 
+app.use(cors({
+  origin: "http://localhost:5173",
+  allowedHeaders: ["content-type", ...supertokens.getAllCORSHeaders()],
+  credentials: true,
+}));
+
+// IMPORTANT: CORS should be before the below line.
+app.use(middleware());
+
 dbConnect();
+
 
 /**
  * CORS 是一种机制，允许来自一个域的网页能够请求另一个域的资源。它通过添加一些特定的 HTTP 头来告诉浏览器允许来自不同源的请求。
@@ -55,7 +136,7 @@ app.use((req, res, next) => {
 // listen for requests
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
-  console.log(`Server started on ${port}`);
+  console.log(`Server started on http://localhost/${port}`);
 });
 // app.get('/api/items', (req, res) => {
 //   res.json({ message: 'This is CORS-enabled for all origins!' });
@@ -167,3 +248,11 @@ app.get("/auth-endpoint", auth, (request, response) => {
   response.json({message: "You are authorizaed to access me"});
   console.log("This is an authenticated endpoint");
 })
+
+// Add this AFTER all your routes
+app.use(errorHandler())
+
+// your own error handler
+// app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+//     // Your error handler logic
+// });

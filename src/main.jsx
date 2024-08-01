@@ -8,7 +8,7 @@ import { Auth0Provider } from '@auth0/auth0-react';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Auth0Provider
+    {/* <Auth0Provider
       // retrieve from auth0 application setting page
       domain="dev-m5ocddyzhqndhe7x.us.auth0.com"
       clientId='B2XOe0G0BdbujW0PqBo2ppdINusJW5yq'
@@ -20,9 +20,9 @@ root.render(
         // and scope props to Auth0Provider as follows:
         audience: "https://dev-m5ocddyzhqndhe7x.us.auth0.com/api/v2/",
         scope: "read:current_user update:current_user_metadata"
-      }}>
+      }}> */}
       
       <App />
-    </Auth0Provider>
+    {/* </Auth0Provider> */}
   </React.StrictMode>
 );
