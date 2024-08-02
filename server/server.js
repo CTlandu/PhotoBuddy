@@ -10,7 +10,7 @@ const dbConnect = require('./db/dbConnect');
 const User = require("./db/userModel");
 // 老的auth模块
 // const auth = require('./auth');
-const { auth } = require("express-oauth2-jwt-bearer");
+// const { auth } = require("express-oauth2-jwt-bearer");
 
 const cors = require("cors");
 const {middleware} = require("supertokens-node/framework/express");
@@ -22,6 +22,8 @@ const EmailPassword = require("supertokens-node/recipe/emailpassword");
 const ThirdParty = require("supertokens-node/recipe/thirdparty");
 const { errorHandler } = require("supertokens-node/framework/express");
 const Dashboard = require("supertokens-node/recipe/dashboard");
+const { verifySession } = require("supertokens-node/recipe/session/framework/express");
+const { SessionRequest } = require("supertokens-node/framework/express");
 
 // 初始化supertokens
 supertokens.init({
@@ -42,7 +44,12 @@ supertokens.init({
       websiteBasePath: "/auth"
   },
   recipeList: [
-      Dashboard.init(),
+      Dashboard.init({
+        // 设置管理员的邮箱。除了管理员有读写功能，其他dashboard user只能读
+        admins: [
+          "jizhoutang@outlook.com",
+        ]
+      }),
       EmailPassword.init(),
       ThirdParty.init({
         // We have provided you with development keys which you can use for testing.
@@ -64,23 +71,12 @@ supertokens.init({
                         clientSecret: "e97051221f4b6426e8fe8d51486396703012f5bd"
                     }]
                 }
-            }, {
-                config: {
-                    thirdPartyId: "apple",
-                    clients: [{
-                        clientId: "4398792-io.supertokens.example.service",
-                        additionalConfig: {
-                            keyId: "7M48Y4RYDL",
-                            privateKey:
-                                "-----BEGIN PRIVATE KEY-----\nMIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgu8gXs+XYkqXD6Ala9Sf/iJXzhbwcoG5dMh1OonpdJUmgCgYIKoZIzj0DAQehRANCAASfrvlFbFCYqn3I2zeknYXLwtH30JuOKestDbSfZYxZNMqhF/OzdZFTV0zc5u5s3eN+oCWbnvl0hM+9IW0UlkdA\n-----END PRIVATE KEY-----",
-                            teamId: "YWQCXGJRJL",
-                        }
-                    }]
-                }
             }],
           }
         }),
-      Session.init() // initializes session features
+      Session.init({
+        exposeAccessTokenToFrontendInCookieBasedAuth: true,
+      }) // initializes session features
     ]
 });
 // express app
@@ -118,7 +114,8 @@ Access-Control-Allow-Methods
  */
 app.use((req, res, next) => {
   // 允许来自所有域的请求
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  // res.setHeader("Access-Control-Allow-Origin", "*");
+
   // 允许客户端使用这些头部字段
   res.setHeader(
     "Access-Control-Allow-Headers",
@@ -138,28 +135,25 @@ const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Server started on http://localhost/${port}`);
 });
-// app.get('/api/items', (req, res) => {
-//   res.json({ message: 'This is CORS-enabled for all origins!' });
-// });
 
-const jwtCheck = auth({
-  audience: 'https://photobuddyapitest',
-  issuerBaseURL: 'https://dev-m5ocddyzhqndhe7x.us.auth0.com/',
-  tokenSigningAlg: 'RS256'
+app.post("/like-comment", verifySession(), (req, res) => {
+  let userId = req.session.getUserId();
+  console.log(111)
+  console.log(userId);
 });
-
-app.use(jwtCheck);
-
-app.get('/authorized', function (req, res) {
-  res.send('Secured Resource');
-});
-
 
 
 // create a "register" endpoint
-app.post('/register',(request, response) => {
+app.post('/register', (request, response) => {
   // hash the password before saving the email and password into the database
   // The code below is telling bcrypt to hash the password received from request body 10 times or 10 salt rounds.
+  try{
+    let userId = request.session.getUserId();
+    console.log('userId', userId);
+    console.log("wtf");
+  } catch {
+    console.log("wtf2");
+  }
   bcrypt.hash(request.body.password, 10)
     // In the then block, save the data you have now. Create a new instance of the userModel and collect the updated data:
     .then((hashedPassword) => {
@@ -237,17 +231,6 @@ app.post("/login",(request,response) => {
       })
     })
 });
-
-app.get("/free-endpoint",(request, response) => {
-  response.json({ message: "You are free to access me anytime"});
-  console.log("This is a free endpoint");
-})
-
-// 多了个auth参数，判断用户是否授权访问这个endpoint
-app.get("/auth-endpoint", auth, (request, response) => {
-  response.json({message: "You are authorizaed to access me"});
-  console.log("This is an authenticated endpoint");
-})
 
 // Add this AFTER all your routes
 app.use(errorHandler())

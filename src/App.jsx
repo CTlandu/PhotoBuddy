@@ -5,6 +5,7 @@ import SuperTokens, { SuperTokensWrapper } from "supertokens-auth-react";
 import ThirdParty, { Github, Google, Facebook, Apple } from "supertokens-auth-react/recipe/thirdparty";
 import EmailPassword from "supertokens-auth-react/recipe/emailpassword";
 import Session from "supertokens-auth-react/recipe/session";
+import { SessionAuth } from 'supertokens-auth-react/recipe/session';
 import { getSuperTokensRoutesForReactRouterDom } from "supertokens-auth-react/ui";
 import { ThirdPartyPreBuiltUI } from 'supertokens-auth-react/recipe/thirdparty/prebuiltui';
 import { EmailPasswordPreBuiltUI } from 'supertokens-auth-react/recipe/emailpassword/prebuiltui';
@@ -15,14 +16,12 @@ import Login from './pages/Login'
 import Home from './pages/Home'
 import NoPage from './pages/NoPage'
 import Register from './pages/Register'
-import ProtectedRoute from './ProtectedRoute'
 import Profile from './pages/Profile'
-import Profile_test from './pages/Profile_test'
+import { useEffect } from 'react'
 
 const APP_NAME = import.meta.env.VITE_APP_NAME;
 const API_DOMAIN = import.meta.env.VITE_APP_API_DOMAIN;
 const WEB_DOMAIN = import.meta.env.VITE_WEBSITE_DOMAIN;
-console.log(APP_NAME, API_DOMAIN, WEB_DOMAIN)
 
 SuperTokens.init({
   appInfo: {
@@ -39,8 +38,8 @@ SuperTokens.init({
               providers: [
                   Github.init(),
                   Google.init(),
-                  Facebook.init(),
-                  Apple.init(),
+                  // Facebook.init(),
+                  // Apple.init(),
               ]
           }
       }),
@@ -49,7 +48,20 @@ SuperTokens.init({
   ]
 });
 
+async function getToken() {
+  const isSessionValid = await Session.doesSessionExist();
+  if (isSessionValid) {
+      const accessToken = await Session.getAccessToken();
+      console.log("Access Token:", accessToken);
+  } else {
+      console.log("User is not logged in");
+  }
+}
+
 function App() {
+  useEffect(() => {
+    getToken();
+  }, []);
 
   return (
     <>
@@ -67,10 +79,14 @@ function App() {
           <Route exact path="/login" element={<Login />}></Route>
           <Route exact path="/register" element={<Register />}></Route>
           <Route path="*" element={<NoPage />}></Route>
-          <Route path="/profile_test" element={<Profile_test />}></Route>
+    
 
           {/* protected routes */}
-          <Route path='/profile' element={<ProtectedRoute element={Profile}/>}></Route>
+          <Route path='/profile' element={
+            <SessionAuth>
+              <Profile/>
+            </SessionAuth>}>
+          </Route>
         </Routes>
       </BrowserRouter>
     </SuperTokensWrapper>
