@@ -57,14 +57,33 @@ SuperTokens.init({
                 } else if (context.action === "PASSWORDLESS_CODE_SENT") {
                     // TODO:
                 } else {
-                    let {id, emails, phoneNumbers} = context.user;
+                    let {id, emails, phoneNumbers, timeJoined} = context.user;
                     if (context.action === "SUCCESS") {
-                        if (context.isNewRecipeUser && context.user.loginMethods.length === 1) {
-                          console.log(`sign up: ${id}, ${emails[0]}, ${phoneNumbers[0]}, Context User: ${JSON.stringify(context.user)}`)
-                        } else {
-                            // TODO: Sign in
-                            console.log(`log in: ${id}, ${emails[0]}, ${phoneNumbers[0]}, Context User: ${JSON.stringify(context.user)}`)
-                        }
+                      const userInfo = {
+                        id: id,
+                        email: emails[0],
+                        phoneNumber: phoneNumbers[0],
+                        timeJoined: timeJoined,
+                      }
+                      // when sign up
+                      if (context.isNewRecipeUser && context.user.loginMethods.length === 1) {
+                        console.log(`sign up: ${id}, ${emails[0]},
+                          phone number: ${phoneNumbers[0]}, time joined: ${timeJoined},
+                         contextUser: ${JSON.stringify(context.user)}`)
+                        await fetch('http://localhost:4000/api/saveUserInfo', {
+                          method: 'POST',
+                          headers: {
+                              'Content-Type': 'application/json'
+                          },
+                          body: JSON.stringify(userInfo)
+                        });
+                      }
+                      // when log in 
+                      else {
+                        console.log(`log in: ${id}, ${emails[0]},
+                          phone number: ${phoneNumbers[0]}, time joined: ${timeJoined},
+                          verified: ${verified}, contextUser: ${JSON.stringify(context.user)}`)
+                      }
                     }
                 }
             }

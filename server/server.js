@@ -110,6 +110,22 @@ async function fetchUserInfo() {
 
 fetchUserInfo();
 
+const mockDatabase = [];
+
+app.post('/api/saveUserInfo', async (req, res) => {
+  const userInfo = req.body;
+  try {
+      // 创建新用户并保存到数据库
+      const newUser = new User(userInfo);
+      await newUser.save();
+      console.log('User information saved:', userInfo);
+      res.status(200).send('User information saved successfully');
+  } catch (error) {
+      console.error('Error saving user information:', error);
+      res.status(500).send('Internal server error');
+  }
+});
+
 
 // create a "register" endpoint
 app.post('/register', (request, response) => {

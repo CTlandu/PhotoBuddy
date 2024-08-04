@@ -1,11 +1,10 @@
 const mongoose = require("mongoose")
 const UserSchema = new mongoose.Schema({
-  email: { type: String, required: [true, "please provide an email!"], unique: [true, "email already exists!"] },
+  email: { type: String, required: [true, "please provide an email!"]},
   // password: { type: String, required: [true, "please provide a password"], unique: false },
-  id: { type: String, required: [true], unique: true },
-  phoneNumber: {type: String},
-  timeJoined: {type: String},
-  verified: {type: Boolean},
+  id: { type: String, required: [true, "please provide an id"], unique: [true, "id already exists!"] },
+  phoneNumber: {type: String, default: null},
+  timeJoined: {type: Date},
 })
 
 // "create a user table or collection if there is no table with that name already".

@@ -1,7 +1,24 @@
 import React from "react";
+import { useState,useEffect } from "react";
+import Session from 'supertokens-auth-react/recipe/session';
 
 const PersonalForm = () => {
+  const [userInfo, setUserInfo] = useState(null);
 
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      if (await Session.doesSessionExist()) {
+        const userId = await Session.getUserId();
+        const accessTokenPayload = await Session.getAccessTokenPayloadSecurely();
+        setUserInfo({
+          userId,
+          ...accessTokenPayload
+        });
+      }
+    };
+    fetchUserInfo();
+    console.log(userInfo);
+  },[]);
 
   return (
     <div className="bg-white p-6 w-1/2 rounded-lg shadow-md">

@@ -10,7 +10,10 @@ const { errorHandler } = require("supertokens-node/framework/express");
 const Dashboard = require("supertokens-node/recipe/dashboard");
 const { verifySession } = require("supertokens-node/recipe/session/framework/express");
 const { SessionRequest } = require("supertokens-node/framework/express");
-const supertokensInit = require("./supertokensInit");
+const dbconnect = require("./db/dbConnect");
+const User = require("./db/userModel");
+
+dbconnect();
 
 // 初始化supertokens
 async function superTokensInit()
@@ -39,44 +42,7 @@ async function superTokensInit()
                 "jizhoutang@outlook.com",
               ]
             }),
-            EmailPassword.init({
-              override: {
-                  functions: (originalImplementation) => {
-                      return {
-                          ...originalImplementation,
-                          consumeCode: async (input) => {
-                              console.log("consumeCode called with input:", input);
-                              
-                              // First we call the original implementation of consumeCode.
-                              let response = await originalImplementation.consumeCode(input);
-                              console.log("consumeCode response:", response);
-      
-                              // Post sign up response, we check if it was successful
-                              if (response.status === "OK") {
-                                  let { id, emails, phoneNumbers } = response.user;
-                                  console.log("consumeCode success with user:", response.user);
-      
-                                  if (input.session === undefined) {
-                                      console.log("No session found in input");
-                                      if (response.createdNewRecipeUser && response.user.loginMethods.length === 1) {
-                                          // TODO: post sign up logic
-                                          console.log("已注册");
-                                      } else {
-                                          // TODO: post sign in logic
-                                          console.log("已登录");
-                                      }
-                                  } else {
-                                      console.log("Session found in input");
-                                  }
-                              } else {
-                                  console.log("consumeCode failed with status:", response.status);
-                              }
-                              return response;
-                          }
-                      }
-                  }
-              }
-          }),
+            EmailPassword.init(),
             EmailVerification.init({
               mode: "OPTIONAL", // or OPTIONAL
             }),
