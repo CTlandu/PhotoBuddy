@@ -3,34 +3,50 @@ import axios from "axios";
 import Cookies from 'universal-cookie';
 import { useState } from 'react';
 const cookies = new Cookies();
-import { useAuth0 } from '@auth0/auth0-react';
+import { signOut } from 'supertokens-auth-react/recipe/session';
+import { redirectToAuth } from 'supertokens-auth-react';
+import Session from "supertokens-auth-react/recipe/session";
 
 
 const Navbar = () => {
-  const [hasToken, setHasToken] = useState(false);
-  // const { loginWithRedirect} = useAuth0();
-  // const { logout } = useAuth0();
 
+  const [accessToken, setAccessToken] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // 页面刷新时，获取当前的token
   useEffect(() => {
-    // Get token genearted on login
-    try{
-      const token = cookies.get('TOKEN');
-      if(token === undefined) return;
-      setHasToken(true);
-    }catch{
-      console.log("No token found 用户未登录")
+    async function fetchToken() {
+      const token = await getToken();
+      setAccessToken(token);
+      setLoading(false);
     }
-  }, []);
 
-    // 旧的 logout function
-    // const logout = () =>{
-    //   // redirect to landing page
-    //   window.location.href = "/"
-    //   //destroy the cookie
-    //   cookies.remove('TOKEN', {path: '/'});
-    //   setHasToken(false);
-    //   // redirect user to the landing page
-    // }
+    fetchToken();
+  }, [accessToken]);
+
+  // 获取Token，若没有则返回null
+  async function getToken() {  
+    try{
+      return await Session.getAccessToken();
+    }catch{
+      return null;
+    }
+  }
+  // supertoken提供的logout方法（signOut)
+  async function onLogout(){
+    await signOut();
+    window.location.href = "/";
+  }
+
+  // 点击登录按钮后，跳转到supertoken提供的login页面
+  async function onLogin(){
+    redirectToAuth();
+  }
+
+  // 若页面正在加载（还没获取到token），则返回null（空页面）
+  if(loading){
+    return null
+  }
 
   return (
   <>
@@ -40,16 +56,16 @@ const Navbar = () => {
       </div>
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1 mr-28">
-          <li><a href='/register'>Register</a></li>
+          {/* <li><a href='/register'>Register</a></li> */}
           {/* 原先:导航至login页面 */}
           {/* <li><a href='/login'>Log in</a></li> */}
           {/* <li><button onClick={()=>loginWithRedirect()}>Log in</button></li> */}
-          <li><a href="/auth">SuperToken Login</a></li>
-          {<li><a href='/profile'>Profile</a></li>}
-          <li><button onClick={() => logout({ logoutParams: { returnTo: window.location.origin}})}>
+          {accessToken && <li><a href='/profile'>Profile</a></li>}
+          {accessToken && <li><button onClick={onLogout}>
             Logout
             </button>
-          </li>
+          </li>}
+          {!accessToken && <li><button onClick={onLogin}>SuperToken Login</button></li>}
           <li>
             <details>
               <summary>Parent</summary>

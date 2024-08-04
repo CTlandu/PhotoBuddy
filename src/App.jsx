@@ -4,11 +4,13 @@ import './index.css'
 import SuperTokens, { SuperTokensWrapper } from "supertokens-auth-react";
 import ThirdParty, { Github, Google, Facebook, Apple } from "supertokens-auth-react/recipe/thirdparty";
 import EmailPassword from "supertokens-auth-react/recipe/emailpassword";
-import Session from "supertokens-auth-react/recipe/session";
+import EmailVerification from 'supertokens-auth-react/recipe/emailverification';
 import { SessionAuth } from 'supertokens-auth-react/recipe/session';
 import { getSuperTokensRoutesForReactRouterDom } from "supertokens-auth-react/ui";
 import { ThirdPartyPreBuiltUI } from 'supertokens-auth-react/recipe/thirdparty/prebuiltui';
 import { EmailPasswordPreBuiltUI } from 'supertokens-auth-react/recipe/emailpassword/prebuiltui';
+import { EmailVerificationPreBuiltUI } from "supertokens-auth-react/recipe/emailverification/prebuiltui";
+import Session from "supertokens-auth-react/recipe/session";
 import * as reactRouterDom from "react-router-dom";
 // import createStore from 'react-auth-kit/createStore'
 // import AuthProvider from 'react-auth-kit/AuthProvider'
@@ -17,11 +19,11 @@ import Home from './pages/Home'
 import NoPage from './pages/NoPage'
 import Register from './pages/Register'
 import Profile from './pages/Profile'
-import { useEffect } from 'react'
+import { useEffect, useState, createContext } from 'react'
 
-const APP_NAME = import.meta.env.VITE_APP_NAME;
-const API_DOMAIN = import.meta.env.VITE_APP_API_DOMAIN;
-const WEB_DOMAIN = import.meta.env.VITE_WEBSITE_DOMAIN;
+// const APP_NAME = import.meta.env.VITE_APP_NAME;
+// const API_DOMAIN = import.meta.env.VITE_APP_API_DOMAIN;
+// const WEB_DOMAIN = import.meta.env.VITE_WEBSITE_DOMAIN;
 
 SuperTokens.init({
   appInfo: {
@@ -43,6 +45,9 @@ SuperTokens.init({
               ]
           }
       }),
+      EmailVerification.init({
+        mode: "REQUIRED", //OR OPTIONAL
+      }),
       EmailPassword.init(),
       Session.init()
   ]
@@ -53,14 +58,22 @@ async function getToken() {
   if (isSessionValid) {
       const accessToken = await Session.getAccessToken();
       console.log("Access Token:", accessToken);
+      return accessToken;
   } else {
       console.log("User is not logged in");
+      return null;
   }
 }
 
 function App() {
+  const [accessToken, setAccessToken] = useState(null);
   useEffect(() => {
-    getToken();
+    async function fetchToken() {
+      const token = await getToken();
+      setAccessToken(token);
+    }
+
+    fetchToken();
   }, []);
 
   return (
@@ -69,12 +82,12 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/*This renders the login UI on the /auth route*/}
-          {getSuperTokensRoutesForReactRouterDom(reactRouterDom, [ThirdPartyPreBuiltUI, EmailPasswordPreBuiltUI])}
+          {getSuperTokensRoutesForReactRouterDom(reactRouterDom, [ThirdPartyPreBuiltUI, EmailPasswordPreBuiltUI, EmailVerificationPreBuiltUI])}
           
           {/*Your app routes*/}
 
            {/* free routes */}
-          <Route index element={<Home/>}></Route>
+          <Route index element={<Home />}></Route>
           <Route exact path="/home" element={<Home />}/>
           <Route exact path="/login" element={<Login />}></Route>
           <Route exact path="/register" element={<Register />}></Route>

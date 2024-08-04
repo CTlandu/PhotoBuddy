@@ -19,6 +19,7 @@ const {middleware} = require("supertokens-node/framework/express");
 const supertokens =require("supertokens-node");
 const Session = require("supertokens-node/recipe/session");
 const EmailPassword = require("supertokens-node/recipe/emailpassword");
+const EmailVerification = require("supertokens-node/recipe/emailverification");
 const ThirdParty = require("supertokens-node/recipe/thirdparty");
 const { errorHandler } = require("supertokens-node/framework/express");
 const Dashboard = require("supertokens-node/recipe/dashboard");
@@ -51,6 +52,9 @@ supertokens.init({
         ]
       }),
       EmailPassword.init(),
+      EmailVerification.init({
+        mode: "REQUIRED", // or OPTIONAL
+      }),
       ThirdParty.init({
         // We have provided you with development keys which you can use for testing.
         // IMPORTANT: Please replace them with your own OAuth keys for production use.
