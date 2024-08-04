@@ -40,15 +40,35 @@ SuperTokens.init({
               providers: [
                   Github.init(),
                   Google.init(),
-                  // Facebook.init(),
+                  //Facebook.init(),
                   // Apple.init(),
               ]
           }
       }),
       EmailVerification.init({
-        mode: "REQUIRED", //OR OPTIONAL
+        mode: "OPTIONAL", //OR OPTIONAL
       }),
-      EmailPassword.init(),
+      EmailPassword.init({
+        contactMethod: "EMAIL_OR_PHONE",
+
+            onHandleEvent: async (context) => {
+                if (context.action === "PASSWORDLESS_RESTART_FLOW") {
+                    // TODO:
+                } else if (context.action === "PASSWORDLESS_CODE_SENT") {
+                    // TODO:
+                } else {
+                    let {id, emails, phoneNumbers} = context.user;
+                    if (context.action === "SUCCESS") {
+                        if (context.isNewRecipeUser && context.user.loginMethods.length === 1) {
+                          console.log(`sign up: ${id}, ${emails[0]}, ${phoneNumbers[0]}, Context User: ${JSON.stringify(context.user)}`)
+                        } else {
+                            // TODO: Sign in
+                            console.log(`log in: ${id}, ${emails[0]}, ${phoneNumbers[0]}, Context User: ${JSON.stringify(context.user)}`)
+                        }
+                    }
+                }
+            }
+      }),
       Session.init()
   ]
 });
