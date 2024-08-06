@@ -16,7 +16,7 @@ function Home() {
     <>
     
     <div className="page-element">
-      <Navbar />
+      <Navbar/>
       <IntroBlock />
       <Carousel></Carousel>
       

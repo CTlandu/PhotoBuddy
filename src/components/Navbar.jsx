@@ -3,29 +3,50 @@ import axios from "axios";
 import Cookies from 'universal-cookie';
 import { useState } from 'react';
 const cookies = new Cookies();
+import { signOut } from 'supertokens-auth-react/recipe/session';
+import { redirectToAuth } from 'supertokens-auth-react';
+import Session from "supertokens-auth-react/recipe/session";
 
 
 const Navbar = () => {
-  const [hasToken, setHasToken] = useState(false);
 
+  const [accessToken, setAccessToken] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // 页面刷新时，获取当前的token
   useEffect(() => {
-    // Get token genearted on login
+    async function fetchToken() {
+      const token = await getToken();
+      setAccessToken(token);
+      setLoading(false);
+    }
+
+    fetchToken();
+  }, [accessToken]);
+
+  // 获取Token，若没有则返回null
+  async function getToken() {  
     try{
-      const token = cookies.get('TOKEN');
-      if(token === undefined) return;
-      setHasToken(true);
+      return await Session.getAccessToken();
     }catch{
-      console.log("No token found 用户未登录")
+      return null;
     }
-  }, []);
-    const logout = () =>{
-      // redirect to landing page
-      window.location.href = "/"
-      //destroy the cookie
-      cookies.remove('TOKEN', {path: '/'});
-      setHasToken(false);
-      // redirect user to the landing page
-    }
+  }
+  // supertoken提供的logout方法（signOut)
+  async function onLogout(){
+    await signOut();
+    window.location.href = "/";
+  }
+
+  // 点击登录按钮后，跳转到supertoken提供的login页面
+  async function onLogin(){
+    redirectToAuth();
+  }
+
+  // 若页面正在加载（还没获取到token），则返回null（空页面）
+  if(loading){
+    return null
+  }
 
   return (
   <>
@@ -35,10 +56,16 @@ const Navbar = () => {
       </div>
       <div className="flex-none">
         <ul className="menu menu-horizontal px-1 mr-28">
-          <li><a href='/register'>Register</a></li>
-          <li><a href='/login'>Log in</a></li>
-          {hasToken && <li><a href='/profile'>Profile</a></li>}
-          {hasToken && <li><button onClick={logout}>Logout</button></li>}
+          {/* <li><a href='/register'>Register</a></li> */}
+          {/* 原先:导航至login页面 */}
+          {/* <li><a href='/login'>Log in</a></li> */}
+          {/* <li><button onClick={()=>loginWithRedirect()}>Log in</button></li> */}
+          {accessToken && <li><a href='/profile'>Profile</a></li>}
+          {accessToken && <li><button onClick={onLogout}>
+            Logout
+            </button>
+          </li>}
+          {!accessToken && <li><button onClick={onLogin}>SuperToken Login</button></li>}
           <li>
             <details>
               <summary>Parent</summary>

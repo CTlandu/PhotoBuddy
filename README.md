@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+# PhotoBuddy
+A MERN project for implementing PhotoBuddy, a startup website for connecting photographers/models
+=======
 # React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
@@ -8,3 +12,4 @@ Currently, two official plugins are available:
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
 命令行启动：npx vite
+>>>>>>> b15c1aa (set up Routers and login page)

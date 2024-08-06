@@ -2,51 +2,63 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import axios from 'axios';
-import Cookies from "universal-cookie"
+// import Cookies from "universal-cookie"
 import Sidebar from '../components/Sidebar';
 import PersonalForm from '../components/PersonalForm';
+import Session from 'supertokens-auth-react/recipe/session';
 
 
 const Profile = () => {
-
-  const cookies = new Cookies();
-  const token = cookies.get('TOKEN');
-
-  const [message, setMessage] = useState('');
-
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
   useEffect(() => {
-    // set configuration for the API call here
-    const configuration = {
-      method: "get",
-      url: "http://localhost:4000/auth-endpoint",
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }
+    const fetchProfile = async () => {
+        try {
+            const userId = await Session.getUserId(); // 替换为实际的用户ID
+            console.log(userId);
+            const response = await axios.get(`http://localhost:4000/profile`, {
+                params: { id: userId }
+            });
+            setProfile(response.data);
+        } catch (err) {
+            setError(err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-    // make the API call
-    axios(configuration)
-      .then((result) => {
-        // assign the message in our result to the message we initialized above
-        setMessage(result.data.message);
-      })
-      .catch((error) => {// 导航至主页面
-        window.location.href = "/"
+    fetchProfile();
+  }, []);
 
-        // 若token失效，则清除token
-        cookies.remove('TOKEN');
-      });
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-  }, [])
-
+  if (error) {
+      return <div>Error: {error.message}</div>;
+  }
 
   return (
     <>
+    <div>
+            <h1>Profile</h1>
+            {profile && (
+                <div>
+                    <p>ID: {profile.id}</p>
+                    <p>Email: {profile.email}</p>
+                    <p>Phone Number: {profile.phoneNumber}</p>
+                    <p>Time Joined: {new Date(profile.timeJoined).toLocaleString()}</p>
+                    <p>Verified: {profile.verified ? 'Yes' : 'No'}</p>
+                </div>
+            )}
+        </div>
       <div className="flex flex-col h-screen">
         <Navbar />
         <div className="flex flex-1 ml-28 mt-20">
           <Sidebar />
-          <PersonalForm />
+          <PersonalForm profile={profile}/>
 
         </div>
 
