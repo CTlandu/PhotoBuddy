@@ -94,28 +94,26 @@ app.listen(port, () => {
 //   console.log(userId);
 // });
 
-async function getUserInfo(){
-  let userInfo = await supertokens.listUsersByAccountInfo(
-    "public",{
-      email: "jizhoutang@outlook.com"
-    }
-  )
-  return userInfo[0].emails[0];
-}
-// 使用异步函数来获取结果
-async function fetchUserInfo() {
-  const userInfo = await getUserInfo();
-  console.log("jizhoutang user info: ", userInfo);
-}
+// async function getUserInfo(){
+//   let userInfo = await supertokens.listUsersByAccountInfo(
+//     "public",{
+//       email: "jizhoutang@outlook.com"
+//     }
+//   )
+//   return userInfo[0].emails[0];
+// }
+// // 使用异步函数来获取结果
+// async function fetchUserInfo() {
+//   const userInfo = await getUserInfo();
+//   console.log("jizhoutang user info: ", userInfo);
+// }
 
-fetchUserInfo();
+// fetchUserInfo();
 
-const mockDatabase = [];
-
+// 用户注册时的后端API，用于把新用户的数据(id, email)传入MongoDB数据库
 app.post('/api/saveUserInfo', async (req, res) => {
   const userInfo = req.body;
   try {
-      // 创建新用户并保存到数据库
       const newUser = new User(userInfo);
       await newUser.save();
       console.log('User information saved:', userInfo);
@@ -126,6 +124,7 @@ app.post('/api/saveUserInfo', async (req, res) => {
   }
 });
 
+// 用户进入profile page时的get API
 app.get('/profile', async (req, res) => {
   try{
     const userId = req.query.id// 假设通过查询参数传递用户ID
@@ -140,6 +139,40 @@ app.get('/profile', async (req, res) => {
     }
   }
 );
+
+/// 处理 PUT 请求，更新用户数据
+app.put('/profile', async (req, res) => {
+  try {
+      const { id, preferredName, lastName, pronouns, email, birthday, zipcode } = req.body;
+
+      // 检查必填字段是否缺失
+      if (!id) {
+          return res.status(400).json({ message: 'User ID is required' });
+      }
+
+      // 更新用户信息
+      const updatedUser = await User.findOneAndUpdate(
+          { id },
+          { preferredName, lastName, pronouns, email, birthday, zipcode },
+          { new: true, runValidators: true } // 返回更新后的文档，并运行验证器
+      );
+
+      if (!updatedUser) {
+          return res.status(404).json({ message: 'User not found' });
+      }
+
+      res.status(200).json(updatedUser);
+  } catch (error) {
+      console.error('Error updating user data:', error);
+
+      // 检查是否是唯一性约束错误
+      if (error.name === 'MongoServerError' && error.code === 11000) {
+          return res.status(409).json({ message: 'Email or ID already exists' });
+      }
+
+      res.status(500).json({ message: 'Internal server error' });
+    }
+});
 
 // create a "register" endpoint
 app.post('/register', (request, response) => {
