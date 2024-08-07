@@ -12,23 +12,23 @@ const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const fetchProfile = async () => {
+    try {
+        const userId = await Session.getUserId(); // 替换为实际的用户ID
+        console.log(userId);
+        const response = await axios.get(`http://localhost:4000/profile`, {
+            params: { id: userId }
+        });
+        setProfile(response.data);
+    } catch (err) {
+        setError(err);
+    } finally {
+        setLoading(false);
+    }
+};
   
   useEffect(() => {
-    const fetchProfile = async () => {
-        try {
-            const userId = await Session.getUserId(); // 替换为实际的用户ID
-            console.log(userId);
-            const response = await axios.get(`http://localhost:4000/profile`, {
-                params: { id: userId }
-            });
-            setProfile(response.data);
-        } catch (err) {
-            setError(err);
-        } finally {
-            setLoading(false);
-        }
-    };
-
     fetchProfile();
   }, []);
 
@@ -39,6 +39,11 @@ const Profile = () => {
   if (error) {
       return <div>Error: {error.message}</div>;
   }
+
+  const handleProfileUpdate = (updatedProfile) => {
+    setProfile(updatedProfile);
+  };
+
 
   return (
     <>
@@ -58,7 +63,7 @@ const Profile = () => {
         <Navbar />
         <div className="flex flex-1 ml-28 mt-20">
           <Sidebar />
-          <PersonalForm profile={profile}/>
+          <PersonalForm profile={profile} onProfileUpdate={handleProfileUpdate}/>
 
         </div>
 

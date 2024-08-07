@@ -5,6 +5,7 @@ const express = require('express');
 //当用户尝试登录时，bcrypt 可以将用户输入的明文密码与存储在数据库中的哈希值进行比较，判断密码是否正确。
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+
 // require database connection
 const dbConnect = require('./db/dbConnect');
 const User = require("./db/userModel");
@@ -47,8 +48,6 @@ app.use(cors({
 app.use(middleware());
 
 
-
-
 /**
  * CORS 是一种机制，允许来自一个域的网页能够请求另一个域的资源。它通过添加一些特定的 HTTP 头来告诉浏览器允许来自不同源的请求。
  * CORS 主要用于解决浏览器的同源策略（Same-Origin Policy）限制的问题，这一策略是为了保护用户免受某些类型的攻击（例如 CSRF）。
@@ -88,28 +87,6 @@ app.listen(port, () => {
   console.log(`Server started on http://localhost/${port}`);
 });
 
-// app.post("/like-comment", verifySession(), (req, res) => {
-//   let userId = req.session.getUserId();
-//   console.log(111)
-//   console.log(userId);
-// });
-
-// async function getUserInfo(){
-//   let userInfo = await supertokens.listUsersByAccountInfo(
-//     "public",{
-//       email: "jizhoutang@outlook.com"
-//     }
-//   )
-//   return userInfo[0].emails[0];
-// }
-// // 使用异步函数来获取结果
-// async function fetchUserInfo() {
-//   const userInfo = await getUserInfo();
-//   console.log("jizhoutang user info: ", userInfo);
-// }
-
-// fetchUserInfo();
-
 // 用户注册时的后端API，用于把新用户的数据(id, email)传入MongoDB数据库
 app.post('/api/saveUserInfo', async (req, res) => {
   const userInfo = req.body;
@@ -144,7 +121,7 @@ app.get('/profile', async (req, res) => {
 app.put('/profile', async (req, res) => {
   try {
       const { id, preferredName, lastName, pronouns, email, birthday, zipcode,
-        twitter, facebook, instagram, linkedin
+        twitter, facebook, instagram, linkedin, avatar
        } = req.body;
 
       // 检查必填字段是否缺失
@@ -156,7 +133,7 @@ app.put('/profile', async (req, res) => {
       const updatedUser = await User.findOneAndUpdate(
           { id },
           { preferredName, lastName, pronouns, email, birthday, zipcode,
-            twitter, facebook, instagram, linkedin,
+            twitter, facebook, instagram, linkedin, avatar
            },
           { new: true, runValidators: true } // 返回更新后的文档，并运行验证器
       );

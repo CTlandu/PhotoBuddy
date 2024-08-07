@@ -82,7 +82,7 @@ SuperTokens.init({
                       else {
                         console.log(`log in: ${id}, ${emails[0]},
                           phone number: ${phoneNumbers[0]}, time joined: ${timeJoined},
-                          verified: ${verified}, contextUser: ${JSON.stringify(context.user)}`)
+                          contextUser: ${JSON.stringify(context.user)}`)
                       }
                     }
                 }
