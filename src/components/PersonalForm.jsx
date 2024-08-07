@@ -64,6 +64,7 @@ const PersonalForm = (props) => {
       // 发送请求到后端api
       const response = await axios.put('http://localhost:4000/profile', formData);
       console.log('Form data updated successfully:', response.data);
+      window.location.reload(); // submit后重新加载页面
     } catch (error) {
       console.error('Error updating user data:', error);
     }
@@ -212,7 +213,7 @@ const PersonalForm = (props) => {
         {/* Other input fields */}
         <div className="flex justify-center mt-4">
             <button type="submit" className="bg-dark-gray text-black py-2 px-4 rounded hover:bg-blue-700">
-                Submit
+                Save
             </button>
         </div>
         

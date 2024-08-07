@@ -26,7 +26,7 @@ const Profile = () => {
     } finally {
         setLoading(false);
     }
-};
+  };
   
   useEffect(() => {
     fetchProfile();
@@ -47,18 +47,6 @@ const Profile = () => {
 
   return (
     <>
-    <div>
-            <h1>Profile</h1>
-            {profile && (
-                <div>
-                    <p>ID: {profile.id}</p>
-                    <p>Email: {profile.email}</p>
-                    <p>Phone Number: {profile.phoneNumber}</p>
-                    <p>Time Joined: {new Date(profile.timeJoined).toLocaleString()}</p>
-                    <p>Verified: {profile.verified ? 'Yes' : 'No'}</p>
-                </div>
-            )}
-        </div>
       <div className="flex flex-col h-screen">
         <Navbar />
         <div className="flex flex-1 ml-28 mt-20">
