@@ -143,7 +143,9 @@ app.get('/profile', async (req, res) => {
 /// 处理 PUT 请求，更新用户数据
 app.put('/profile', async (req, res) => {
   try {
-      const { id, preferredName, lastName, pronouns, email, birthday, zipcode } = req.body;
+      const { id, preferredName, lastName, pronouns, email, birthday, zipcode,
+        twitter, facebook, instagram, linkedin
+       } = req.body;
 
       // 检查必填字段是否缺失
       if (!id) {
@@ -153,7 +155,9 @@ app.put('/profile', async (req, res) => {
       // 更新用户信息
       const updatedUser = await User.findOneAndUpdate(
           { id },
-          { preferredName, lastName, pronouns, email, birthday, zipcode },
+          { preferredName, lastName, pronouns, email, birthday, zipcode,
+            twitter, facebook, instagram, linkedin,
+           },
           { new: true, runValidators: true } // 返回更新后的文档，并运行验证器
       );
 

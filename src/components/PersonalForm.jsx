@@ -22,7 +22,12 @@ const PersonalForm = (props) => {
     pronouns: props.profile.pronouns || '',
     email: props.profile.email || '',
     birthday: props.profile.birthday ? formatDate(props.profile.birthday) : '',
-    zipcode: props.profile.zipcode || ''
+    zipcode: props.profile.zipcode || '',
+    phone: props.profile.phone || '',
+    instagram: props.profile.instagra || '',
+    linkedin: props.profile.linkedin || '',
+    twitter: props.profile.twitter || '',
+    facebook: props.profile.facebook || '',
 });
 
   const handleChange = (e) => {
@@ -32,6 +37,7 @@ const PersonalForm = (props) => {
         [id]: value
     }));
   };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,7 +68,7 @@ const PersonalForm = (props) => {
         <div className="flex flex-row justify-between items-center">
           <div>
             <label htmlFor="preferredName" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
-              Preferred Name
+              *Preferred Name
             </label>
             <input type="text" 
                    id="preferredName" 
@@ -73,7 +79,7 @@ const PersonalForm = (props) => {
           </div>
           <div>
             <label htmlFor="lastName" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
-              Last Name
+              *Last Name
             </label>
             <input type="text"
                    id="lastName" 
@@ -97,9 +103,21 @@ const PersonalForm = (props) => {
 
         <div>
           <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
-            Email
+            *Email
           </label>
           <input value={formData.email} type="text" id="email" readOnly className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
+        </div>
+
+        <div>
+          <label htmlFor="phone" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
+            Phone Number
+          </label>
+          <input value={formData.phone} 
+                 type="text" 
+                 id="phone"
+                 onChange={handleChange}
+                 maxLength={10}
+                 className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
         </div>
 
         <div>
@@ -126,7 +144,52 @@ const PersonalForm = (props) => {
                  className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
         </div>
 
+
+        <h2 className="text-xl font-bold mt-8 text-center">Social Media</h2>
+
+        <div>
+          <label htmlFor="instagram" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
+            Instagram
+          </label>
+          <input value={formData.instagram} 
+                 type="url" 
+                 id="instagram"
+                 onChange={handleChange}
+                 className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
+        </div>
+        <div>
+          <label htmlFor="linkedin" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
+            Linkedin
+          </label>
+          <input value={formData.linkedin} 
+                 type="url" 
+                 id="linkedin"
+                 onChange={handleChange}
+                 className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
+        </div>
+        <div>
+          <label htmlFor="facebook" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
+            Facebook
+          </label>
+          <input value={formData.facebook} 
+                 type="url" 
+                 id="facebook"
+                 onChange={handleChange}
+                 className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
+        </div>
+        <div>
+          <label htmlFor="twitter" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
+            X
+          </label>
+          <input value={formData.twitter} 
+                 type="url" 
+                 id="twitter"
+                 onChange={handleChange}
+                 className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
+        </div>
+
       </div>
+
   
       {/* Other input fields */}
       <div className="flex justify-center mt-4">
@@ -134,6 +197,9 @@ const PersonalForm = (props) => {
               Submit
           </button>
       </div>
+      
+
+
     </form>
   </div>
   );
