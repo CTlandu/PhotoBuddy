@@ -76,7 +76,8 @@ const PersonalForm = (props) => {
 
 
   return ( 
-    <div className="bg-white p-6 w-1/2 rounded-lg shadow-md">
+    // <div className="bg-white p-6 w-full rounded-lg shadow-md">
+    <div className="bg-white p-6 w-full md:w-3/4 lg:w-2/3  rounded-lg shadow-md mx-auto">
       <h2 className="text-xl font-bold mb-4 text-center">Personal Info</h2>
         <div className="avatar flex justify-center">  
             <AvatarUpload profile={props.profile} onSave={handleAvatarSave}/>
@@ -87,7 +88,7 @@ const PersonalForm = (props) => {
           <div className="flex flex-row justify-between items-center">
             <div>
               <label htmlFor="preferredName" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
-                *Preferred Name
+                *First Name
               </label>
               <input type="text" 
                     id="preferredName" 

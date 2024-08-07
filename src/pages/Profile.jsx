@@ -48,8 +48,8 @@ const Profile = () => {
   return (
     <>
       <div className="flex flex-col h-screen">
-        <Navbar />
-        <div className="flex flex-1 ml-28 mt-20">
+        <Navbar/>
+        <div className="flex flex-1 mx-auto mt-16">
           <Sidebar />
           <PersonalForm profile={profile} onProfileUpdate={handleProfileUpdate}/>
 
