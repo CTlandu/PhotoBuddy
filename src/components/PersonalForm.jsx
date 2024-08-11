@@ -122,25 +122,6 @@ const PersonalForm = (props) => {
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
-              *Email
-            </label>
-            <input value={formData.email} type="text" id="email" readOnly className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
-          </div>
-
-          <div>
-            <label htmlFor="phone" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
-              Phone Number
-            </label>
-            <input value={formData.phone} 
-                  type="text" 
-                  id="phone"
-                  onChange={handleChange}
-                  maxLength={10}
-                  className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
-          </div>
-
-          <div>
             <label htmlFor="birthday" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
               Birthday
             </label>
@@ -165,48 +146,130 @@ const PersonalForm = (props) => {
           </div>
 
 
-          <h2 className="text-xl font-bold mt-8 text-center">Social Media</h2>
+          <h2 className="text-xl font-bold mt-8 text-center">Contact</h2>
+          {/** Email邮箱 */}
+          <div>
+            <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
+              *Email
+            </label>
+            <div className="flex items-center">
+              <input
+                value={formData.email}
+                type="text"
+                id="email"
+                readOnly
+                className="border w-full rounded py-2 px-3 leading-tight bg-dark-gray mr-3"
+              />
+              <div className="flex items-center">
+                <div className="font-bold mr-2">Preferred Contact</div>
+                <input type="checkbox" className="checkbox border-gray" />
+              </div>
+            </div>
+          </div>
 
+
+
+          {/** Phone Number电话号码 */}
+          <div>
+            <label htmlFor="phone" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
+              Phone Number
+            </label>
+            <div className="flex items-center">
+              <input
+                value={formData.phone}
+                type="text"
+                id="phone"
+                onChange={handleChange}
+                maxLength={10}
+                className="border w-full rounded py-2 px-3 leading-tight bg-dark-gray mr-3"
+              />
+              <div className="flex items-center">
+                <div className="font-bold mr-2">Preferred Contact</div>
+                <input type="checkbox" className="checkbox border-gray" />
+              </div>
+            </div>
+          </div>
+
+          {/** Instagram */}
           <div>
             <label htmlFor="instagram" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
               Instagram
             </label>
-            <input value={formData.instagram} 
-                  type="url" 
-                  id="instagram"
-                  onChange={handleChange}
-                  className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
+            <div className="flex items-center">
+              <input
+                value={formData.instagram}
+                type="url"
+                id="instagram"
+                onChange={handleChange}
+                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3"
+              />
+              <div className="flex items-center">
+                <div className="font-bold mr-2">Preferred Contact</div>
+                <input type="checkbox" className="checkbox border-gray" />
+              </div>
+            </div>
           </div>
+
+          {/** LinkedIn */}
           <div>
             <label htmlFor="linkedin" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
-              Linkedin
+              LinkedIn
             </label>
-            <input value={formData.linkedin} 
-                  type="url" 
-                  id="linkedin"
-                  onChange={handleChange}
-                  className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
+            <div className="flex items-center">
+              <input
+                value={formData.linkedin}
+                type="url"
+                id="linkedin"
+                onChange={handleChange}
+                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3"
+              />
+              <div className="flex items-center">
+                <div className="font-bold mr-2">Preferred Contact</div>
+                <input type="checkbox" className="checkbox border-gray" />
+              </div>
+            </div>
           </div>
+
+          {/** Facebook */}
           <div>
             <label htmlFor="facebook" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
               Facebook
             </label>
-            <input value={formData.facebook} 
-                  type="url" 
-                  id="facebook"
-                  onChange={handleChange}
-                  className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
+            <div className="flex items-center">
+              <input
+                value={formData.facebook}
+                type="url"
+                id="facebook"
+                onChange={handleChange}
+                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3"
+              />
+              <div className="flex items-center">
+                <div className="font-bold mr-2">Preferred Contact</div>
+                <input type="checkbox" className="checkbox border-gray" />
+              </div>
+            </div>
           </div>
+
+          {/** Twitter(X) */}
           <div>
             <label htmlFor="twitter" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
               X
             </label>
-            <input value={formData.twitter} 
-                  type="url" 
-                  id="twitter"
-                  onChange={handleChange}
-                  className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
+            <div className="flex items-center">
+              <input
+                value={formData.twitter}
+                type="url"
+                id="twitter"
+                onChange={handleChange}
+                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3"
+              />
+              <div className="flex items-center">
+                <div className="font-bold mr-2">Preferred Contact</div>
+                <input type="checkbox" className="checkbox border-gray" />
+              </div>
+            </div>
           </div>
+
 
         </div>
 

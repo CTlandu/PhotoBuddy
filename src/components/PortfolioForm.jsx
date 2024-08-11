@@ -263,19 +263,19 @@ const PortfolioForm = (props) => {
       <h2 className="text-xl font-bold mb-4 text-center">My Portfolio of...</h2>
       <div className="navbar m-0 w-full bg-white flex">
         <a 
-          className="btn btn-ghost text-xl w-1/2 flex justify-center" 
+          className={`btn text-xl w-1/2 flex justify-center ${useModelForm ? 'bg-gray-300 text-black' : 'btn-ghost'}`} 
           onClick={() => {setUseModelForm(true); setUsePhotographerForm(false)}}>
             Model
         </a>
         <a 
-          className="btn btn-ghost text-xl w-1/2 flex justify-center"
+          className={`btn text-xl w-1/2 flex justify-center ${usePhotographerForm ? 'bg-gray-300 text-black' : 'btn-ghost'}`}
           onClick={() => {setUsePhotographerForm(true); setUseModelForm(false)}}>Photographer</a>
       </div>
 
       {/* 如果useModelForm === true，则正在使用useModelForm, 显示这段代码 */}
       {useModelForm && (
         <>
-        <h2 className="text-3xl font-sans mb-4 ml-8 text-center text-purple-500">Model Gallery</h2>
+        <h2 className="text-base font-bold mb-4 text-center text-gray-400">Submit up to 9 photos to showcase your model experiences:</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {model_images ? (model_images.map((image, index) => (
             <div className="relative w-full pb-[100%]" key={index}>
@@ -283,7 +283,7 @@ const PortfolioForm = (props) => {
               {/* 添加删除按钮 */}
               <button
                 onClick={() => handleDeleteImage(index)}
-                className="absolute top-2 right-2 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                className="absolute top-2 right-2 bg-red text-white rounded-full w-6 h-6 flex items-center justify-center"
               >
                 x
               </button>
@@ -326,9 +326,44 @@ const PortfolioForm = (props) => {
     
         </div>
 
+        {/** level of experience */}
+        <div className="mt-10">
+          <h2 className="mb-5 font-bold">Level of experience:</h2>
+          <select className="select select-bordered w-full max-w-xs">
+            <option selected>I just started! (Amateur)</option>
+            <option>1-6 Months (Have a little experience)</option>
+            <option>6 months - 1 year</option>
+            <option>1 - 3 years</option>
+            <option>I'm a professional</option>
+          </select>
+        </div>
+
+        {/** level of experience */}
+        <div className="mt-10">
+          <h2 className="mb-5 font-bold">I am looking for:</h2>
+          <div className="flex items-center">
+            <h3 className="mr-2">Make friends & Network</h3>
+            <input type="checkbox" defaultChecked className="checkbox border-gray" />
+          </div>
+          <div className="flex items-center">
+            <h3 className="mr-2">Trade for Portfolio (mutually free)</h3>
+            <input type="checkbox" defaultChecked className="checkbox border-gray" />
+          </div>
+          <div className="flex items-center">
+            <h3 className="mr-2">An experienced photographer (I'm willing to pay)</h3>
+            <input type="checkbox" defaultChecked className="checkbox border-gray" />
+          </div>
+          <div className="flex items-center">
+            <h3 className="mr-2">Business Opportunity</h3>
+            <input type="checkbox" defaultChecked className="checkbox border-gray" />
+          </div>
+
+        
+        </div>
+
         {/* Model Bio */}
         <div className="mt-10">
-          <h2 className="mb-5">Introduce yourself as a model:</h2>
+          <h2 className="mb-5 font-bold">Introduce yourself as a model:</h2>
           <textarea
             className="textarea textarea-bordered textarea-md w-full"
             placeholder="Model Bio"
@@ -339,9 +374,12 @@ const PortfolioForm = (props) => {
           <div className="text-right text-sm text-gray-500">
             {modelBio.length}/{250} characters
           </div>
-          <button className="btn btn-primary mt-4 w-full" onClick={handleSaveModelBio}>
-            Save Model Bio
-          </button>
+          <div className="flex justify-center">
+            <button className="btn btn-primary mt-4 w-1/2" onClick={handleSaveModelBio}>
+              Save Model Bio
+            </button>
+          </div>
+          
           {/* 成功提示 */}
           {successMessage && (
             <div className="mt-4 text-green-500 text-center">
@@ -358,7 +396,7 @@ const PortfolioForm = (props) => {
       {/* 如果usePhotographerForm === true，则正在使用usePhotographerForm, 显示这段代码 */}
       {usePhotographerForm && (
         <>
-        <h2 className="text-3xl font-sans mb-4 ml-8 text-center text-purple-500">Photographer Gallery</h2>
+        <h2 className="text-base font-bold mb-4 text-center text-gray-400">Submit up to 9 photos to showcase your photographer experiences:</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {photographer_images ? (photographer_images.map((image, index) => (
             <div className="relative w-full pb-[100%]" key={index}>
@@ -366,7 +404,7 @@ const PortfolioForm = (props) => {
               {/* 添加删除按钮 */}
               <button
                 onClick={() => handleDeleteImage(index)}
-                className="absolute top-2 right-2 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                className="absolute top-2 right-2 bg-red text-white rounded-full w-6 h-6 flex items-center justify-center"
               >
                 x
               </button>
@@ -409,9 +447,44 @@ const PortfolioForm = (props) => {
     
         </div>
 
+        {/** level of experience */}
+        <div className="mt-10">
+          <h2 className="mb-5 font-bold">Level of experience:</h2>
+          <select className="select select-bordered w-full max-w-xs">
+            <option selected>I just started! (Amateur)</option>
+            <option>1-6 Months (Have a little experience)</option>
+            <option>6 months - 1 year</option>
+            <option>1 - 3 years</option>
+            <option>I'm a professional</option>
+          </select>
+        </div>
+
+        {/** level of experience */}
+        <div className="mt-10">
+          <h2 className="mb-5 font-bold">I am looking for:</h2>
+          <div className="flex items-center">
+            <h3 className="mr-2">Make friends & Network</h3>
+            <input type="checkbox" defaultChecked className="checkbox border-gray" />
+          </div>
+          <div className="flex items-center">
+            <h3 className="mr-2">Trade for Portfolio (mutually free)</h3>
+            <input type="checkbox" defaultChecked className="checkbox border-gray" />
+          </div>
+          <div className="flex items-center">
+            <h3 className="mr-2">A model with experiences (I'm willing to pay)</h3>
+            <input type="checkbox" defaultChecked className="checkbox border-gray" />
+          </div>
+          <div className="flex items-center">
+            <h3 className="mr-2">Business Opportunity</h3>
+            <input type="checkbox" defaultChecked className="checkbox border-gray" />
+          </div>
+        </div>
+
+
+
         {/* Photographer Bio */}
         <div className="mt-10">
-          <h2 className="mb-5">Introduce yourself as a Photographer:</h2>
+          <h2 className="mb-5 font-bold">Introduce yourself as a Photographer:</h2>
           <textarea
             className="textarea textarea-bordered textarea-md w-full"
             placeholder="Photographer Bio"
@@ -422,9 +495,12 @@ const PortfolioForm = (props) => {
           <div className="text-right text-sm text-gray-500">
             {photographerBio.length}/{250} characters
           </div>
-          <button className="btn btn-primary mt-4 w-full" onClick={handleSavePhotographerBio}>
-            Save Photographer Bio
-          </button>
+          <div className="flex justify-center">
+            <button className="btn btn-primary mt-4 w-1/2 " onClick={handleSavePhotographerBio}>
+              Save Photographer Bio
+            </button>
+          </div>
+          
           {/* 成功提示 */}
           {successMessage && (
             <div className="mt-4 text-green-500 text-center">

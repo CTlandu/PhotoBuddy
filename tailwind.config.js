@@ -15,6 +15,7 @@ export default {
       "dark-gray":"#1f2937",
       'white':"#f8fafc",
       "green":"#38a169",
+      "red": "#F00C0F",
     },
     fontFamily: {
       sans: ['Graphik', 'sans-serif'],
@@ -24,7 +25,7 @@ export default {
   },
   plugins: [
     require('daisyui'),
-    require("flowbite/plugin")
+    //require("flowbite/plugin")
   ],
 }
 
