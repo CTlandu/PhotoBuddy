@@ -31,7 +31,7 @@ const Navbar = () => {
     try{
       const token =  await Session.getAccessToken();
       const userId = await Session.getUserId(); 
-      const response = await axios.get(`http://localhost:4000/profile`, {
+      const response = await axios.get(`http://localhost:4000/api/profile`, {
         params: { id: userId }
       });
       setAvatar(response.data.avatar);

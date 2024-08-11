@@ -39,7 +39,7 @@ function AvatarUpload({profile, onSave}) {
       };
 
       try {
-        const response = await axios.put('http://localhost:4000/profile', data, {
+        const response = await axios.put('http://localhost:4000/api/profile', data, {
           headers: {
             'Content-Type': 'application/json',
           },
