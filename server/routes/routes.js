@@ -6,6 +6,73 @@ const jwt = require('jsonwebtoken');
 const User = require('../db/userModel'); // 引用你的User模型
 const router = express.Router();
 
+
+
+router.put('/modelImageUpload', async (req, res) => {
+  const { id, model_image } = req.body;
+
+  try {
+    // 打印出收到的数据，检查其结构
+    console.log('Received ID:', id);
+    console.log('Received Image:', model_image);
+
+    // 查找用户
+    const user = await User.findOne({ id });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // 确保 model_images 是一个数组
+    if (!Array.isArray(user.model_images)) {
+      user.model_images = [];
+    }
+
+    // 确保 model_image 是字符串
+    if (typeof model_image === 'string') {
+      // 将新的图片添加到现有的 model_images 数组中
+      user.model_images.push(model_image);
+    } else {
+      throw new Error('Invalid image format');
+    }
+
+    // 保存更新后的用户信息
+    await user.save();
+
+    res.status(200).json({ message: 'Model images updated successfully', user });
+  } catch (error) {
+    console.error('Error updating model images:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+// 删除用户指定的图片
+router.delete('/modelImageDelete', async (req, res) => {
+  const { id, model_image } = req.body;
+
+  try {
+    // 查找用户
+    const user = await User.findOne({ id });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // 从 model_images 数组中删除指定的图片
+    user.model_images = user.model_images.filter(image => image !== model_image);
+
+    // 保存更新后的用户信息
+    await user.save();
+
+    res.status(200).json({ message: 'Image deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting image:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+
 // 用户注册时的后端API
 router.post('/saveUserInfo', async (req, res) => {
   const userInfo = req.body;

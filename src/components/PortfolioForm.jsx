@@ -8,6 +8,12 @@ const PortfolioForm = (props) => {
   // 判断当前显示哪一个form
   const [useModelForm,setUseModelForm] = useState(true);
   const [usePhotographerForm,setUsePhotographerForm] = useState(false);
+  const [profile, setProfile] = useState(props.profile)
+  
+  
+  // 获取model_image列表以及其长度
+  const images = profile.model_images;
+  const numOfImages = images ? images.length : 0;
 
   // 用于引用隐藏的文件输入
   const fileInputRef = useRef(null);
@@ -19,13 +25,72 @@ const PortfolioForm = (props) => {
   };
 
   // 处理文件选择
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
+    // 查看用户是否已经有9张图片了
+    if (numOfImages >= 9) {
+      alert("You have reached the maximum number of images");
+      return;
+    }
+
     const file = event.target.files[0];
     if (file) {
-      console.log("Selected file:", file);
-      // 你可以在这里处理文件上传逻辑，例如发送文件到服务器
+        console.log("File selected");
+
+        // 将文件转换为 Base64 格式
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = async () => {
+            const base64Image = reader.result;
+
+            // 创建要发送的数据
+            const data = {
+                id: profile.id,
+                model_image: base64Image // 只上传当前选择的单个图像
+            };
+
+            try {
+                const response = await axios.put('http://localhost:4000/api/modelImageUpload', data, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                console.log('User data updated successfully');
+
+            } catch (error) {
+                console.error('Error updating user data:', error);
+            }
+        };
     }
-  };
+};
+
+//处理照片删除
+const handleDeleteImage = async (index) => {
+  try {
+    const imageToDelete = images[index];
+    
+    const data = {
+      id: profile.id,
+      model_image: imageToDelete
+    };
+
+    // 发送删除请求到后端
+    const response = await axios.delete('http://localhost:4000/api/modelImageDelete', {
+      data: data,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    console.log('Image deleted successfully:', response.data);
+
+    // 删除成功后，更新前端的图片列表
+    const updatedImages = images.filter((_, i) => i !== index);
+    setProfile({ ...profile, model_images: updatedImages });
+
+  } catch (error) {
+    console.error('Error deleting image:', error);
+  }
+};
 
 
 
@@ -38,16 +103,30 @@ const PortfolioForm = (props) => {
         <a className="btn btn-ghost text-xl w-1/2 flex justify-center">Photographer</a>
       </div>
 
-        <h2 className="text-lg font-sans mb-4 text-left ml-8"> Gallery</h2>
+      <h2 className="text-lg font-sans mb-4 text-left ml-8"> Gallery</h2>
 
-        <div>
-
-        </div>
 
         
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        <div className="relative w-full pb-[100%]"> 
+
+
+        {images ? (images.map((image, index) => (
+          <div className="relative w-full pb-[100%]" key={index}>
+            <img src={image} alt="" className="absolute inset-0 h-full w-full object-cover rounded-lg" />
+            {/* 添加删除按钮 */}
+            <button
+              onClick={() => handleDeleteImage(index)}
+              className="absolute top-2 right-2 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center"
+            >
+              x
+            </button>
+          </div>
+          
+        ))) : null}
+
+
+        {/* <div className="relative w-full pb-[100%]"> 
           <img 
             className="absolute inset-0 h-full w-full object-cover rounded-lg" 
             src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg" 
@@ -60,7 +139,7 @@ const PortfolioForm = (props) => {
             src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image.jpg" 
             alt="" 
           />
-        </div>
+        </div> */}
 
 
 
