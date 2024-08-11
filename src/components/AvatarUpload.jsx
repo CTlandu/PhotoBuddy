@@ -3,6 +3,7 @@ import AvatarEditor from 'react-avatar-editor';
 import Modal from 'react-modal';
 import 'react-image-crop/dist/ReactCrop.css';
 import axios from 'axios';
+import emtpyAvatar from '../assets/empty_avatar.jpg';
 
 Modal.setAppElement('#root'); // 设置根元素，防止辅助技术焦点陷阱
 
@@ -61,9 +62,16 @@ function AvatarUpload({profile, onSave}) {
     <div className="bg-white p-6 rounded-lg">
       <form onSubmit={(e) => e.preventDefault()}>
         <div className="mb-4 relative">
-          <div className="avatar flex justify-center cursor-pointer" onClick={handleClick}>
-            <div className="w-24 rounded-full scale-125">
-              <img src={profile.avatar || "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"} alt="Avatar" />
+          <div className="avatar flex justify-center cursor-pointer relative group" onClick={handleClick}>
+            <div className="w-24 rounded-full scale-125 overflow-hidden">
+              <img
+                src={profile.avatar || emtpyAvatar}
+                alt="Avatar"
+                className="w-full h-full object-cover transition duration-300 ease-in-out group-hover:blur-sm"
+              />
+              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 transition-opacity duration-75 ease-in-out group-hover:opacity-100">
+                <span className="text-white font-bold">Upload</span>
+              </div>
             </div>
             <input
               type="file"

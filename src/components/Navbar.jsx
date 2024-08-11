@@ -93,7 +93,10 @@ const Navbar = () => {
                     className="flex items-center justify-center h-9 overflow-hidden"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <button className="flex items-center justify-center h-7 overflow-hidden">
+                    <button 
+                      className="flex items-center justify-center h-7 overflow-hidden"
+                      onClick={() => menuRef.current.open = !menuRef.current.open}
+                    >
                       <img className="w-full h-full object-cover rounded-full" src={avatar || emptyAvatar} alt="Avatar" />
                     </button>
                   </summary>

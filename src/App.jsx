@@ -20,6 +20,7 @@ import NoPage from './pages/NoPage'
 import Register from './pages/Register'
 import Profile from './pages/Profile'
 import { useEffect, useState, createContext } from 'react'
+import Portfolio from './pages/Portfolio';
 
 // const APP_NAME = import.meta.env.VITE_APP_NAME;
 // const API_DOMAIN = import.meta.env.VITE_APP_API_DOMAIN;
@@ -137,6 +138,11 @@ function App() {
           <Route path='/profile' element={
             <SessionAuth>
               <Profile/>
+            </SessionAuth>}>
+          </Route>
+          <Route path='/portfolio' element={
+            <SessionAuth>
+              <Portfolio/>
             </SessionAuth>}>
           </Route>
         </Routes>

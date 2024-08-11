@@ -6,9 +6,11 @@ import axios from 'axios';
 import Sidebar from '../components/Sidebar';
 import PersonalForm from '../components/PersonalForm';
 import Session from 'supertokens-auth-react/recipe/session';
+import Model_Portfolio from '../components/PortfolioForm';
+import PortfolioForm from '../components/PortfolioForm';
 
 
-const Profile = () => {
+const Portfolio = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -16,7 +18,7 @@ const Profile = () => {
   const fetchProfile = async () => {
     try {
         const userId = await Session.getUserId(); // 替换为实际的用户ID
-        console.log("UserId:\n" + userId);
+        console.log("userID:\n"+userId);
         const response = await axios.get(`http://localhost:4000/profile`, {
             params: { id: userId }
         });
@@ -50,8 +52,8 @@ const Profile = () => {
       <div className="flex flex-col h-screen">
         <Navbar/>
         <div className="flex flex-1 mt-16">
-          <Sidebar />
-          <PersonalForm profile={profile} onProfileUpdate={handleProfileUpdate}/>
+          <Sidebar className="pl-24"/>
+          <PortfolioForm profile={profile} onProfileUpdate={handleProfileUpdate}/>
 
         </div>
 
@@ -61,4 +63,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Portfolio;
