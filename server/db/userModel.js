@@ -22,7 +22,11 @@ const UserSchema = new mongoose.Schema({
   // images
   avatar: {type: String, default: null},
 
+  model_bio: {type:String, default: null},
   model_images: {type: Array, default: null},
+
+  photographer_bio: {type:String, default: null},
+  photographer_images: {type: Array, default: null},
   
 
 },{ timestamps: true })

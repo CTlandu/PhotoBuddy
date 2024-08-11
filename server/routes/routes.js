@@ -7,7 +7,116 @@ const User = require('../db/userModel'); // 引用你的User模型
 const router = express.Router();
 
 
+// 更新PhotographerBio
+router.put("/photographerBio", async (req, res) => {
+  const { id, photographer_bio } = req.body;
 
+  try {
+    const user = await User.findOne({ id });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.photographer_bio = photographer_bio;
+    await user.save();
+
+    res.status(200).json({ message: "Photographer bio updated successfully", user });
+  } catch (error) {
+    console.error("Error updating photographer bio:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// 更新modelBio
+router.put("/modelBio", async (req, res) => {
+  const { id, model_bio } = req.body;
+
+  try {
+    const user = await User.findOne({ id });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    user.model_bio = model_bio;
+    await user.save();
+
+    res.status(200).json({ message: "Model bio updated successfully", user });
+  } catch (error) {
+    console.error("Error updating model bio:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
+// 摄影师照片上传
+router.put('/photographerImageUpload', async (req, res) => {
+  const { id, photographer_image } = req.body;
+
+  try {
+    // 打印出收到的数据，检查其结构
+    console.log('Received ID:', id);
+    console.log('Image Received');
+
+    // 查找用户
+    const user = await User.findOne({ id });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // 确保 photographer_images 是一个数组
+    if (!Array.isArray(user.photographer_images)) {
+      user.photographer_images = [];
+    }
+
+    // 确保 photographer_image 是字符串
+    if (typeof photographer_image === 'string') {
+      // 将新的图片添加到现有的 photographer_images 数组中
+      user.photographer_images.push(photographer_image);
+    } else {
+      throw new Error('Invalid image format');
+    }
+
+    // 保存更新后的用户信息
+    await user.save();
+
+    res.status(200).json({ message: 'Photographer images updated successfully', user });
+  } catch (error) {
+    console.error('Error updating photographer images:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+// 删除用户指定的摄影师图片
+router.delete('/photographerImageDelete', async (req, res) => {
+  const { id, photographer_image } = req.body;
+
+  try {
+    // 查找用户
+    const user = await User.findOne({ id });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // 从 photographer_images 数组中删除指定的图片
+    user.photographer_images = user.photographer_images.filter(image => image !== photographer_image);
+
+    // 保存更新后的用户信息
+    await user.save();
+
+    res.status(200).json({ message: 'Photographer image deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting photographer image:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+// 模特照片上传
 router.put('/modelImageUpload', async (req, res) => {
   const { id, model_image } = req.body;
 
@@ -46,7 +155,7 @@ router.put('/modelImageUpload', async (req, res) => {
   }
 });
 
-// 删除用户指定的图片
+// 删除用户指定的模特图片
 router.delete('/modelImageDelete', async (req, res) => {
   const { id, model_image } = req.body;
 
