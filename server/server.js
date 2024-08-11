@@ -35,8 +35,8 @@ supertokensInit();
 // express app
 const app = express();
 
-app.use(bodyParser.json({limit: '10mb'}));
-app.use(bodyParser.urlencoded({limit: '10mb', extended:true}))
+app.use(bodyParser.json({limit: '2mb'}));
+app.use(bodyParser.urlencoded({limit: '2mb', extended:true}))
 
 app.use(cors({
   origin: "http://localhost:5173",

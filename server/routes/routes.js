@@ -14,7 +14,7 @@ router.put('/modelImageUpload', async (req, res) => {
   try {
     // 打印出收到的数据，检查其结构
     console.log('Received ID:', id);
-    console.log('Received Image:', model_image);
+    console.log('Image Received');
 
     // 查找用户
     const user = await User.findOne({ id });

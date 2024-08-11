@@ -28,38 +28,66 @@ const PortfolioForm = (props) => {
   const handleFileChange = async (event) => {
     // 查看用户是否已经有9张图片了
     if (numOfImages >= 9) {
-      alert("You have reached the maximum number of images");
+      alert("You have reached the maximum number of 9 images");
       return;
     }
 
     const file = event.target.files[0];
     if (file) {
-        console.log("File selected");
+      console.log("File selected");
 
-        // 将文件转换为 Base64 格式
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onloadend = async () => {
-            const base64Image = reader.result;
+      const img = new Image();
+      const reader = new FileReader();
 
-            // 创建要发送的数据
-            const data = {
-                id: profile.id,
-                model_image: base64Image // 只上传当前选择的单个图像
-            };
+      reader.onload = (e) => {
+          img.src = e.target.result;
+      };
 
-            try {
-                const response = await axios.put('http://localhost:4000/api/modelImageUpload', data, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-                console.log('User data updated successfully');
+      img.onload = async () => {
+          // 创建一个 canvas 元素
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
 
-            } catch (error) {
-                console.error('Error updating user data:', error);
-            }
-        };
+          // 设置 canvas 的宽高，这里假设你想压缩到宽 800px，高度按比例缩放
+          const maxWidth = 800;
+          const scaleSize = maxWidth / img.width;
+          canvas.width = maxWidth;
+          canvas.height = img.height * scaleSize;
+
+          // 将图像绘制到 canvas 上
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+          // 将 canvas 内容转换为 base64 编码的图像
+          const base64Image = canvas.toDataURL('image/jpeg', 0.8); // 0.8 为压缩质量，可根据需要调整
+
+          // 创建要发送的数据
+          const data = {
+              id: profile.id,
+              model_image: base64Image // 只上传当前选择的单个图像
+          };
+
+          try {
+            const response = await axios.put('http://localhost:4000/api/modelImageUpload', data, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            console.log('User data updated successfully');
+
+            // 更新前端的图片列表
+            const updatedImages = [...images, base64Image];
+            setProfile({ ...profile, model_images: updatedImages });
+
+            // 打印压缩后的图片大小
+            console.log('Compressed Image Size:', Math.round(base64Image.length * (3/4) / 1024) + ' KB');
+
+          } catch (error) {
+              console.error('Error updating user data:', error);
+          }
+      };
+
+        // 读取文件内容
+      reader.readAsDataURL(file);
     }
 };
 
