@@ -14,10 +14,6 @@ function AvatarUpload({profile, onSave}) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const fileInputRef = useRef(null);
 
-//   const [formData, setFormData] = useState({
-//     id: props.id || '', // 从 props 中获取用户 ID
-//     canvas: props.canvas || '', // 从 props 中获取用户头像
-// });
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -35,7 +31,7 @@ function AvatarUpload({profile, onSave}) {
 
       const data = {
         id: profile.id,
-        avatar: base64Image
+        avatar: base64Image,
       };
 
       try {
@@ -45,7 +41,7 @@ function AvatarUpload({profile, onSave}) {
           },
         });
         console.log('User data updated successfully:', response.data);
-        onSave(response.data); // 通知父组件数据已更新
+        onSave(response.data.user); // 通知父组件数据已更新
 
       } catch (error) {
         console.error('Error updating user data:', error);

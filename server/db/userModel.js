@@ -15,8 +15,6 @@ const PhotographerInfoSchema = new mongoose.Schema({
 });
 
 const ContactSchema = new mongoose.Schema({
-  email: { type: String, required: [true, "please provide an email!"] },
-  email_preferred: { type: Boolean, default: false },
   phoneNumber: { type: String, default: null },
   phoneNumber_preferred: { type: Boolean, default: false },
   instagram: { type: String, default: null },
@@ -32,6 +30,7 @@ const ContactSchema = new mongoose.Schema({
 const UserSchema = new mongoose.Schema({
   // identifier
   id: { type: String, required: [true, "please provide an id"], unique: [true, "id already exists!"] },
+  email: { type: String, required: [true, "please provide an email!"] },
 
   timeJoined: { type: Date, default: null },
   preferredName: { type: String, default: null },
@@ -40,16 +39,17 @@ const UserSchema = new mongoose.Schema({
   birthday: { type: Date, default: null },
   zipcode: { type: String, default: null },
 
+  // 头像
+  avatar: { type: String, default: null },
+
   // Contact
-  contact: ContactSchema,
+  contact: { type: ContactSchema, default: {} },
 
   // consolidated model info
-  model_info: { type: [ModelInfoSchema], default: [{}] },
+  model_info: { type: ModelInfoSchema, default: {} },
 
   // consolidated photographer info
-  photographer_info: { type: [PhotographerInfoSchema], default: [{}] },
-
-  avatar: { type: String, default: null },
+  photographer_info: { type: PhotographerInfoSchema, default: {} },
 
 }, { timestamps: true });
 

@@ -205,6 +205,7 @@ router.get('/profile', async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
     res.json(user);
+    console.log('User profile fetched');
   } catch (error) {
     console.error('Error fetching user profile:', error);
     res.status(500).json({ message: 'Internal server error' });
@@ -213,37 +214,48 @@ router.get('/profile', async (req, res) => {
 
 // 处理 PUT 请求，更新用户数据
 router.put('/profile', async (req, res) => {
+  const { id, preferredName, lastName, pronouns, birthday, zipcode, avatar, contact } = req.body;
+
   try {
-    const { id, preferredName, lastName, pronouns, email, birthday, zipcode, twitter, facebook, instagram, linkedin, avatar } = req.body;
+    // 查找用户
+    const user = await User.findOne({ id });
 
-    // 检查必填字段是否缺失
-    if (!id) {
-      return res.status(400).json({ message: 'User ID is required' });
-    }
-
-    // 更新用户信息
-    const updatedUser = await User.findOneAndUpdate(
-      { id },
-      { preferredName, lastName, pronouns, email, birthday, zipcode, twitter, facebook, instagram, linkedin, avatar },
-      { new: true, runValidators: true } // 返回更新后的文档，并运行验证器
-    );
-
-    if (!updatedUser) {
+    if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    res.status(200).json(updatedUser);
-  } catch (error) {
-    console.error('Error updating user data:', error);
+    // 更新用户信息
+    user.preferredName = preferredName !== undefined ? preferredName : user.preferredName;
+    user.lastName = lastName !== undefined ? lastName : user.lastName;
+    user.pronouns = pronouns !== undefined ? pronouns : user.pronouns;
+    user.birthday = birthday !== undefined ? birthday : user.birthday;
+    user.zipcode = zipcode !== undefined ? zipcode : user.zipcode;
+    user.avatar = avatar !== undefined ? avatar : user.avatar;
 
-    // 检查是否是唯一性约束错误
-    if (error.name === 'MongoServerError' && error.code === 11000) {
-      return res.status(409).json({ message: 'Email or ID already exists' });
+    // 更新联系信息，如果 contact 对象存在且有相应的属性
+    if (contact) {
+      user.contact = {
+        ...user.contact, // 保留现有的联系信息
+        phoneNumber: contact.phoneNumber !== undefined ? contact.phoneNumber : user.contact?.phoneNumber,
+        instagram: contact.instagram !== undefined ? contact.instagram : user.contact?.instagram,
+        linkedin: contact.linkedin !== undefined ? contact.linkedin : user.contact?.linkedin,
+        twitter: contact.twitter !== undefined ? contact.twitter : user.contact?.twitter,
+        facebook: contact.facebook !== undefined ? contact.facebook : user.contact?.facebook,
+      };
     }
 
+    // 保存更新后的用户信息
+    await user.save();
+
+    // 这里返回更新后的用户数据
+    res.status(200).json({ message: 'User profile updated successfully', user});
+    
+  } catch (error) {
+    console.error('Error updating user profile:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+
 
 // create a "register" endpoint
 router.post('/register', (request, response) => {

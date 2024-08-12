@@ -18,17 +18,22 @@ const PersonalForm = (props) => {
 
   const [formData, setFormData] = useState({
     id: props.profile.id || '', // 从 props 中获取用户 ID
+    email: props.profile.email || '', // 从 props 中获取用户邮箱
+
     preferredName: props.profile.preferredName || '',
     lastName: props.profile.lastName || '',
     pronouns: props.profile.pronouns || '',
-    email: props.profile.email || '',
     birthday: props.profile.birthday ? formatDate(props.profile.birthday) : '',
     zipcode: props.profile.zipcode || '',
-    phone: props.profile.phone || '',
-    instagram: props.profile.instagra || '',
-    linkedin: props.profile.linkedin || '',
-    twitter: props.profile.twitter || '',
-    facebook: props.profile.facebook || '',
+
+    // Contact - 使用安全的默认值
+    contact: {
+      phoneNumber: props.profile.contact.phoneNumber || '',
+      instagram: props.profile.contact.instagram || '',
+      linkedin: props.profile.contact.linkedin || '',
+      twitter: props.profile.contact.twitter || '',
+      facebook: props.profile.contact.facebook || ''
+  }
 });
 
   useEffect(() => {
@@ -40,22 +45,48 @@ const PersonalForm = (props) => {
       email: props.profile.email || '',
       birthday: props.profile.birthday ? formatDate(props.profile.birthday) : '',
       zipcode: props.profile.zipcode || '',
-      phone: props.profile.phone || '',
-      instagram: props.profile.instagram || '',
-      linkedin: props.profile.linkedin || '',
-      twitter: props.profile.twitter || '',
-      facebook: props.profile.facebook || '',
+
+      // Contact
+      contact: {
+        phoneNumber: props.profile.contact.phoneNumber || '',
+        instagram: props.profile.contact.instagram || '',
+        linkedin: props.profile.contact.linkedin || '',
+        twitter: props.profile.contact.twitter || '',
+        facebook: props.profile.contact.facebook || ''
+      }
     });
   }, [props.profile]);
 
-
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setFormData((prevFormData) => ({
-        ...prevFormData,
-        [id]: value
-    }));
+  /**
+   * 
+   * 在你的 handleChange 函数中，有一个问题是 id 属性并不适用于 formData 中嵌套的对象（如 contact.phoneNumber 等）。
+   * 目前你使用的是 id 直接映射到 formData，但是对于嵌套的字段如 contact 对象，这种方法会失败。
+    你可以通过以下方式解决此问题：
+    1. 更新 handleChange 函数
+    需要根据 id 字段来正确更新嵌套对象中的值。可以使用 name 属性来区分不同的字段： 
+   */
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+  
+      setFormData((prevFormData) => {
+          if (name.includes(".")) {
+              const [parentKey, childKey] = name.split(".");
+              return {
+                  ...prevFormData,
+                  [parentKey]: {
+                      ...prevFormData[parentKey],
+                      [childKey]: value,
+                  },
+              };
+          } else {
+              return {
+                  ...prevFormData,
+                  [name]: value,
+              };
+          }
+      });
   };
+  
 
 
   const handleSubmit = async (e) => {
@@ -91,7 +122,7 @@ const PersonalForm = (props) => {
                 *First Name
               </label>
               <input type="text" 
-                    id="preferredName" 
+                    name="preferredName" 
                     value={formData.preferredName}
                     onChange={handleChange}
                     maxLength="20" // 限制输入长度为20个字符
@@ -102,7 +133,7 @@ const PersonalForm = (props) => {
                 *Last Name
               </label>
               <input type="text"
-                    id="lastName" 
+                    name="lastName" 
                     value={formData.lastName}
                     onChange={handleChange}
                     maxLength="20" // 限制输入长度为20个字符
@@ -113,7 +144,7 @@ const PersonalForm = (props) => {
                 Pronouns
               </label>
               <input type="text"
-                    id="pronouns" 
+                    name="pronouns" 
                     value={formData.pronouns}
                     onChange={handleChange}
                     maxLength="10" // 限制输入长度为20个字符
@@ -121,12 +152,23 @@ const PersonalForm = (props) => {
             </div>
           </div>
 
+          <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
+              *Email
+          </label>
+            <input
+              value={formData.email}
+              type="text"
+              name="email"
+              readOnly
+              className="border w-full rounded py-2 px-3 leading-tight bg-dark-gray mr-3"
+            />
+
           <div>
             <label htmlFor="birthday" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
               Birthday
             </label>
             <input type="date"
-                  id="birthday" 
+                  name="birthday" 
                   value={formData.birthday}
                   onChange={handleChange}
                   className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
@@ -137,7 +179,7 @@ const PersonalForm = (props) => {
               Zipcode
             </label>
             <input type="number"
-                  id="zipcode" 
+                  name="zipcode" 
                   value={formData.zipcode}
                   onChange={handleChange}
                   min="00501"
@@ -147,25 +189,7 @@ const PersonalForm = (props) => {
 
 
           <h2 className="text-xl font-bold mt-8 text-center">Contact</h2>
-          {/** Email邮箱 */}
-          <div>
-            <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
-              *Email
-            </label>
-            <div className="flex items-center">
-              <input
-                value={formData.email}
-                type="text"
-                id="email"
-                readOnly
-                className="border w-full rounded py-2 px-3 leading-tight bg-dark-gray mr-3"
-              />
-              <div className="flex items-center">
-                <div className="font-bold mr-2">Preferred Contact</div>
-                <input type="checkbox" className="checkbox border-gray" />
-              </div>
-            </div>
-          </div>
+      
 
 
 
@@ -176,9 +200,9 @@ const PersonalForm = (props) => {
             </label>
             <div className="flex items-center">
               <input
-                value={formData.phone}
+                value={formData.contact.phoneNumber}
                 type="text"
-                id="phone"
+                name="contact.phoneNumber"
                 onChange={handleChange}
                 maxLength={10}
                 className="border w-full rounded py-2 px-3 leading-tight bg-dark-gray mr-3"
@@ -197,9 +221,9 @@ const PersonalForm = (props) => {
             </label>
             <div className="flex items-center">
               <input
-                value={formData.instagram}
+                value={formData.contact.instagram}
                 type="url"
-                id="instagram"
+                name="contact.instagram"
                 onChange={handleChange}
                 className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3"
               />
@@ -217,9 +241,9 @@ const PersonalForm = (props) => {
             </label>
             <div className="flex items-center">
               <input
-                value={formData.linkedin}
+                value={formData.contact.linkedin}
                 type="url"
-                id="linkedin"
+                name="contact.linkedin"
                 onChange={handleChange}
                 className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3"
               />
@@ -237,9 +261,9 @@ const PersonalForm = (props) => {
             </label>
             <div className="flex items-center">
               <input
-                value={formData.facebook}
+                value={formData.contact.facebook}
                 type="url"
-                id="facebook"
+                name="contact.facebook"
                 onChange={handleChange}
                 className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3"
               />
@@ -257,9 +281,9 @@ const PersonalForm = (props) => {
             </label>
             <div className="flex items-center">
               <input
-                value={formData.twitter}
+                value={formData.contact.twitter}
                 type="url"
-                id="twitter"
+                name="contact.twitter"
                 onChange={handleChange}
                 className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3"
               />
