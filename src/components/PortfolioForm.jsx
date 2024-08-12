@@ -10,20 +10,21 @@ const PortfolioForm = (props) => {
 
   const [profile, setProfile] = useState(props.profile)
 
-  const [modelBio, setModelBio] = useState(profile.model_bio || "");
-  const [photographerBio, setPhotographerBio] = useState(profile.photographer_bio || "");
+  const [modelBio, setModelBio] = useState(profile.model_info.model_bio || "");
+  const [photographerBio, setPhotographerBio] = useState(profile.photographer_info.photographer_bio || "");
 
   const [successMessage, setSuccessMessage] = useState("");
 
   
   
   // 获取model_image列表以及其长度
-  const model_images = profile.model_images;
-  const numOfModelImages = model_images ? model_images.length : 0;
+  const model_images = profile.model_info.model_images || [];
+  const numOfModelImages = model_images.length;
+
 
   // 获取photographer_image列表以及其长度
-  const photographer_images = profile.photographer_images;
-  const numOfPhotographerImages = photographer_images ? photographer_images.length : 0;
+  const photographer_images = profile.photographer_info.photographer_images || [];
+  const numOfPhotographerImages = photographer_images.length;
 
   // 用于引用隐藏的文件输入
   const fileInputRef = useRef(null);
@@ -82,6 +83,7 @@ const PortfolioForm = (props) => {
               const data = {
                 id: profile.id,
                 model_image: base64Image,
+                // "model_info.model_images": [...model_images, base64Image],
               };
   
               try {
@@ -91,10 +93,10 @@ const PortfolioForm = (props) => {
                   },
                 });
   
-                console.log('User data updated successfully');
+                console.log('User Image updated successfully');
   
-                const updatedImages = [...profile.model_images || [], base64Image];
-                setProfile({ ...profile, model_images: updatedImages });
+                const updatedImages = [...model_images, base64Image];
+                setProfile({ ...profile, model_info: { ...profile.model_info, model_images: updatedImages } });
               } catch (error) {
                 console.error('Error updating user data:', error);
               }
@@ -113,8 +115,8 @@ const PortfolioForm = (props) => {
   
                 console.log('User data updated successfully');
   
-                const updatedImages = [...profile.photographer_images || [], base64Image];
-                setProfile({ ...profile, photographer_images: updatedImages });
+                const updatedImages = [...photographer_images, base64Image];
+                setProfile({ ...profile, photographer_info: { ...profile.photographer_info, photographer_images: updatedImages } });
               } catch (error) {
                 console.error('Error updating user data:', error);
               }
@@ -137,13 +139,13 @@ const PortfolioForm = (props) => {
   //处理照片删除
   const handleDeleteImage = async (index) => {
     try {
-      // 判断用户正在填模特信息还是摄影师信息
-      if (useModelForm){
+      if (useModelForm) {
         const imageToDelete = model_images[index];
-      
+        const updatedImages = model_images.filter((_, i) => i !== index);
+
         const data = {
           id: profile.id,
-          model_image: imageToDelete
+          model_image: imageToDelete, // 指定要删除的图片
         };
 
         // 发送删除请求到后端
@@ -154,20 +156,19 @@ const PortfolioForm = (props) => {
           },
         });
 
-        console.log('Image deleted successfully:', response.data);
+        console.log('Model image deleted successfully:', response.data);
 
         // 删除成功后，更新前端的图片列表
-        const updatedImages = model_images.filter((_, i) => i !== index);
-        setProfile({ ...profile, model_images: updatedImages });
-      }
-
-      else if(usePhotographerForm){
+        setProfile({ ...profile, model_info: { ...profile.model_info, model_images: updatedImages } });
+      } else if (usePhotographerForm) {
         const imageToDelete = photographer_images[index];
-      
+        const updatedImages = photographer_images.filter((_, i) => i !== index);
+
         const data = {
           id: profile.id,
-          photographer_image: imageToDelete
+          photographer_image: imageToDelete, // 指定要删除的图片
         };
+
         // 发送删除请求到后端
         const response = await axios.delete('http://localhost:4000/api/photographerImageDelete', {
           data: data,
@@ -175,17 +176,17 @@ const PortfolioForm = (props) => {
             'Content-Type': 'application/json',
           },
         });
-        console.log('Image deleted successfully:', response.data);
+
+        console.log('Photographer image deleted successfully:', response.data);
 
         // 删除成功后，更新前端的图片列表
-        const updatedImages = photographer_images.filter((_, i) => i !== index);
-        setProfile({ ...profile, photographer_images: updatedImages });
+        setProfile({ ...profile, photographer_info: { ...profile.photographer_info, photographer_images: updatedImages } });
       }
-
     } catch (error) {
       console.error('Error deleting image:', error);
     }
   };
+
 
   //模特自我介绍
   const handleModelBioChange = (event) => {
@@ -202,7 +203,8 @@ const PortfolioForm = (props) => {
     try {
       const data = {
         id: profile.id,
-        model_bio: modelBio,
+        // model_bio: modelBio,
+        "model_info.model_bio": modelBio, // 更新 model_info 中的 model_bio
       };
 
       const response = await axios.put("http://localhost:4000/api/modelBio", data, {
@@ -212,7 +214,8 @@ const PortfolioForm = (props) => {
       });
 
       console.log("Model Bio updated successfully:", response.data);
-      setProfile({ ...profile, model_bio: modelBio });
+      // setProfile({ ...profile, model_bio: modelBio });
+      setProfile({ ...profile, model_info: { ...profile.model_info, model_bio: modelBio } });
 
       // 显示成功消息
       setSuccessMessage("Model Bio updated successfully!");
@@ -220,7 +223,7 @@ const PortfolioForm = (props) => {
       // 3秒后隐藏提示消息
       setTimeout(() => {
         setSuccessMessage("");
-      }, 3000); // 3000毫秒，即3秒
+      }, 2000); // 3000毫秒，即3秒
 
     } catch (error) {
       console.error("Error updating model bio:", error);
@@ -232,7 +235,8 @@ const PortfolioForm = (props) => {
     try {
       const data = {
         id: profile.id,
-        photographer_bio: photographerBio,
+        // photographer_bio: photographerBio,
+        "photographer_info.photographer_bio": photographerBio, // 更新 photographer_info 中的 photographer_bio
       };
 
       const response = await axios.put("http://localhost:4000/api/photographerBio", data, {
@@ -242,7 +246,8 @@ const PortfolioForm = (props) => {
       });
 
       console.log("Photographer Bio updated successfully:", response.data);
-      setProfile({ ...profile, photographer_bio: photographerBio });
+      // setProfile({ ...profile, photographer_bio: photographerBio });
+      setProfile({ ...profile, photographer_info: { ...profile.photographer_info, photographer_bio: photographerBio } });
 
       // 显示成功消息
       setSuccessMessage("Photographer Bio updated successfully!");
@@ -292,7 +297,7 @@ const PortfolioForm = (props) => {
           ))) : null}
 
           {/* 上传按钮 */}
-          <button
+          {numOfModelImages < 9 && <button
             type="button"
             className="relative w-full pb-[100%] transform transition duration-300 ease-in-out hover:scale-95 active:scale-90"
             onClick={handleButtonClick}
@@ -314,7 +319,7 @@ const PortfolioForm = (props) => {
                 />
               </svg>
             </div>
-          </button>
+          </button>}
 
           {/* 隐藏的文件输入 */}
           <input
@@ -330,7 +335,7 @@ const PortfolioForm = (props) => {
         <div className="mt-10">
           <h2 className="mb-5 font-bold">Level of experience:</h2>
           <select className="select select-bordered w-full max-w-xs">
-            <option selected>I just started! (Amateur)</option>
+            <option>I just started! (Amateur)</option>
             <option>1-6 Months (Have a little experience)</option>
             <option>6 months - 1 year</option>
             <option>1 - 3 years</option>
@@ -413,7 +418,7 @@ const PortfolioForm = (props) => {
           ))) : null}
 
           {/* 上传按钮 */}
-          <button
+          {numOfPhotographerImages < 9 && <button
             type="button"
             className="relative w-full pb-[100%] transform transition duration-300 ease-in-out hover:scale-95 active:scale-90"
             onClick={handleButtonClick}
@@ -435,7 +440,7 @@ const PortfolioForm = (props) => {
                 />
               </svg>
             </div>
-          </button>
+          </button>}
 
           {/* 隐藏的文件输入 */}
           <input
@@ -451,7 +456,7 @@ const PortfolioForm = (props) => {
         <div className="mt-10">
           <h2 className="mb-5 font-bold">Level of experience:</h2>
           <select className="select select-bordered w-full max-w-xs">
-            <option selected>I just started! (Amateur)</option>
+            <option>I just started! (Amateur)</option>
             <option>1-6 Months (Have a little experience)</option>
             <option>6 months - 1 year</option>
             <option>1 - 3 years</option>

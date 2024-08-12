@@ -18,7 +18,7 @@ router.put("/photographerBio", async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    user.photographer_bio = photographer_bio;
+    user.photographer_info.photographer_bio = photographer_bio;
     await user.save();
 
     res.status(200).json({ message: "Photographer bio updated successfully", user });
@@ -39,7 +39,7 @@ router.put("/modelBio", async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    user.model_bio = model_bio;
+    user.model_info.model_bio = model_bio;
     await user.save();
 
     res.status(200).json({ message: "Model bio updated successfully", user });
@@ -67,14 +67,14 @@ router.put('/photographerImageUpload', async (req, res) => {
     }
 
     // 确保 photographer_images 是一个数组
-    if (!Array.isArray(user.photographer_images)) {
-      user.photographer_images = [];
+    if (!Array.isArray(user.photographer_info.photographer_images)) {
+      user.photographer_info.photographer_images = [];
     }
 
-    // 确保 photographer_image 是字符串
-    if (typeof photographer_image === 'string') {
-      // 将新的图片添加到现有的 photographer_images 数组中
-      user.photographer_images.push(photographer_image);
+   // 确保 photographer_image 是字符串
+   if (typeof photographer_image === 'string') {
+    // 将新的图片添加到现有的 photographer_images 数组中
+    user.photographer_info.photographer_images.push(photographer_image);
     } else {
       throw new Error('Invalid image format');
     }
@@ -103,7 +103,7 @@ router.delete('/photographerImageDelete', async (req, res) => {
     }
 
     // 从 photographer_images 数组中删除指定的图片
-    user.photographer_images = user.photographer_images.filter(image => image !== photographer_image);
+    user.photographer_info.photographer_images = user.photographer_info.photographer_images.filter(image => image !== photographer_image);
 
     // 保存更新后的用户信息
     await user.save();
@@ -121,7 +121,6 @@ router.put('/modelImageUpload', async (req, res) => {
   const { id, model_image } = req.body;
 
   try {
-    // 打印出收到的数据，检查其结构
     console.log('Received ID:', id);
     console.log('Image Received');
 
@@ -133,14 +132,14 @@ router.put('/modelImageUpload', async (req, res) => {
     }
 
     // 确保 model_images 是一个数组
-    if (!Array.isArray(user.model_images)) {
-      user.model_images = [];
+    if (!Array.isArray(user.model_info.model_images)) {
+      user.model_info.model_images = [];
     }
 
     // 确保 model_image 是字符串
     if (typeof model_image === 'string') {
       // 将新的图片添加到现有的 model_images 数组中
-      user.model_images.push(model_image);
+      user.model_info.model_images.push(model_image);
     } else {
       throw new Error('Invalid image format');
     }
@@ -155,7 +154,8 @@ router.put('/modelImageUpload', async (req, res) => {
   }
 });
 
-// 删除用户指定的模特图片
+
+// 接口：删除用户指定的模特图片
 router.delete('/modelImageDelete', async (req, res) => {
   const { id, model_image } = req.body;
 
@@ -168,7 +168,7 @@ router.delete('/modelImageDelete', async (req, res) => {
     }
 
     // 从 model_images 数组中删除指定的图片
-    user.model_images = user.model_images.filter(image => image !== model_image);
+    user.model_info.model_images = user.model_info.model_images.filter(image => image !== model_image);
 
     // 保存更新后的用户信息
     await user.save();
@@ -182,7 +182,7 @@ router.delete('/modelImageDelete', async (req, res) => {
 
 
 
-// 用户注册时的后端API
+// 接口：用户注册时的后端API
 router.post('/saveUserInfo', async (req, res) => {
   const userInfo = req.body;
   try {
@@ -196,7 +196,8 @@ router.post('/saveUserInfo', async (req, res) => {
   }
 });
 
-// 用户进入profile page时的get API
+
+// 接口： 用户进入profile page时的get API
 router.get('/profile', async (req, res) => {
   try {
     const userId = req.query.id; // 假设通过查询参数传递用户ID
@@ -212,7 +213,8 @@ router.get('/profile', async (req, res) => {
   }
 });
 
-// 处理 PUT 请求，更新用户数据
+
+// 接口：处理 PUT 请求，更新用户数据
 router.put('/profile', async (req, res) => {
   const { id, preferredName, lastName, pronouns, birthday, zipcode, avatar, contact } = req.body;
 
@@ -249,7 +251,7 @@ router.put('/profile', async (req, res) => {
 
     // 这里返回更新后的用户数据
     res.status(200).json({ message: 'User profile updated successfully', user});
-    
+
   } catch (error) {
     console.error('Error updating user profile:', error);
     res.status(500).json({ message: 'Internal server error' });
@@ -258,85 +260,85 @@ router.put('/profile', async (req, res) => {
 
 
 // create a "register" endpoint
-router.post('/register', (request, response) => {
-  // hash the password before saving the email and password into the database
-  try {
-    let userId = request.session.getUserId();
-    console.log('userId', userId);
-  } catch {
-    console.log("wtf2");
-  }
+// router.post('/register', (request, response) => {
+//   // hash the password before saving the email and password into the database
+//   try {
+//     let userId = request.session.getUserId();
+//     console.log('userId', userId);
+//   } catch {
+//     console.log("wtf2");
+//   }
 
-  bcrypt.hash(request.body.password, 10)
-    .then((hashedPassword) => {
-      const user = new User({
-        email: request.body.email,
-        password: hashedPassword,
-      });
+//   bcrypt.hash(request.body.password, 10)
+//     .then((hashedPassword) => {
+//       const user = new User({
+//         email: request.body.email,
+//         password: hashedPassword,
+//       });
 
-      user.save()
-        .then((result) => {
-          response.status(201).send({
-            message: "User created Successfully用户注册成功",
-            result,
-          });
-        })
-        .catch((error) => {
-          response.status(500).send({
-            message: "Error creating user用户创建失败",
-            error,
-          });
-        });
-    })
-    .catch((e) => {
-      response.status(500).json({
-        message: "密码哈希失败",
-        e: e.message,
-      });
-      console.log(e);
-    });
-});
+//       user.save()
+//         .then((result) => {
+//           response.status(201).send({
+//             message: "User created Successfully用户注册成功",
+//             result,
+//           });
+//         })
+//         .catch((error) => {
+//           response.status(500).send({
+//             message: "Error creating user用户创建失败",
+//             error,
+//           });
+//         });
+//     })
+//     .catch((e) => {
+//       response.status(500).json({
+//         message: "密码哈希失败",
+//         e: e.message,
+//       });
+//       console.log(e);
+//     });
+// });
 
-// create a "login" endpoint
-router.post("/login", (request, response) => {
-  User.findOne({ email: request.body.email })
-    .then((user) => {
-      bcrypt.compare(request.body.password, user.password)
-        .then((passwordChecked) => {
-          if (!passwordChecked) {
-            return response.status(401).send({
-              message: "密码错误1",
-            });
-          }
+// // create a "login" endpoint
+// router.post("/login", (request, response) => {
+//   User.findOne({ email: request.body.email })
+//     .then((user) => {
+//       bcrypt.compare(request.body.password, user.password)
+//         .then((passwordChecked) => {
+//           if (!passwordChecked) {
+//             return response.status(401).send({
+//               message: "密码错误1",
+//             });
+//           }
 
-          const token = jwt.sign(
-            {
-              userId: user._id,
-              userEmail: user.email,
-            },
-            "RANDOM-TOKEN",
-            { expiresIn: '1h' }
-          );
+//           const token = jwt.sign(
+//             {
+//               userId: user._id,
+//               userEmail: user.email,
+//             },
+//             "RANDOM-TOKEN",
+//             { expiresIn: '1h' }
+//           );
 
-          response.status(201).send({
-            message: "登录成功",
-            email: user.email,
-            token,
-          });
-        })
-        .catch((error) => {
-          response.status(401).send({
-            message: "密码错误2",
-            error,
-          });
-        });
-    })
-    .catch(error => {
-      response.status(404).send({
-        message: "Email not found",
-        error,
-      });
-    });
-});
+//           response.status(201).send({
+//             message: "登录成功",
+//             email: user.email,
+//             token,
+//           });
+//         })
+//         .catch((error) => {
+//           response.status(401).send({
+//             message: "密码错误2",
+//             error,
+//           });
+//         });
+//     })
+//     .catch(error => {
+//       response.status(404).send({
+//         message: "Email not found",
+//         error,
+//       });
+//     });
+// });
 
 module.exports = router;
