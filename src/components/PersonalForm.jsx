@@ -2,6 +2,7 @@ import React from "react";
 import { useState,useEffect } from "react";
 import Session from 'supertokens-auth-react/recipe/session';
 import axios from "axios";
+import AvatarUpload from "./AvatarUpload";
 
 const PersonalForm = (props) => {
 
@@ -17,190 +18,296 @@ const PersonalForm = (props) => {
 
   const [formData, setFormData] = useState({
     id: props.profile.id || '', // 从 props 中获取用户 ID
+    email: props.profile.email || '', // 从 props 中获取用户邮箱
+
     preferredName: props.profile.preferredName || '',
     lastName: props.profile.lastName || '',
     pronouns: props.profile.pronouns || '',
-    email: props.profile.email || '',
     birthday: props.profile.birthday ? formatDate(props.profile.birthday) : '',
     zipcode: props.profile.zipcode || '',
-    phone: props.profile.phone || '',
-    instagram: props.profile.instagra || '',
-    linkedin: props.profile.linkedin || '',
-    twitter: props.profile.twitter || '',
-    facebook: props.profile.facebook || '',
+
+    // Contact - 使用安全的默认值
+    contact: {
+      phoneNumber: props.profile.contact.phoneNumber || '',
+      instagram: props.profile.contact.instagram || '',
+      linkedin: props.profile.contact.linkedin || '',
+      twitter: props.profile.contact.twitter || '',
+      facebook: props.profile.contact.facebook || ''
+  }
 });
 
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setFormData((prevFormData) => ({
-        ...prevFormData,
-        [id]: value
-    }));
+  useEffect(() => {
+    setFormData({
+      id: props.profile.id || '',
+      preferredName: props.profile.preferredName || '',
+      lastName: props.profile.lastName || '',
+      pronouns: props.profile.pronouns || '',
+      email: props.profile.email || '',
+      birthday: props.profile.birthday ? formatDate(props.profile.birthday) : '',
+      zipcode: props.profile.zipcode || '',
+
+      // Contact
+      contact: {
+        phoneNumber: props.profile.contact.phoneNumber || '',
+        instagram: props.profile.contact.instagram || '',
+        linkedin: props.profile.contact.linkedin || '',
+        twitter: props.profile.contact.twitter || '',
+        facebook: props.profile.contact.facebook || ''
+      }
+    });
+  }, [props.profile]);
+
+  /**
+   * 
+   * 在你的 handleChange 函数中，有一个问题是 id 属性并不适用于 formData 中嵌套的对象（如 contact.phoneNumber 等）。
+   * 目前你使用的是 id 直接映射到 formData，但是对于嵌套的字段如 contact 对象，这种方法会失败。
+    你可以通过以下方式解决此问题：
+    1. 更新 handleChange 函数
+    需要根据 id 字段来正确更新嵌套对象中的值。可以使用 name 属性来区分不同的字段： 
+   */
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+  
+      setFormData((prevFormData) => {
+          if (name.includes(".")) {
+              const [parentKey, childKey] = name.split(".");
+              return {
+                  ...prevFormData,
+                  [parentKey]: {
+                      ...prevFormData[parentKey],
+                      [childKey]: value,
+                  },
+              };
+          } else {
+              return {
+                  ...prevFormData,
+                  [name]: value,
+              };
+          }
+      });
   };
+  
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       // 发送请求到后端api
-      const response = await axios.put('http://localhost:4000/profile', formData);
+      const response = await axios.put('http://localhost:4000/api/profile', formData);
       console.log('Form data updated successfully:', response.data);
+      window.location.reload(); // submit后重新加载页面
     } catch (error) {
       console.error('Error updating user data:', error);
     }
   };
 
+  const handleAvatarSave = (updatedProfile) => {
+    props.onProfileUpdate(updatedProfile); // 通知父组件数据已更新
+  };
+
 
   return ( 
-    <div className="bg-white p-6 w-1/2 rounded-lg shadow-md">
-    <h2 className="text-xl font-bold mb-8 text-center">Personal Info</h2>
-    <form onSubmit={handleSubmit}>
-      <div className="mb-4"> 
-        {/* 头像 */}
+    // <div className="bg-white p-6 w-full rounded-lg shadow-md">
+    <div className="bg-white p-6 w-full md:w-3/4 lg:w-2/3  rounded-lg shadow-md mx-auto">
+      <h2 className="text-xl font-bold mb-4 text-center">Personal Info</h2>
         <div className="avatar flex justify-center">  
-          <div className="w-24 rounded-full scale-125">
-            <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-          </div>
+            <AvatarUpload profile={props.profile} onSave={handleAvatarSave}/>
         </div>
-      </div>
-      <div className="mb-6">
-        {/* 把三个信息并排显示 */}
-        <div className="flex flex-row justify-between items-center">
-          <div>
-            <label htmlFor="preferredName" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
-              *Preferred Name
-            </label>
-            <input type="text" 
-                   id="preferredName" 
-                   value={formData.preferredName}
-                   onChange={handleChange}
-                   maxLength="20" // 限制输入长度为20个字符
-                   className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
+      <form onSubmit={handleSubmit}>
+        <div className="mb-6">
+          {/* 把三个信息并排显示 */}
+          <div className="flex flex-row justify-between items-center">
+            <div>
+              <label htmlFor="preferredName" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
+                *First Name
+              </label>
+              <input type="text" 
+                    name="preferredName" 
+                    value={formData.preferredName}
+                    onChange={handleChange}
+                    maxLength="20" // 限制输入长度为20个字符
+                    className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
+            </div>
+            <div>
+              <label htmlFor="lastName" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
+                *Last Name
+              </label>
+              <input type="text"
+                    name="lastName" 
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    maxLength="20" // 限制输入长度为20个字符
+                    className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
+            </div>
+            <div>
+              <label htmlFor="pronouns" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
+                Pronouns
+              </label>
+              <input type="text"
+                    name="pronouns" 
+                    value={formData.pronouns}
+                    onChange={handleChange}
+                    maxLength="10" // 限制输入长度为20个字符
+                    className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
+            </div>
           </div>
-          <div>
-            <label htmlFor="lastName" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
-              *Last Name
-            </label>
-            <input type="text"
-                   id="lastName" 
-                   value={formData.lastName}
-                   onChange={handleChange}
-                   maxLength="20" // 限制输入长度为20个字符
-                   className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
-          </div>
-          <div>
-            <label htmlFor="pronouns" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
-              Pronouns
-            </label>
-            <input type="text"
-                   id="pronouns" 
-                   value={formData.pronouns}
-                   onChange={handleChange}
-                   maxLength="10" // 限制输入长度为20个字符
-                   className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
-          </div>
-        </div>
 
-        <div>
           <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
-            *Email
+              *Email
           </label>
-          <input value={formData.email} type="text" id="email" readOnly className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
-        </div>
+            <input
+              value={formData.email}
+              type="text"
+              name="email"
+              readOnly
+              className="border w-full rounded py-2 px-3 leading-tight bg-dark-gray mr-3"
+            />
 
-        <div>
-          <label htmlFor="phone" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
-            Phone Number
-          </label>
-          <input value={formData.phone} 
-                 type="text" 
-                 id="phone"
-                 onChange={handleChange}
-                 maxLength={10}
-                 className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
-        </div>
+          <div>
+            <label htmlFor="birthday" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
+              Birthday
+            </label>
+            <input type="date"
+                  name="birthday" 
+                  value={formData.birthday}
+                  onChange={handleChange}
+                  className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
+          </div>
 
-        <div>
-          <label htmlFor="birthday" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
-            Birthday
-          </label>
-          <input type="date"
-                 id="birthday" 
-                 value={formData.birthday}
-                 onChange={handleChange}
-                 className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
-        </div>
-
-        <div>
-          <label htmlFor="zipcode" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
-            Zipcode
-          </label>
-          <input type="number"
-                 id="zipcode" 
-                 value={formData.zipcode}
-                 onChange={handleChange}
-                 min="00501"
-                 max="99950"
-                 className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
-        </div>
+          <div>
+            <label htmlFor="zipcode" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
+              Zipcode
+            </label>
+            <input type="number"
+                  name="zipcode" 
+                  value={formData.zipcode}
+                  onChange={handleChange}
+                  min="00501"
+                  max="99950"
+                  className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
+          </div>
 
 
-        <h2 className="text-xl font-bold mt-8 text-center">Social Media</h2>
-
-        <div>
-          <label htmlFor="instagram" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
-            Instagram
-          </label>
-          <input value={formData.instagram} 
-                 type="url" 
-                 id="instagram"
-                 onChange={handleChange}
-                 className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
-        </div>
-        <div>
-          <label htmlFor="linkedin" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
-            Linkedin
-          </label>
-          <input value={formData.linkedin} 
-                 type="url" 
-                 id="linkedin"
-                 onChange={handleChange}
-                 className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
-        </div>
-        <div>
-          <label htmlFor="facebook" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
-            Facebook
-          </label>
-          <input value={formData.facebook} 
-                 type="url" 
-                 id="facebook"
-                 onChange={handleChange}
-                 className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
-        </div>
-        <div>
-          <label htmlFor="twitter" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
-            X
-          </label>
-          <input value={formData.twitter} 
-                 type="url" 
-                 id="twitter"
-                 onChange={handleChange}
-                 className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray" />
-        </div>
-
-      </div>
-
-  
-      {/* Other input fields */}
-      <div className="flex justify-center mt-4">
-          <button type="submit" className="bg-dark-gray text-black py-2 px-4 rounded hover:bg-blue-700">
-              Submit
-          </button>
-      </div>
+          <h2 className="text-xl font-bold mt-8 text-center">Contact</h2>
       
 
 
-    </form>
+
+          {/** Phone Number电话号码 */}
+          <div>
+            <label htmlFor="phone" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
+              Phone Number
+            </label>
+            <div className="flex items-center">
+              <input
+                value={formData.contact.phoneNumber}
+                type="text"
+                name="contact.phoneNumber"
+                onChange={handleChange}
+                maxLength={10}
+                className="border w-full rounded py-2 px-3 leading-tight bg-dark-gray mr-3"
+              />
+              <div className="flex items-center">
+                <div className="font-bold mr-2">Preferred Contact</div>
+                <input type="checkbox" className="checkbox border-gray" />
+              </div>
+            </div>
+          </div>
+
+          {/** Instagram */}
+          <div>
+            <label htmlFor="instagram" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
+              Instagram
+            </label>
+            <div className="flex items-center">
+              <input
+                value={formData.contact.instagram}
+                type="url"
+                name="contact.instagram"
+                onChange={handleChange}
+                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3"
+              />
+              <div className="flex items-center">
+                <div className="font-bold mr-2">Preferred Contact</div>
+                <input type="checkbox" className="checkbox border-gray" />
+              </div>
+            </div>
+          </div>
+
+          {/** LinkedIn */}
+          <div>
+            <label htmlFor="linkedin" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
+              LinkedIn
+            </label>
+            <div className="flex items-center">
+              <input
+                value={formData.contact.linkedin}
+                type="url"
+                name="contact.linkedin"
+                onChange={handleChange}
+                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3"
+              />
+              <div className="flex items-center">
+                <div className="font-bold mr-2">Preferred Contact</div>
+                <input type="checkbox" className="checkbox border-gray" />
+              </div>
+            </div>
+          </div>
+
+          {/** Facebook */}
+          <div>
+            <label htmlFor="facebook" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
+              Facebook
+            </label>
+            <div className="flex items-center">
+              <input
+                value={formData.contact.facebook}
+                type="url"
+                name="contact.facebook"
+                onChange={handleChange}
+                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3"
+              />
+              <div className="flex items-center">
+                <div className="font-bold mr-2">Preferred Contact</div>
+                <input type="checkbox" className="checkbox border-gray" />
+              </div>
+            </div>
+          </div>
+
+          {/** Twitter(X) */}
+          <div>
+            <label htmlFor="twitter" className="block text-gray-700 text-sm font-bold mb-2 mt-2">
+              X
+            </label>
+            <div className="flex items-center">
+              <input
+                value={formData.contact.twitter}
+                type="url"
+                name="contact.twitter"
+                onChange={handleChange}
+                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3"
+              />
+              <div className="flex items-center">
+                <div className="font-bold mr-2">Preferred Contact</div>
+                <input type="checkbox" className="checkbox border-gray" />
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+    
+        {/* Other input fields */}
+        <div className="flex justify-center mt-4">
+            <button type="submit" className="bg-dark-gray text-black py-2 px-4 rounded hover:bg-blue-700">
+                Save
+            </button>
+        </div>
+        
+
+
+      </form>
   </div>
   );
 }
