@@ -203,8 +203,7 @@ const PortfolioForm = (props) => {
     try {
       const data = {
         id: profile.id,
-        // model_bio: modelBio,
-        "model_info.model_bio": modelBio, // 更新 model_info 中的 model_bio
+        model_bio: modelBio,
       };
 
       const response = await axios.put("http://localhost:4000/api/modelBio", data, {
@@ -235,8 +234,7 @@ const PortfolioForm = (props) => {
     try {
       const data = {
         id: profile.id,
-        // photographer_bio: photographerBio,
-        "photographer_info.photographer_bio": photographerBio, // 更新 photographer_info 中的 photographer_bio
+        photographer_bio: photographerBio,
       };
 
       const response = await axios.put("http://localhost:4000/api/photographerBio", data, {
