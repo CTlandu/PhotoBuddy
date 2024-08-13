@@ -85,7 +85,7 @@ const Navbar = () => {
         </div>
         <div className="flex-none">
           <ul className="menu menu-horizontal px-1 mr-28">
-
+            <li><a href='/findmatches'>Find Matches!</a></li>
             {accessToken && (
               <li className="flex items-center">
                 <details className='relative' ref={menuRef}>
