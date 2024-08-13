@@ -6,31 +6,9 @@ const jwt = require('jsonwebtoken');
 const User = require('../db/userModel'); // 引用你的User模型
 const router = express.Router();
 
-
-// 更新PhotographerBio
-router.put("/photographerBio", async (req, res) => {
-  const { id, photographer_bio } = req.body;
-
-  try {
-    const user = await User.findOne({ id });
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    user.photographer_info.photographer_bio = photographer_bio;
-    await user.save();
-
-    res.status(200).json({ message: "Photographer bio updated successfully", user });
-  } catch (error) {
-    console.error("Error updating photographer bio:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
-
-// 更新modelBio
-router.put("/modelBio", async (req, res) => {
-  const { id, model_bio } = req.body;
+// 更新ModelInfo或PhotographerInfo
+router.put("/updateProfile", async (req, res) => {
+  const { id, model_info, photographer_info } = req.body;
 
   try {
     const user = await User.findOne({ id });
@@ -39,15 +17,40 @@ router.put("/modelBio", async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    user.model_info.model_bio = model_bio;
+    // 如果请求中包含model_info，则更新model_info
+    if (model_info) {
+      if (model_info.model_lookingfor) {
+        // 确保 model_lookingfor 中只包含唯一值
+        model_info.model_lookingfor = [...new Set(model_info.model_lookingfor)];
+      }
+      user.model_info = {
+        ...user.model_info, // 保留之前的值
+        ...model_info, // 更新新的值
+      };
+    }
+
+    // 如果请求中包含photographer_info，则更新photographer_info
+    if (photographer_info) {
+      if (photographer_info.photographer_lookingfor) {
+        // 确保 photographer_lookingfor 中只包含唯一值
+        photographer_info.photographer_lookingfor = [...new Set(photographer_info.photographer_lookingfor)];
+      }
+      user.photographer_info = {
+        ...user.photographer_info, // 保留之前的值
+        ...photographer_info, // 更新新的值
+      };
+    }
+
+    // 保存更新后的用户信息
     await user.save();
 
-    res.status(200).json({ message: "Model bio updated successfully", user });
+    res.status(200).json({ message: "Profile updated successfully", user });
   } catch (error) {
-    console.error("Error updating model bio:", error);
+    console.error("Error updating profile:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
 
 
 // 摄影师照片上传
