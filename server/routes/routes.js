@@ -246,6 +246,12 @@ router.put('/profile', async (req, res) => {
         linkedin: contact.linkedin !== undefined ? contact.linkedin : user.contact?.linkedin,
         twitter: contact.twitter !== undefined ? contact.twitter : user.contact?.twitter,
         facebook: contact.facebook !== undefined ? contact.facebook : user.contact?.facebook,
+        
+        phoneNumber_preferred: contact.phoneNumber_preferred !== undefined ? contact.phoneNumber_preferred : user.contact?.phoneNumber_preferred,
+        instagram_preferred: contact.instagram_preferred !== undefined ? contact.instagram_preferred : user.contact?.instagram_preferred,
+        linkedin_preferred: contact.linkedin_preferred !== undefined ? contact.linkedin_preferred : user.contact?.linkedin_preferred,
+        twitter_preferred: contact.twitter_preferred !== undefined ? contact.twitter_preferred : user.contact?.twitter_preferred,
+        facebook_preferred: contact.facebook_preferred !== undefined ? contact.facebook_preferred : user.contact?.facebook_preferred,
       };
     }
 

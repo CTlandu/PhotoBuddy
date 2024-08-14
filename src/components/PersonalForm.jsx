@@ -32,7 +32,13 @@ const PersonalForm = (props) => {
       instagram: props.profile.contact.instagram || '',
       linkedin: props.profile.contact.linkedin || '',
       twitter: props.profile.contact.twitter || '',
-      facebook: props.profile.contact.facebook || ''
+      facebook: props.profile.contact.facebook || '',
+
+      phoneNumber_preferred: props.profile.contact.phoneNumber_preferred || false,
+      instagram_preferred: props.profile.contact.instagram_preferred || false,
+      linkedin_preferred: props.profile.contact.linkedin_preferred || false,
+      twitter_preferred: props.profile.contact.twitter_preferred || false,
+      facebook_preferred: props.profile.contact.facebook_preferred || false,
   }
 });
 
@@ -52,7 +58,13 @@ const PersonalForm = (props) => {
         instagram: props.profile.contact.instagram || '',
         linkedin: props.profile.contact.linkedin || '',
         twitter: props.profile.contact.twitter || '',
-        facebook: props.profile.contact.facebook || ''
+        facebook: props.profile.contact.facebook || '',
+
+        phoneNumber_preferred: props.profile.contact.phoneNumber_preferred || false,
+        instagram_preferred: props.profile.contact.instagram_preferred || false,
+        linkedin_preferred: props.profile.contact.linkedin_preferred || false,
+        twitter_preferred: props.profile.contact.twitter_preferred || false,
+        facebook_preferred: props.profile.contact.facebook_preferred || false,
       }
     });
   }, [props.profile]);
@@ -86,6 +98,20 @@ const PersonalForm = (props) => {
           }
       });
   };
+
+  // 为复选框增加处理函数，更新 formData 中的状态：
+  const handleCheckboxChange = (e) => {
+    const { name, checked } = e.target;
+  
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      contact: {
+        ...prevFormData.contact,
+        [name]: checked,
+      }
+    }));
+  };
+  
   
 
 
@@ -208,9 +234,16 @@ const PersonalForm = (props) => {
                 className="border w-full rounded py-2 px-3 leading-tight bg-dark-gray mr-3"
               />
               <div className="flex items-center">
-                <div className="font-bold mr-2">Preferred Contact</div>
-                <input type="checkbox" className="checkbox border-gray" />
+                <div className="font-bold mr-2">Show on Profile Card</div>
+                <input
+                  type="checkbox"
+                  name="phoneNumber_preferred"
+                  checked={formData.contact.phoneNumber_preferred}
+                  onChange={handleCheckboxChange}
+                  className="checkbox border-gray"
+                />
               </div>
+              {formData.contact.phoneNumber_preferred ? <p>321</p>: <p>123</p>}
             </div>
           </div>
 
@@ -228,8 +261,14 @@ const PersonalForm = (props) => {
                 className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3"
               />
               <div className="flex items-center">
-                <div className="font-bold mr-2">Preferred Contact</div>
-                <input type="checkbox" className="checkbox border-gray" />
+                <div className="font-bold mr-2">Show on Profile Card</div>
+                <input
+                  type="checkbox"
+                  name="instagram_preferred"
+                  checked={formData.contact.instagram_preferred}
+                  onChange={handleCheckboxChange}
+                  className="checkbox border-gray"
+                />
               </div>
             </div>
           </div>
@@ -248,8 +287,14 @@ const PersonalForm = (props) => {
                 className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3"
               />
               <div className="flex items-center">
-                <div className="font-bold mr-2">Preferred Contact</div>
-                <input type="checkbox" className="checkbox border-gray" />
+                <div className="font-bold mr-2">Show on Profile Card</div>
+                <input
+                  type="checkbox"
+                  name="linkedin_preferred"
+                  checked={formData.contact.linkedin_preferred}
+                  onChange={handleCheckboxChange}
+                  className="checkbox border-gray"
+                />
               </div>
             </div>
           </div>
@@ -268,8 +313,14 @@ const PersonalForm = (props) => {
                 className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3"
               />
               <div className="flex items-center">
-                <div className="font-bold mr-2">Preferred Contact</div>
-                <input type="checkbox" className="checkbox border-gray" />
+                <div className="font-bold mr-2">Show on Profile Card</div>
+                <input
+                  type="checkbox"
+                  name="facebook_preferred"
+                  checked={formData.contact.facebook_preferred}
+                  onChange={handleCheckboxChange}
+                  className="checkbox border-gray"
+                />
               </div>
             </div>
           </div>
@@ -288,8 +339,14 @@ const PersonalForm = (props) => {
                 className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3"
               />
               <div className="flex items-center">
-                <div className="font-bold mr-2">Preferred Contact</div>
-                <input type="checkbox" className="checkbox border-gray" />
+                <div className="font-bold mr-2">Show on Profile Card</div>
+                <input
+                  type="checkbox"
+                  name="twitter_preferred"
+                  checked={formData.contact.twitter_preferred}
+                  onChange={handleCheckboxChange}
+                  className="checkbox border-gray"
+                />
               </div>
             </div>
           </div>
