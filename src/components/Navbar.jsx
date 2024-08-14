@@ -83,9 +83,11 @@ const Navbar = () => {
         <div className="flex-1 ml-24">
           <a className="btn btn-ghost text-xl" href='/' >PhotoBuddy</a>
         </div>
+        <div className="flex">
+          <a href='/findmatches'>Find Matches!</a>
+        </div>
         <div className="flex-none">
           <ul className="menu menu-horizontal px-1 mr-28">
-            <li><a href='/findmatches'>Find Matches!</a></li>
             {accessToken && (
               <li className="flex items-center">
                 <details className='relative' ref={menuRef}>
