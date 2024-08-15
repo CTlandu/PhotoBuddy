@@ -2,13 +2,15 @@ import React from 'react';
 import { useState,useEffect } from 'react';
 import Session from 'supertokens-auth-react/recipe/session';
 import axios from 'axios';
+import Empty_Avatar from '../assets/empty_avatar.jpg';
 
 
 
-const ProfileCard = () => {
+const ProfileCard = (props) => {
 
-  const [profile, setProfile] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState(props.fetched_profile);
+  const [loading, setLoading] = useState(props.isLoading);
+
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -25,21 +27,6 @@ const ProfileCard = () => {
   };
 
 
-  const fetchProfile = async () => {
-    try {
-        const userId = await Session.getUserId(); // 替换为实际的用户ID
-        console.log("UserId:\n" + userId);
-        const response = await axios.get(`http://localhost:4000/api/profile`, {
-            params: { id: userId }
-        });
-        setProfile(response.data);
-    } catch (err) {
-        console.log(err);
-    } finally {
-        setLoading(false);
-    }
-  };
-  
   // 给定一个生日日期，计算年龄
   const calculateAge = (birthday) => {
     const birthDate = new Date(birthday);
@@ -55,22 +42,17 @@ const ProfileCard = () => {
   };
   
 
-  //initiate use effect
-  useEffect(() => {
-    fetchProfile();
-  }, []);
-
   return (
     <>
       {loading ? null : (
-        <div className="card bg-base-100 w-96 shadow-xl">
+        <div className="card bg-base-100 w-full h-full shadow-xl m-2">
           <figure className="h-96">
             <img src={profile.model_info.model_images[2]} alt="Profile" />
           </figure>
           <div className="card-body">
             <button
               className="btn btn-link"
-              onClick={() => document.getElementById("profileModal").showModal()}
+              onClick={() => document.getElementById(props.modal_index).showModal()}
             >
               See detail
             </button>
@@ -103,14 +85,14 @@ const ProfileCard = () => {
       {/** Profile Modal */}
       {
         loading ? null : (
-            <dialog id="profileModal" className="modal">
+            <dialog id={props.modal_index} className="modal">
             <div className="modal-box max-w-lg max-h-[90vh]">
               <div className="flex items-center space-x-6">
                 {/* 头像部分 */}
                 <div className="avatar">
                   <div className="w-24 h-24 rounded-full overflow-hidden">
                     <img
-                      src={profile.avatar || 'https://via.placeholder.com/150'}
+                      src={profile.avatar || Empty_Avatar}
                       alt="Avatar"
                       className="w-full h-full object-cover"
                     />
@@ -240,7 +222,7 @@ const ProfileCard = () => {
             <form
               method="dialog"
               className="modal-backdrop"
-              onClick={() => document.getElementById("profileModal").close()}
+              onClick={() => document.getElementById(props.modal_index).close()}
             >
               <button className="btn">Close</button>
             </form>

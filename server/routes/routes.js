@@ -6,6 +6,57 @@ const jwt = require('jsonwebtoken');
 const User = require('../db/userModel'); // 引用你的User模型
 const router = express.Router();
 
+
+
+// fetchAll API
+router.get("/fetchAll", async (req, res) => {
+  const { role } = req.query; // 从查询参数中获取 role
+
+  try {
+    let users;
+
+    // 根据类型获取不同的信息
+    if (role === "model") {
+      users = await User.find(
+        { "model_info.model_images": { $ne: [] } }, // 查找 model_images 非空的用户
+        {
+          model_info: 1, // 只返回 model_info 字段
+          preferredName: 1, // 返回 preferredName 字段
+          email: 1, // 返回 email 字段
+          avatar: 1, // 返回 avatar 字段
+          pronouns: 1, // 返回 pronouns 字段
+          birthday: 1, // 返回 birthday 字段
+          zipcode: 1, // 返回 zipcode 字段
+          contact: 1, // 返回 contact 字段
+        }
+      );
+    } else if (role === "photographer") {
+      users = await User.find(
+        { "photographer_info.photographer_images": { $ne: [] } }, // 查找 photographer_images 非空的用户
+        {
+          photographer_info: 1, // 只返回 photographer_info 字段
+          preferredName: 1, // 返回 preferredName 字段
+          email: 1, // 返回 email 字段
+          avatar: 1, // 返回 avatar 字段
+          pronouns: 1, // 返回 pronouns 字段
+          birthday: 1, // 返回 birthday 字段
+          zipcode: 1, // 返回 zipcode 字段
+          contact: 1, // 返回 contact 字段
+        }
+      );
+    } else {
+      return res.status(400).json({ message: "Invalid role parameter. Must be 'model' or 'photographer'." });
+    }
+
+    res.status(200).json(users);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
+
 // 更新ModelInfo或PhotographerInfo
 router.put("/updateProfile", async (req, res) => {
   const { id, model_info, photographer_info } = req.body;
@@ -246,7 +297,7 @@ router.put('/profile', async (req, res) => {
         linkedin: contact.linkedin !== undefined ? contact.linkedin : user.contact?.linkedin,
         twitter: contact.twitter !== undefined ? contact.twitter : user.contact?.twitter,
         facebook: contact.facebook !== undefined ? contact.facebook : user.contact?.facebook,
-        
+
         phoneNumber_preferred: contact.phoneNumber_preferred !== undefined ? contact.phoneNumber_preferred : user.contact?.phoneNumber_preferred,
         instagram_preferred: contact.instagram_preferred !== undefined ? contact.instagram_preferred : user.contact?.instagram_preferred,
         linkedin_preferred: contact.linkedin_preferred !== undefined ? contact.linkedin_preferred : user.contact?.linkedin_preferred,
