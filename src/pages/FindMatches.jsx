@@ -80,10 +80,17 @@ function FindMatches() {
         </div>
 
         {/* 自适应排列 */}
-        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-16 px-4">
+        {/* <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-16 px-4">
           {displayProfiles.map((profile, index) => (
             <div key={index} className="p-2">
               <ProfileCard fetched_profile={profile} isLoading={isLoading} modal_index={`modal-${index}`}/>
+            </div>
+          ))}
+        </div> */}
+        <div className="grid gap-6 mt-16 px-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {displayProfiles.map((profile, index) => (
+            <div key={index} className="p-2">
+              <ProfileCard fetched_profile={profile} isLoading={isLoading} modal_index={`modal-${index}`} />
             </div>
           ))}
         </div>
@@ -95,20 +102,20 @@ function FindMatches() {
             nextLabel={'Next'}
             pageCount={Math.ceil((selectedRole === 'model' ? modelProfiles.length : photographerProfiles.length) / profilesPerPage)}
             onPageChange={handlePageClick}
-            containerClassName={'pagination'}
-            activeClassName={'active'}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={5}
-            breakLabel={'...'}
-            breakClassName={'break-me'}
-            pageClassName={'page-item'}
-            pageLinkClassName={'page-link'}
+            containerClassName={'pagination flex justify-center items-center space-x-2'}
+            activeClassName={'active bg-blue-500 text-white rounded-lg px-3 py-1'}
+            pageClassName={'page-item rounded-lg'}
+            pageLinkClassName={'page-link text-blue-500 hover:bg-blue-100 transition-colors duration-200 px-3 py-1 rounded-lg'}
             previousClassName={'page-item'}
-            previousLinkClassName={'page-link'}
+            previousLinkClassName={'btn btn-outline text-blue-500 border-blue-500 hover:bg-blue-100 transition-colors duration-200 px-3 py-1 rounded-lg'}
             nextClassName={'page-item'}
-            nextLinkClassName={'page-link'}
+            nextLinkClassName={'btn btn-outline text-green border-green hover:bg-blue-100 transition-colors duration-200 px-3 py-1 rounded-lg'}
+            breakLabel={'...'}
+            breakClassName={'break-me text-blue-500'}
           />
         </div>
+
+
       </div>
     </>
   );

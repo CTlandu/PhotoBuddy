@@ -1,7 +1,5 @@
 import React from 'react';
 import { useState,useEffect } from 'react';
-import Session from 'supertokens-auth-react/recipe/session';
-import axios from 'axios';
 import Empty_Avatar from '../assets/empty_avatar.jpg';
 
 
@@ -47,14 +45,14 @@ const ProfileCard = (props) => {
       {loading ? null : (
         <div className="card bg-base-100 w-full h-full shadow-xl m-2">
           <figure className="h-96">
-            <img src={profile.model_info.model_images[2]} alt="Profile" />
+            <img src={profile.model_info.model_images[1]} alt="Profile" className="w-full h-full object-cover"/>
           </figure>
           <div className="card-body">
             <button
               className="btn btn-link"
               onClick={() => document.getElementById(props.modal_index).showModal()}
             >
-              See detail
+              See profile
             </button>
             <h2 className="card-title">
               {profile.preferredName}
