@@ -243,7 +243,6 @@ const PersonalForm = (props) => {
                   className="checkbox border-gray"
                 />
               </div>
-              {formData.contact.phoneNumber_preferred ? <p>321</p>: <p>123</p>}
             </div>
           </div>
 

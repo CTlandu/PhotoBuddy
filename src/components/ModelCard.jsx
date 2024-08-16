@@ -111,6 +111,8 @@ const ModelCard = (props) => {
                   ) : null}
                   {/* 所在城市 */}
                   <p>{profile.location || 'Williamsburg, VA'}</p>
+                  {/* 电话 */}
+                  {profile.contact.phoneNumber_preferred && <p>{profile.contact.phoneNumber}</p>}
                   {/* IG */}
                   {profile.contact.instagram_preferred && 
                   (
