@@ -2,28 +2,24 @@ import React from 'react';
 import { useState,useEffect } from 'react';
 import Empty_Avatar from '../assets/empty_avatar.jpg';
 
-
-
-const ProfileCard = (props) => {
+const PhotographerCard = (props) => {
 
   const [profile, setProfile] = useState(props.fetched_profile);
   const [loading, setLoading] = useState(props.isLoading);
-
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? profile.model_info.model_images.length - 1 : prevIndex - 1
+      prevIndex === 0 ? profile.photographer_info.photographer_images.length - 1 : prevIndex - 1
     );
   };
 
   const handleNext = () => {
     setCurrentIndex((prevIndex) =>
-      prevIndex === profile.model_info.model_images.length - 1 ? 0 : prevIndex + 1
+      prevIndex === profile.photographer_info.photographer_images.length - 1 ? 0 : prevIndex + 1
     );
   };
-
 
   // 给定一个生日日期，计算年龄
   const calculateAge = (birthday) => {
@@ -38,14 +34,13 @@ const ProfileCard = (props) => {
   
     return age;
   };
-  
 
   return (
     <>
       {loading ? null : (
         <div className="card bg-base-100 w-full h-full shadow-xl m-2">
           <figure className="h-96">
-            <img src={profile.model_info.model_images[1]} alt="Profile" className="w-full h-full object-cover"/>
+            <img src={profile.photographer_info.photographer_images[1]} alt="Profile" className="w-full h-full object-cover"/>
           </figure>
           <div className="card-body">
             <button
@@ -57,12 +52,12 @@ const ProfileCard = (props) => {
             <h2 className="card-title">
               {profile.preferredName}
               <div className="badge badge-secondary">
-                {profile.model_info.model_images.length} photos
+                {profile.photographer_info.photographer_images.length} photos
               </div>
             </h2>
             <p>Looking for:</p>
             <ul>
-              {profile.model_info.model_lookingfor.map((string, index) => (
+              {profile.photographer_info.photographer_lookingfor.map((string, index) => (
                 <li key={index}>
                   <div className="badge badge-primary">{string}</div>
                 </li>
@@ -72,14 +67,14 @@ const ProfileCard = (props) => {
             <div className="badge badge-info">1.4 miles</div>
             <div className="card-actions justify-end">
               <div className="badge badge-outline">
-                {profile.model_info.model_experience}
+                {profile.photographer_info.photographer_experience}
               </div>
               <div className="badge badge-outline">3 years</div>
             </div>
           </div>
         </div>
       )}
-  
+
       {/** Profile Modal */}
       {
         loading ? null : (
@@ -176,16 +171,16 @@ const ProfileCard = (props) => {
                   className="flex transition-transform ease-in-out duration-300"
                   style={{
                     transform: `translateX(-${currentIndex * 100}%)`,
-                    width: `${profile.model_info?.model_images.length * 8}%`,
+                    width: `${profile.photographer_info?.photographer_images.length * 8}%`,
                   }}
                 >
-                  {profile.model_info?.model_images && profile.model_info.model_images.length > 0 ? (
-                    profile.model_info.model_images.map((image, index) => (
+                  {profile.photographer_info?.photographer_images && profile.photographer_info.photographer_images.length > 0 ? (
+                    profile.photographer_info.photographer_images.map((image, index) => (
                       <div key={index} className="flex-shrink-0 w-full p-1">
                         <div className="w-full aspect-square relative rounded-lg overflow-hidden">
                           <img
                             src={image}
-                            alt={`Model Image ${index + 1}`}
+                            alt={`Photographer Image ${index + 1}`}
                             className="absolute inset-0 w-full h-full object-cover"
                           />
                         </div>
@@ -212,7 +207,7 @@ const ProfileCard = (props) => {
 
                 {/** 图片数量指示器 */}
                 <div className="text-center mt-2">
-                  <p>{currentIndex + 1} / {profile.model_info?.model_images.length}</p>
+                  <p>{currentIndex + 1} / {profile.photographer_info?.photographer_images.length}</p>
                 </div>
               </div>
             </div>
@@ -230,7 +225,6 @@ const ProfileCard = (props) => {
       
     </>
   );
-  
 }
 
-export default ProfileCard;
+export default PhotographerCard;

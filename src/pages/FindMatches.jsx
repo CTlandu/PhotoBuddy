@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
-import ProfileCard from '../components/ProfileCard';
+import ModelCard from '../components/ModelCard';
 import ReactPaginate from 'react-paginate';
+import PhotographerCard from '../components/PhotographerCard';
 
 function FindMatches() {
   const [modelProfiles, setModelProfiles] = useState([]);
@@ -9,7 +10,7 @@ function FindMatches() {
   const [selectedRole, setSelectedRole] = useState('model'); // 默认选中 model
   const [currentPage, setCurrentPage] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const profilesPerPage = 6; // 每页展示的 ProfileCard 数量
+  const profilesPerPage = 6; // 每页展示的 Profile Card 数量
 
   const handleRoleSelection = (role) => {
     setSelectedRole(role);
@@ -80,17 +81,14 @@ function FindMatches() {
         </div>
 
         {/* 自适应排列 */}
-        {/* <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-16 px-4">
-          {displayProfiles.map((profile, index) => (
-            <div key={index} className="p-2">
-              <ProfileCard fetched_profile={profile} isLoading={isLoading} modal_index={`modal-${index}`}/>
-            </div>
-          ))}
-        </div> */}
         <div className="grid gap-6 mt-16 px-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {displayProfiles.map((profile, index) => (
             <div key={index} className="p-2">
-              <ProfileCard fetched_profile={profile} isLoading={isLoading} modal_index={`modal-${index}`} />
+              {
+                selectedRole === 'model' ?
+                <ModelCard fetched_profile={profile} isLoading={isLoading} modal_index={`modal-${index}`} /> :
+                <PhotographerCard fetched_profile={profile} isLoading={isLoading} modal_index={`modal-${index}`} />
+              }
             </div>
           ))}
         </div>
