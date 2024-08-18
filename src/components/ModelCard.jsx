@@ -45,7 +45,7 @@ const ModelCard = (props) => {
       {loading ? null : (
         <div className="card bg-base-100 w-full h-full shadow-xl m-2">
           <figure className="h-96">
-            <img src={profile.model_info.model_images[1]} alt="Profile" className="w-full h-full object-cover"/>
+            <img src={profile.model_info.model_images[0]} alt="Profile" className="w-full h-full object-cover"/>
           </figure>
           <div className="card-body">
             <button

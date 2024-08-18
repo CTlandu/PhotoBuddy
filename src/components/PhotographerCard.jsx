@@ -40,7 +40,7 @@ const PhotographerCard = (props) => {
       {loading ? null : (
         <div className="card bg-base-100 w-full h-full shadow-xl m-2">
           <figure className="h-96">
-            <img src={profile.photographer_info.photographer_images[1]} alt="Profile" className="w-full h-full object-cover"/>
+            <img src={profile.photographer_info.photographer_images[0]} alt="Profile" className="w-full h-full object-cover"/>
           </figure>
           <div className="card-body">
             <button
@@ -55,7 +55,7 @@ const PhotographerCard = (props) => {
                 {profile.photographer_info.photographer_images.length} photos
               </div>
             </h2>
-            <p>Looking for:</p>
+            <p class="">Looking for:</p>
             <ul>
               {profile.photographer_info.photographer_lookingfor.map((string, index) => (
                 <li key={index}>

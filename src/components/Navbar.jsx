@@ -82,10 +82,14 @@ const Navbar = () => {
     <div className="navbar bg-base-100 mt-4">
         <div className="flex-1 ml-24">
           <a className="btn btn-ghost text-xl" href='/' >PhotoBuddy</a>
+          <div>
+            <a href='/about' className='btn btn-accent ml-10 text-md'>About</a>
+          </div>
+          <div>
+            <a href='/findmatches' className='btn btn-secondary ml-10 text-md'>Find Matches!</a>
+          </div>
         </div>
-        <div className="flex">
-          <a href='/findmatches'>Find Matches!</a>
-        </div>
+    
         <div className="flex-none">
           <ul className="menu menu-horizontal px-1 mr-28">
             {accessToken && (
