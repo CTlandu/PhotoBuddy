@@ -1,3 +1,4 @@
+import React from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import './index.css'
 // importing SuperTokens packages
@@ -28,23 +29,28 @@ import About from './pages/About';
 // const API_DOMAIN = import.meta.env.VITE_APP_API_DOMAIN;
 // const WEB_DOMAIN = import.meta.env.VITE_WEBSITE_DOMAIN;
 
+console.log('App Name:', import.meta.env.VITE_APP_NAME);
+console.log('API Domain:', import.meta.env.VITE_API_DOMAIN);
+console.log('Website Domain:', import.meta.env.VITE_WEBSITE_DOMAIN);
+console.log('API Base Path:', import.meta.env.VITE_APP_API_BASE_PATH);
+console.log('Website Base Path:', import.meta.env.VITE_WEBSITE_BASE_PATH);
+
 SuperTokens.init({
   appInfo: {
       // learn more about this on https://supertokens.com/docs/thirdpartyemailpassword/appinfo
-      appName: "photobuddy",
-        apiDomain: "http://localhost:4000",
-        websiteDomain: "http://localhost:5173",
-        apiBasePath: "/auth",
-        websiteBasePath: "/auth"
+      appName: import.meta.env.VITE_APP_NAME,
+      apiDomain: import.meta.env.VITE_API_DOMAIN,
+      websiteDomain: import.meta.env.VITE_WEBSITE_DOMAIN,
+      apiBasePath: import.meta.env.VITE_APP_API_BASE_PATH,
+      websiteBasePath: import.meta.env.VITE_WEBSITE_BASE_PATH,
   },
   recipeList: [
+      // 第三方登录选项
       ThirdParty.init({
           signInAndUpFeature: {
               providers: [
                   Github.init(),
                   Google.init(),
-                  //Facebook.init(),
-                  // Apple.init(),
               ]
           }
       }),
