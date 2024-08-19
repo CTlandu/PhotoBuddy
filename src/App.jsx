@@ -21,6 +21,8 @@ import Register from './pages/Register'
 import Profile from './pages/Profile'
 import { useEffect, useState, createContext } from 'react'
 import Portfolio from './pages/Portfolio';
+import FindMatches from './pages/FindMatches';
+import About from './pages/About';
 
 // const APP_NAME = import.meta.env.VITE_APP_NAME;
 // const API_DOMAIN = import.meta.env.VITE_APP_API_DOMAIN;
@@ -129,8 +131,10 @@ function App() {
            {/* free routes */}
           <Route index element={<Home />}></Route>
           <Route exact path="/home" element={<Home />}/>
-          <Route exact path="/login" element={<Login />}></Route>
-          <Route exact path="/register" element={<Register />}></Route>
+          <Route exact path='/findmatches' element={<FindMatches />}></Route>
+          <Route exact path="/about" element={<About /> }></Route>
+          {/* <Route exact path="/login" element={<Login />}></Route>
+          <Route exact path="/register" element={<Register />}></Route> */}
           <Route path="*" element={<NoPage />}></Route>
     
 

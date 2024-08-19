@@ -79,13 +79,19 @@ const Navbar = () => {
 
   return (
   <>
-    <div className="navbar bg-base-100 mt-4">
+    <div className="navbar bg-base-100 mt-2">
         <div className="flex-1 ml-24">
           <a className="btn btn-ghost text-xl" href='/' >PhotoBuddy</a>
+          <div>
+            <a href='/about' className='btn btn-accent ml-10 text-md'>About</a>
+          </div>
+          <div>
+            <a href='/findmatches' className='btn btn-secondary ml-10 text-md'>Find Matches!</a>
+          </div>
         </div>
+    
         <div className="flex-none">
-          <ul className="menu menu-horizontal px-1 mr-28">
-
+          <ul className="menu menu-horizontal px-1 mr-24">
             {accessToken && (
               <li className="flex items-center">
                 <details className='relative' ref={menuRef}>
@@ -112,7 +118,7 @@ const Navbar = () => {
               </li>
             )}
 
-            {!accessToken && <li><button onClick={onLogin}>SuperToken Login</button></li>}
+            {!accessToken && <li><button onClick={onLogin}>Login</button></li>}
 
           </ul>
         </div>
