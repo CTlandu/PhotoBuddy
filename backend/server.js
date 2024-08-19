@@ -23,9 +23,7 @@ const supertokens =require("supertokens-node");
 // const EmailVerification = require("supertokens-node/recipe/emailverification");
 // const ThirdParty = require("supertokens-node/recipe/thirdparty");
 const { errorHandler } = require("supertokens-node/framework/express");
-// const Dashboard = require("supertokens-node/recipe/dashboard");
-// const { verifySession } = require("supertokens-node/recipe/session/framework/express");
-// const { SessionRequest } = require("supertokens-node/framework/express");
+
 const supertokensInit = require("./supertokensInit");
 
 dbConnect();
@@ -39,7 +37,7 @@ app.use(bodyParser.json({limit: '2mb'}));
 app.use(bodyParser.urlencoded({limit: '2mb', extended:true}))
 
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: "http://localhost:3000",
   methods: ['GET','POST','PUT', 'DELETE'],
   allowedHeaders: ["content-type", "Authorization", ...supertokens.getAllCORSHeaders()],
   credentials: true,
@@ -83,7 +81,7 @@ app.use((req, res, next) => {
 
 
 // listen for requests
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 4000;
 app.listen(port, () => {
   console.log(`Server started on http://localhost/${port}`);
 });

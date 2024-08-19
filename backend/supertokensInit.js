@@ -16,7 +16,7 @@ const User = require("./db/userModel");
 dbconnect();
 
 // 初始化supertokens
-async function superTokensInit()
+function superTokensInit()
 {
     supertokens.init({
         framework: "express",
@@ -31,7 +31,7 @@ async function superTokensInit()
             // learn more about this on https://supertokens.com/docs/thirdpartyemailpassword/appinfo
             appName: "photobuddy",
             apiDomain: "http://localhost:4000",
-            websiteDomain: "http://localhost:5173",
+            websiteDomain: "http://localhost:3000",
             apiBasePath: "/auth",
             websiteBasePath: "/auth"
         },
@@ -46,7 +46,8 @@ async function superTokensInit()
             EmailVerification.init({
               mode: "OPTIONAL", // or OPTIONAL
             }),
-            ThirdParty.init({
+            ThirdParty.init(
+              {
               // We have provided you with development keys which you can use for testing.
               // IMPORTANT: Please replace them with your own OAuth keys for production use.
               signInAndUpFeature: {
@@ -69,7 +70,8 @@ async function superTokensInit()
                   }
                 ],
                 }
-              }),
+              }
+            ),
             Session.init({
               exposeAccessTokenToFrontendInCookieBasedAuth: true,
             }) // initializes session features
