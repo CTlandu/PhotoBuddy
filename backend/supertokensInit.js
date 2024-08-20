@@ -29,9 +29,9 @@ function superTokensInit()
         supertokens: {
             // https://try.supertokens.com is for demo purposes. Replace this with the address of your core instance (sign up on supertokens.com), or self host a core.
             // connectionURI: "https://try.supertokens.com",
-            connectionURI: "https://st-dev-66f4ad70-4fb9-11ef-a24d-7fa502ed3c7e.aws.supertokens.io",
+            connectionURI: process.env.SUPERTOKEN_CORE_CONNECTIONURI,
             // apiKey: <API_KEY(if configured)>,
-            apiKey: "5cwWMIhpOn9Gq=IY3BooLy7u3t",
+            apiKey: process.env.SUPERTOKEN_CORE_API_KEY,
         },
         appInfo: {
             // learn more about this on https://supertokens.com/docs/thirdpartyemailpassword/appinfo
