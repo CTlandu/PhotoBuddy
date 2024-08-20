@@ -2,6 +2,8 @@ version: '3.8'
 
 services:
   frontend:
+    env_file:
+      - .env.production
     build:
       context: ./frontend
       dockerfile: Dockerfile
@@ -13,6 +15,8 @@ services:
       - app-network
 
   backend:
+    env_file:
+      - .env.production
     build:
       context: ./backend
       dockerfile: Dockerfile
