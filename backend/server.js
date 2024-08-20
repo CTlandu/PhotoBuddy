@@ -40,10 +40,14 @@ app.use(bodyParser.urlencoded({limit: '2mb', extended:true}))
 
 app.use(cors({
   origin: process.env.CORS_ORIGIN,
-  methods: ['GET','POST','PUT', 'DELETE'],
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: ["content-type", "Authorization", ...supertokens.getAllCORSHeaders()],
   credentials: true,
+  optionsSuccessStatus: 204,
 }));
+console.log("CORS_ORIGIN", process.env.CORS_ORIGIN);
+
+
 
 // IMPORTANT: CORS should be before the below line.
 app.use(middleware());
@@ -83,7 +87,7 @@ app.use((req, res, next) => {
 
 
 // listen for requests
-const port = process.env.PORT || 4000;
+const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`Server started on http://localhost/${port}`);
 });
