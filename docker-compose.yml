@@ -32,7 +32,7 @@ services:
       - "4000:4000"
     environment:
       - NODE_ENV=development
-      - MONGO_URL=${DB_URL}  # 这里使用你 .env 文件中的 DB_URL
+      # - MONGO_URL=${DB_URL}  # 这里使用你 .env 文件中的 DB_URL
       - CHOKIDAR_USEPOLLING=true
     networks:
       - app-network
