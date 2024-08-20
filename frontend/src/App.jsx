@@ -79,7 +79,7 @@ SuperTokens.init({
                         console.log(`sign up: ${id}, ${emails[0]},
                           phone number: ${phoneNumbers[0]}, time joined: ${timeJoined},
                          contextUser: ${JSON.stringify(context.user)}`)
-                        await fetch('http://localhost:4000/api/saveUserInfo', {
+                        await fetch(`${import.meta.env.VITE_API_DOMAIN}${import.meta.env.VITE_APP_API_BASE_PATH}/saveUserInfo`, {
                           method: 'POST',
                           headers: {
                               'Content-Type': 'application/json'

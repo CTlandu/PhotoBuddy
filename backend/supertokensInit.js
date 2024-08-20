@@ -12,6 +12,12 @@ const { verifySession } = require("supertokens-node/recipe/session/framework/exp
 const { SessionRequest } = require("supertokens-node/framework/express");
 const dbconnect = require("./db/dbConnect");
 const User = require("./db/userModel");
+const dotenv = require('dotenv');
+const path = require('path');
+
+// 根据当前环境加载 .env 文件
+const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
+dotenv.config({ path: path.resolve(__dirname, '../', envFile) });
 
 dbconnect();
 
@@ -30,8 +36,8 @@ function superTokensInit()
         appInfo: {
             // learn more about this on https://supertokens.com/docs/thirdpartyemailpassword/appinfo
             appName: "photobuddy",
-            apiDomain: "http://localhost:4000",
-            websiteDomain: "http://localhost:3000",
+            apiDomain: process.env.REACT_APP_API_DOMAIN || "http://localhost:4000",
+            websiteDomain: process.env.REACT_APP_FRONTEND_URL || "http://localhost:3000",
             apiBasePath: "/auth",
             websiteBasePath: "/auth"
         },
