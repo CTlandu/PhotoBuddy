@@ -1,9 +1,11 @@
-require('dotenv').config();
+const dotenv = require('dotenv');
+const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
+dotenv.config({ path: envFile });
 const bodyParser = require('body-parser');
 const express = require('express');
 // bcrypt 将用户的明文密码转换为一个加密的哈希值。这个哈希值是不可逆的，即无法从哈希值直接还原出原始密码。
 //当用户尝试登录时，bcrypt 可以将用户输入的明文密码与存储在数据库中的哈希值进行比较，判断密码是否正确。
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 // require database connection
@@ -37,7 +39,7 @@ app.use(bodyParser.json({limit: '2mb'}));
 app.use(bodyParser.urlencoded({limit: '2mb', extended:true}))
 
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: process.env.CORS_ORIGIN,
   methods: ['GET','POST','PUT', 'DELETE'],
   allowedHeaders: ["content-type", "Authorization", ...supertokens.getAllCORSHeaders()],
   credentials: true,

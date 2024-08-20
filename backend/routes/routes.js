@@ -1,7 +1,7 @@
 // routes/routes.js
 
 const express = require('express');
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../db/userModel'); // 引用你的User模型
 const router = express.Router();

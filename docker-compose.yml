@@ -2,25 +2,38 @@ version: '3.8'
 
 services:
   frontend:
+    env_file:
+      - .env.development
     build:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "3001:3001"
+    volumes:
+      - ./frontend:/app  # 仅挂载前端代码到容器中的 /app 目录
+      - /app/node_modules  # 保持容器内 node_modules 独立，避免与主机冲突
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true  # 解决文件系统的监听问题
     networks:
       - app-network
 
   backend:
+    env_file:
+      - .env.development
     build:
       context: ./backend
       dockerfile: Dockerfile
+    command: npm run dev
+    volumes:
+    - ./backend:/app  # 映射当前目录的 backend 文件夹到容器内的 /app 文件夹
+    - /app/node_modules  # 防止 node_modules 被覆盖
     ports:
       - "4000:4000"
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
       - MONGO_URL=${DB_URL}  # 这里使用你 .env 文件中的 DB_URL
+      - CHOKIDAR_USEPOLLING=true
     networks:
       - app-network
 

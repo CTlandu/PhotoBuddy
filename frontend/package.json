@@ -5,14 +5,16 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "vite --mode development --host 0.0.0.0",
+    "build": "vite build --mode production",
+    "start": "vite preview --port 3001 --mode production",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
     "@auth0/auth0-react": "^2.2.4",
     "axios": "^1.7.2",
+    "dotenv": "^16.4.5",
     "flowbite": "^2.5.1",
     "react": "^18.3.1",
     "react-auth-kit": "^3.1.3",
