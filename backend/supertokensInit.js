@@ -36,11 +36,12 @@ function superTokensInit()
         appInfo: {
             // learn more about this on https://supertokens.com/docs/thirdpartyemailpassword/appinfo
             appName: "photobuddy",
-            apiDomain: process.env.REACT_APP_API_DOMAIN || "http://localhost:4000",
-            websiteDomain: process.env.REACT_APP_FRONTEND_URL || "http://localhost:3001",
+            apiDomain: process.env.REACT_APP_API_DOMAIN,
+            websiteDomain: process.env.REACT_APP_FRONTEND_URL,
             apiBasePath: "/auth",
             websiteBasePath: "/auth"
         },
+        cookieSecure: process.env.NODE_ENV === 'production' ? true : false, // 生产环境中启用 HTTPS
         recipeList: [
             Dashboard.init({
               // 设置管理员的邮箱。除了管理员有读写功能，其他dashboard user只能读
