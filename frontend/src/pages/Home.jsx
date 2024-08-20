@@ -15,7 +15,7 @@ function Home() {
       <IntroBlock></IntroBlock>
       
       
-      <Carousel></Carousel>
+      {/* <Carousel></Carousel> */}
       <div className="text-center mt-8">
         <p className="text-gray-500">&copy; 2024 PhotoBuddy. All rights reserved.</p>
       </div>
