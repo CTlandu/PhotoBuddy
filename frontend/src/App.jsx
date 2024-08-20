@@ -46,14 +46,14 @@ SuperTokens.init({
   },
   recipeList: [
       // 第三方登录选项
-      ThirdParty.init({
-          signInAndUpFeature: {
-              providers: [
-                  Github.init(),
-                  Google.init(),
-              ]
-          }
-      }),
+      // ThirdParty.init({
+      //     signInAndUpFeature: {
+      //         providers: [
+      //             Github.init(),
+      //             Google.init(),
+      //         ]
+      //     }
+      // }),
       EmailVerification.init({
         mode: "OPTIONAL", //OR OPTIONAL
       }),
@@ -130,7 +130,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/*This renders the login UI on the /auth route*/}
-          {getSuperTokensRoutesForReactRouterDom(reactRouterDom, [ThirdPartyPreBuiltUI, EmailPasswordPreBuiltUI, EmailVerificationPreBuiltUI])}
+          {/* {getSuperTokensRoutesForReactRouterDom(reactRouterDom, [ThirdPartyPreBuiltUI, EmailPasswordPreBuiltUI, EmailVerificationPreBuiltUI])} */}
+          {getSuperTokensRoutesForReactRouterDom(reactRouterDom, [EmailPasswordPreBuiltUI, EmailVerificationPreBuiltUI])}
           
           {/*Your app routes*/}
 
