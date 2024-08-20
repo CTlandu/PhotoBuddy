@@ -94,7 +94,7 @@ const PortfolioForm = (props) => {
               };
   
               try {
-                const response = await axios.put('http://localhost:4000/api/modelImageUpload', data, {
+                const response = await axios.put(`${import.meta.env.VITE_API_DOMAIN}/api/modelImageUpload`, data, {
                   headers: {
                     'Content-Type': 'application/json',
                   },
@@ -114,7 +114,7 @@ const PortfolioForm = (props) => {
               };
   
               try {
-                const response = await axios.put('http://localhost:4000/api/photographerImageUpload', data, {
+                const response = await axios.put(`${import.meta.env.VITE_API_DOMAIN}/api/photographerImageUpload`, data, {
                   headers: {
                     'Content-Type': 'application/json',
                   },
@@ -155,7 +155,7 @@ const PortfolioForm = (props) => {
         };
 
         // 发送删除请求到后端
-        const response = await axios.delete('http://localhost:4000/api/modelImageDelete', {
+        const response = await axios.delete(`${import.meta.env.VITE_API_DOMAIN}/api/modelImageDelete`, {
           data: data,
           headers: {
             'Content-Type': 'application/json',
@@ -176,7 +176,7 @@ const PortfolioForm = (props) => {
         };
 
         // 发送删除请求到后端
-        const response = await axios.delete('http://localhost:4000/api/photographerImageDelete', {
+        const response = await axios.delete(`${import.meta.env.VITE_API_DOMAIN}/api/photographerImageDelete`, {
           data: data,
           headers: {
             'Content-Type': 'application/json',
@@ -254,7 +254,7 @@ const PortfolioForm = (props) => {
   
     try {
       const response = await axios.put(
-        "http://localhost:4000/api/updateProfile",  // 使用统一的API路径
+        `${import.meta.env.VITE_API_DOMAIN}/api/updateProfile`,  // 使用统一的API路径
         data,
         {
           headers: {

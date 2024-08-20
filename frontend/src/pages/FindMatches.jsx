@@ -20,7 +20,7 @@ function FindMatches() {
 
   const fetchProfiles = async (role) => {
     try {
-      const response = await fetch(`http://localhost:4000/api/fetchAll?role=${role}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_DOMAIN}/api/fetchAll?role=${role}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

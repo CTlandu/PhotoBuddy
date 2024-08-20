@@ -119,7 +119,7 @@ const PersonalForm = (props) => {
     e.preventDefault();
     try {
       // 发送请求到后端api
-      const response = await axios.put('http://localhost:4000/api/profile', formData);
+      const response = await axios.put(`${import.meta.env.VITE_API_DOMAIN}/api/profile`, formData);
       console.log('Form data updated successfully:', response.data);
       window.location.reload(); // submit后重新加载页面
     } catch (error) {

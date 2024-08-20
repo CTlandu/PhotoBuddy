@@ -16,7 +16,7 @@ export default function Login() {
   const handleSubmit = (e) => {
     const configuration = {
       method: "post",
-      url: "http://localhost:4000/login",
+      url: `${import.meta.env.VITE_API_DOMAIN}/login`,
       data:{
         email,
         password

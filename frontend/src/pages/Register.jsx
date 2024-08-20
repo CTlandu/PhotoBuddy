@@ -13,7 +13,7 @@ export default function Register() {
     // set configurations
     const configuration = {
       method: "post",
-      url: "http://localhost:4000/register",
+      url: `${import.meta.env.VITE_API_DOMAIN}/register`,
       data: {
         email,
         password,
