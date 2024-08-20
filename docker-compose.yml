@@ -33,6 +33,7 @@ services:
     environment:
       - NODE_ENV=development
       - MONGO_URL=${DB_URL}  # 这里使用你 .env 文件中的 DB_URL
+      - CHOKIDAR_USEPOLLING=true
     networks:
       - app-network
 

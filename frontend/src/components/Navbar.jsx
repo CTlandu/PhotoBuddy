@@ -31,7 +31,7 @@ const Navbar = () => {
     try{
       const token =  await Session.getAccessToken();
       const userId = await Session.getUserId(); 
-      const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/profile`, {
+      const response = await axios.get(`${import.meta.env.VITE_API_DOMAIN}/api/profile`, {
         params: { id: userId }
       });
       setAvatar(response.data.avatar);

@@ -94,7 +94,7 @@ const About = () => {
                   <svg xmlns="http://www.w3.org/2000/svg" width="8em" height="8em" viewBox="0 0 256 256" className="mx-auto">
                     <g fill="none">
                       <rect width="256" height="256" fill="#242938" rx="60" />
-                      <path fill="url(#skillIconsTailwindcssDark0)" fill-rule="evenodd" d="M83 110q9-36 45-36c36 0 40.5 27 58.5 31.5q18 4.502 31.5-13.5q-9 36-45 36c-36 0-40.5-27-58.5-31.5Q96.5 92 83 110m-45 54q9-36 45-36c36 0 40.5 27 58.5 31.5q18 4.502 31.5-13.5q-9 36-45 36c-36 0-40.5-27-58.5-31.5q-18-4.502-31.5 13.5" clip-rule="evenodd" />
+                      <path fill="url(#skillIconsTailwindcssDark0)" fillRule="evenodd" d="M83 110q9-36 45-36c36 0 40.5 27 58.5 31.5q18 4.502 31.5-13.5q-9 36-45 36c-36 0-40.5-27-58.5-31.5Q96.5 92 83 110m-45 54q9-36 45-36c36 0 40.5 27 58.5 31.5q18 4.502 31.5-13.5q-9 36-45 36c-36 0-40.5-27-58.5-31.5q-18-4.502-31.5 13.5" clip-rule="evenodd" />
                       <defs>
                         <linearGradient id="skillIconsTailwindcssDark0" x1="86.5" x2="163.5" y1="74" y2="185.5" gradientUnits="userSpaceOnUse">
                           <stop stop-color="#32b1c1" />
@@ -133,10 +133,10 @@ const About = () => {
                     <path fill="#b6b598" fill-rule="evenodd" d="M62.835 86.871c.149-.188.363-.354.439-.568c.558-1.565 1.082-3.144 1.637-4.71c.071-.2.261-.357.396-.535l.959 2.104c-.189.268-.451.511-.556.81l-1.836 5.392c-.076.217-.333.369-.507.552z" clip-rule="evenodd" />
                     <path fill="#c2c1a7" fill-rule="evenodd" d="M63.367 89.915c.173-.183.431-.335.507-.552l1.836-5.392c.104-.299.367-.542.556-.81l.928.791c-.448.443-.697.955-.547 1.602l-.282.923c-.128.158-.314.296-.377.477c-.641 1.836-1.252 3.682-1.898 5.517c-.082.232-.309.415-.468.621z" clip-rule="evenodd" />
                     <path fill="#cecdb7" fill-rule="evenodd" d="M63.621 93.091c.16-.206.387-.389.468-.621c.646-1.835 1.258-3.681 1.898-5.517c.063-.181.249-.318.377-.477l-.389 4.236c-.104.12-.254.225-.304.364l-1.294 3.708c-.091.253-.265.479-.401.716c-.121-.158-.337-.311-.347-.475c-.038-.642-.011-1.289-.008-1.934" clip-rule="evenodd" />
-                    <path fill="#dbdac7" fill-rule="evenodd" d="M63.977 95.501c.136-.237.31-.463.401-.716l1.294-3.708c.05-.14.201-.244.304-.364l.01 2.78l-.931 2.387z" clip-rule="evenodd" />
-                    <path fill="#ebe9dc" fill-rule="evenodd" d="m65.055 95.88l.931-2.387l.192 2.824z" clip-rule="evenodd" />
-                    <path fill="#cecdb7" fill-rule="evenodd" d="M66.646 85.554c-.149-.646.099-1.158.547-1.602l.258.176z" clip-rule="evenodd" />
-                    <path fill="#4faa41" fill-rule="evenodd" d="m64.242 73.542l-.05-.009l-.051.008l.119-.427z" clip-rule="evenodd" />
+                    <path fill="#dbdac7" fill-rule="evenodd" d="M63.977 95.501c.136-.237.31-.463.401-.716l1.294-3.708c.05-.14.201-.244.304-.364l.01 2.78l-.931 2.387z" clipRule="evenodd" />
+                    <path fill="#ebe9dc" fill-rule="evenodd" d="m65.055 95.88l.931-2.387l.192 2.824z" clipRule="evenodd" />
+                    <path fill="#cecdb7" fill-rule="evenodd" d="M66.646 85.554c-.149-.646.099-1.158.547-1.602l.258.176z" cliRule="evenodd" />
+                    <path fill="#4faa41" fill-rule="evenodd" d="m64.242 73.542l-.05-.009l-.051.008l.119-.427z" cliRule="evenodd" />
                   </svg>
                   <p className="text-center mt-2">MongoDB</p>
                 </div>

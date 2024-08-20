@@ -55,7 +55,7 @@ const PhotographerCard = (props) => {
                 {profile.photographer_info.photographer_images.length} photos
               </div>
             </h2>
-            <p class="">Looking for:</p>
+            <p className="">Looking for:</p>
             <ul>
               {profile.photographer_info.photographer_lookingfor.map((string, index) => (
                 <li key={index}>
