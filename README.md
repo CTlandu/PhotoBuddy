@@ -16,6 +16,7 @@ Currently, two official plugins are available:
 PhotoBuddy 是一个摄影师和模特之间的匹配和交流平台，基于 MERN Stack 开发。此项目分为前端（`frontend`）和后端（`backend`）两个部分，通过 Docker 容器化进行部署。
 
 ## 项目结构
+```
 PhotoBuddy/
 │
 ├── backend/ # 后端代码，包含 API、数据库连接等
@@ -25,6 +26,7 @@ PhotoBuddy/
 ├── docker-compose.yml # Docker Compose 配置文件，用于容器化部署
 │
 └── .gitignore # Git 忽略文件配置
+```
 
 ## 使用说明
 
