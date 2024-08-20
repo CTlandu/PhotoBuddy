@@ -10,6 +10,7 @@ async function dbConnect(){
     }
   ).then( () => {
     console.log("成功连接到MongoDB Atlas!");
+    console.log("数据库名称: " + mongoose.connection.db.databaseName + "\n")
   })
   .catch((error) => {
     console.log("连接失败");
