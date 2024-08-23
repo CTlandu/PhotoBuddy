@@ -11,7 +11,8 @@ const Navbar = () => {
   const [accessToken, setAccessToken] = useState(null);
   const [loading, setLoading] = useState(true);
   const [avatar, setAvatar] = useState(null);
-  const menuRef = useRef(null);
+  const menuRef = useRef(null); // 头像部分的菜单
+  const mobileMenuRef = useRef(null); // 小屏幕下的菜单
 
   // 页面刷新时，获取当前的token
   useEffect(() => {
@@ -27,20 +28,28 @@ const Navbar = () => {
   // 获取Token，若没有则返回null
   async function getToken() {
     try {
-      const token = await Session.getAccessToken();
-      const userId = await Session.getUserId();
+      // 并行获取 token 和 userId
+      const [token, userId] = await Promise.all([
+        Session.getAccessToken(),
+        Session.getUserId()
+      ]);
+
+      // 通过 userId 获取用户资料
       const response = await axios.get(
         `${import.meta.env.VITE_API_DOMAIN}/api/profile`,
         {
           params: { id: userId },
         }
       );
+
+      // 设置头像
       setAvatar(response.data.avatar);
+
       return token;
     } catch (error) {
       console.log(error);
     }
-  }
+}
 
   // supertoken提供的logout方法（signOut)
   async function onLogout() {
@@ -63,6 +72,9 @@ const Navbar = () => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         menuRef.current.removeAttribute("open");
+      }
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+        mobileMenuRef.current.removeAttribute("open");
       }
     };
 
@@ -104,7 +116,7 @@ const Navbar = () => {
   
           {/* 小屏幕下的下拉菜单 */}
           <div className="lg:hidden ml-2 relative">
-            <details className="dropdown">
+            <details className="dropdown" ref={mobileMenuRef}>
               <summary className="btn btn-ghost p-1 focus:outline-none flex items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

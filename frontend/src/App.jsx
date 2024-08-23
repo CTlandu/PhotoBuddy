@@ -29,11 +29,11 @@ import About from './pages/About';
 // const API_DOMAIN = import.meta.env.VITE_APP_API_DOMAIN;
 // const WEB_DOMAIN = import.meta.env.VITE_WEBSITE_DOMAIN;
 
-console.log('App Name:', import.meta.env.VITE_APP_NAME);
-console.log('API Domain:', import.meta.env.VITE_API_DOMAIN);
-console.log('Website Domain:', import.meta.env.VITE_WEBSITE_DOMAIN);
-console.log('API Base Path:', import.meta.env.VITE_APP_API_BASE_PATH);
-console.log('Website Base Path:', import.meta.env.VITE_WEBSITE_BASE_PATH);
+// console.log('App Name:', import.meta.env.VITE_APP_NAME);
+// console.log('API Domain:', import.meta.env.VITE_API_DOMAIN);
+// console.log('Website Domain:', import.meta.env.VITE_WEBSITE_DOMAIN);
+// console.log('API Base Path:', import.meta.env.VITE_APP_API_BASE_PATH);
+// console.log('Website Base Path:', import.meta.env.VITE_WEBSITE_BASE_PATH);
 
 SuperTokens.init({
   appInfo: {
@@ -105,7 +105,7 @@ async function getToken() {
   const isSessionValid = await Session.doesSessionExist();
   if (isSessionValid) {
       const accessToken = await Session.getAccessToken();
-      console.log("Access Token:", accessToken);
+      console.log("Access Token: 有");
       return accessToken;
   } else {
       console.log("User is not logged in");
