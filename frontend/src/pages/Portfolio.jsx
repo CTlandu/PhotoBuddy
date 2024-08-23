@@ -10,7 +10,7 @@ import Model_Portfolio from '../components/PortfolioForm';
 import PortfolioForm from '../components/PortfolioForm';
 
 
-const Portfolio = () => {
+const Portfolio = ({ token }) => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -50,7 +50,7 @@ const Portfolio = () => {
   return (
     <>
       <div className="flex flex-col h-screen">
-        <Navbar/>
+        <Navbar token={token}/>
         <div className="flex flex-1 mt-16">
           <Sidebar className="pl-24"/>
           <PortfolioForm profile={profile} onProfileUpdate={handleProfileUpdate}/>

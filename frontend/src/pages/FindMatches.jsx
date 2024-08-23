@@ -4,7 +4,7 @@ import ModelCard from '../components/ModelCard';
 import ReactPaginate from 'react-paginate';
 import PhotographerCard from '../components/PhotographerCard';
 
-function FindMatches() {
+function FindMatches({ token}) {
   const [modelProfiles, setModelProfiles] = useState([]);
   const [photographerProfiles, setPhotographerProfiles] = useState([]);
   const [selectedRole, setSelectedRole] = useState('model'); // 默认选中 model
@@ -63,7 +63,7 @@ function FindMatches() {
   return (
     <>
       <div className="flex flex-col h-screen">
-        <Navbar />
+        <Navbar token={token}/>
         <div className="flex mt-16 justify-center">
           <div className='font-bold flex items-center mr-5'>Find:</div>
           <button

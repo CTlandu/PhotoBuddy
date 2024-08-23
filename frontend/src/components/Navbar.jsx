@@ -16,10 +16,16 @@ const Navbar = ({ token }) => {
   // 页面刷新时，获取头像等登录信息
   useEffect(() => {
     if (token) {
+      console.log("Navbar收到了Token");
       fetchAvatar();
     } else {
-      setLoading(false); // 如果没有token，不发起请求，直接结束loading状态
+      setTimeout(() => {
+        // 如果1秒后还没有收到token，则应该是真的没有了，遂呈现未登录状态的Navbar
+        console.log("Navbar没收到Token！！");
+        setLoading(false); // 如果没有token，不发起请求，直接结束loading状态
+    }, 1000);
     }
+    
   }, [token]);
 
   async function fetchAvatar() {
@@ -83,7 +89,7 @@ const Navbar = ({ token }) => {
 
   return (
     <>
-    { avatar && (
+    {!loading && (
       <div className="navbar bg-base-100 mt-2 flex justify-between items-center">
         {/* 左侧部分 - PhotoBuddy Logo 和 菜单项 */}
         <div className="flex items-center ml-4 lg:ml-24">
@@ -146,7 +152,7 @@ const Navbar = ({ token }) => {
         {/* 右侧部分 - 登录/头像 */}
         <div className="flex-none mr-4 lg:mr-24">
           <ul className="menu menu-horizontal px-1">
-            {avatar ? (
+            {token ? (
               <li className="flex items-center">
                 <details className="relative" ref={menuRef}>
                   <summary
@@ -154,7 +160,7 @@ const Navbar = ({ token }) => {
                     onClick={(e) => e.stopPropagation()}
                   >
                     <button
-                      className="flex items-center justify-center h-7 overflow-hidden"
+                      className="flex items-center justify-center h-auto overflow-hidden"
                       onClick={() =>
                         (menuRef.current.open = !menuRef.current.open)
                       }
@@ -166,7 +172,7 @@ const Navbar = ({ token }) => {
                       />
                     </button>
                   </summary>
-                  <ul className="bg-base-100 rounded-t-none p-2 absolute right-0 top-12">
+                  <ul className="bg-base-100 rounded-t-none p-2 absolute right-0 top-12 z-50">
                     <li>
                       <a href="/profile">Profile</a>
                     </li>
@@ -178,13 +184,13 @@ const Navbar = ({ token }) => {
               </li>
             ) : (
               <li>
-                <button onClick={onLogin}>Login</button>
+                <button onClick={onLogin}>Log in/Sign up</button>
               </li>
             )}
           </ul>
         </div>
       </div>
-      )}
+    )}
     </>     
   );
   

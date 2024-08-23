@@ -86,12 +86,16 @@ SuperTokens.init({
                           },
                           body: JSON.stringify(userInfo)
                         });
+                        // 重新加载主页面，以重新尝试获取token
+                        window.location.reload();
                       }
                       // when log in 
                       else {
                         console.log(`log in: ${id}, ${emails[0]},
                           phone number: ${phoneNumbers[0]}, time joined: ${timeJoined},
                           contextUser: ${JSON.stringify(context.user)}`)
+                        // 重新加载主页面，以重新尝试获取token
+                        window.location.reload();
                       }
                     }
                 }

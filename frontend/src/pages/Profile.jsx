@@ -8,10 +8,11 @@ import PersonalForm from '../components/PersonalForm';
 import Session from 'supertokens-auth-react/recipe/session';
 
 
-const Profile = () => {
+const Profile = ({ token }) => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [navbarKey, setNavbarKey] = useState(0);
 
   const fetchProfile = async () => {
     try {
@@ -42,13 +43,15 @@ const Profile = () => {
 
   const handleProfileUpdate = (updatedProfile) => {
     setProfile(updatedProfile);
+    setNavbarKey(prevKey => prevKey + 1); // 改变 Navbar 的 key
   };
 
 
   return (
     <>
       <div className="flex flex-col h-screen">
-        <Navbar/>
+        {/** 通过给Navbar设置一个key，并在handleProfileUpdate里改变key，来实现每次personalform里头像更新的时候，navbar被重新加载 */}
+        <Navbar token={token} key={navbarKey}/>
         <div className="flex flex-1 mt-16">
           <Sidebar />
           <PersonalForm profile={profile} onProfileUpdate={handleProfileUpdate}/>
