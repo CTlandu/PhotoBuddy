@@ -4,12 +4,12 @@ import IntroBlock from '../components/IntroBlock'
 import Carousel from '../components/Carousel'
 import HeroImage from "../assets/hero_img.jpg"
 
-function Home() {
+function Home({ token }) {
 
   return (
     <>
       <div className="top-0 left-0 w-full z-50">
-        <Navbar/>  
+        <Navbar token={token}/>  
       </div>
       
       <IntroBlock></IntroBlock>

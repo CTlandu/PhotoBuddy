@@ -136,24 +136,24 @@ function App() {
           {/*Your app routes*/}
 
            {/* free routes */}
-          <Route index element={<Home />}></Route>
-          <Route exact path="/home" element={<Home />}/>
-          <Route exact path='/findmatches' element={<FindMatches />}></Route>
-          <Route exact path="/about" element={<About /> }></Route>
+          <Route index element={<Home token={accessToken}/>}></Route>
+          <Route exact path="/home" element={<Home token={accessToken}/>}/>
+          <Route exact path='/findmatches' element={<FindMatches token={accessToken}/>}></Route>
+          <Route exact path="/about" element={<About token={accessToken}/> }></Route>
           {/* <Route exact path="/login" element={<Login />}></Route>
           <Route exact path="/register" element={<Register />}></Route> */}
-          <Route path="*" element={<NoPage />}></Route>
+          <Route path="*" element={<NoPage token={accessToken}/>}></Route>
     
 
           {/* protected routes */}
           <Route path='/profile' element={
             <SessionAuth>
-              <Profile/>
+              <Profile token={accessToken}/>
             </SessionAuth>}>
           </Route>
           <Route path='/portfolio' element={
             <SessionAuth>
-              <Portfolio/>
+              <Portfolio token={accessToken}/>
             </SessionAuth>}>
           </Route>
         </Routes>

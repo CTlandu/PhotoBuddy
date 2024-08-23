@@ -7,32 +7,24 @@ import { redirectToAuth } from "supertokens-auth-react";
 import Session from "supertokens-auth-react/recipe/session";
 import emptyAvatar from "../assets/empty_avatar.jpg";
 
-const Navbar = () => {
-  const [accessToken, setAccessToken] = useState(null);
-  const [loading, setLoading] = useState(true);
+const Navbar = ({ token }) => {
   const [avatar, setAvatar] = useState(null);
+  const [loading, setLoading] = useState(true);
   const menuRef = useRef(null); // 头像部分的菜单
   const mobileMenuRef = useRef(null); // 小屏幕下的菜单
 
-  // 页面刷新时，获取当前的token
+  // 页面刷新时，获取头像等登录信息
   useEffect(() => {
-    fetchToken();
-  }, []);
+    if (token) {
+      fetchAvatar();
+    } else {
+      setLoading(false); // 如果没有token，不发起请求，直接结束loading状态
+    }
+  }, [token]);
 
-  async function fetchToken() {
-    const token = await getToken();
-    setAccessToken(token);
-    setLoading(false);
-  }
-
-  // 获取Token，若没有则返回null
-  async function getToken() {
+  async function fetchAvatar() {
     try {
-      // 并行获取 token 和 userId
-      const [token, userId] = await Promise.all([
-        Session.getAccessToken(),
-        Session.getUserId()
-      ]);
+      const userId = await Session.getUserId();
 
       // 通过 userId 获取用户资料
       const response = await axios.get(
@@ -44,12 +36,12 @@ const Navbar = () => {
 
       // 设置头像
       setAvatar(response.data.avatar);
-
-      return token;
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false); // 结束loading状态
     }
-}
+  }
 
   // supertoken提供的logout方法（signOut)
   async function onLogout() {
@@ -91,6 +83,7 @@ const Navbar = () => {
 
   return (
     <>
+    { avatar && (
       <div className="navbar bg-base-100 mt-2 flex justify-between items-center">
         {/* 左侧部分 - PhotoBuddy Logo 和 菜单项 */}
         <div className="flex items-center ml-4 lg:ml-24">
@@ -153,7 +146,7 @@ const Navbar = () => {
         {/* 右侧部分 - 登录/头像 */}
         <div className="flex-none mr-4 lg:mr-24">
           <ul className="menu menu-horizontal px-1">
-            {accessToken ? (
+            {avatar ? (
               <li className="flex items-center">
                 <details className="relative" ref={menuRef}>
                   <summary
@@ -191,7 +184,8 @@ const Navbar = () => {
           </ul>
         </div>
       </div>
-    </>
+      )}
+    </>     
   );
   
   
