@@ -89,7 +89,7 @@ app.use((req, res, next) => {
 // listen for requests
 const port = process.env.PORT;
 app.listen(port, () => {
-  console.log(`Server started on http://localhost/${port}`);
+  console.log(`服务器启动在${port}端口`);
 });
 
 
