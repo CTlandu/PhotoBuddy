@@ -21,7 +21,7 @@ const Navbar = ({ token }) => {
     } else {
       setTimeout(() => {
         // 如果1秒后还没有收到token，则应该是真的没有了，遂呈现未登录状态的Navbar
-        console.log("Navbar没收到Token！！");
+        console.log("Navbar没收到Token!");
         setLoading(false); // 如果没有token，不发起请求，直接结束loading状态
     }, 1000);
     }

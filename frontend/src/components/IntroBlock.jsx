@@ -21,8 +21,8 @@ const IntroBlock = () => {
             <p className="py-6 text-base lg:text-lg">
             Find Your Perfect Creative Match at <b className="text-pink-white">PhotoBuddy</b>
             </p>
-            <button className="btn btn-primary mr-5" onClick={onLogin}> Sign Up</button>
-            <button className="btn bg-pink-white"><a href="/about">Learn More (Click me!)</a></button>
+            <button className="btn btn-primary mx-1" onClick={onLogin}> Sign Up</button>
+            <button className="btn bg-pink-white mx-1"><a href="/about">Learn More (Click me!)</a></button>
           </div>
           <img
             src={HeroImage}
