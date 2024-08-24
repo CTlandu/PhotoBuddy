@@ -1,5 +1,7 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
+import AvatarEditor from "react-avatar-editor";
+import Modal from "react-modal";
 import axios from "axios";
 
 const PortfolioForm = (props) => {
@@ -22,6 +24,11 @@ const PortfolioForm = (props) => {
 
   const [successMessage, setSuccessMessage] = useState("");
 
+  // 图片上传相关的State
+  const [file, setFile] = useState(null);
+  const [editor, setEditor] = useState(null);
+  const [scale, setScale] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
   
   // 获取model_image列表以及其长度
@@ -43,7 +50,7 @@ const PortfolioForm = (props) => {
   };
 
   // 处理文件选择
-  const handleFileChange = async (event) => {
+  const handleFileChange = (event) => {
     if (useModelForm && numOfModelImages >= 9) {
       alert("You have reached the maximum number of 9 model images");
       return;
@@ -51,96 +58,59 @@ const PortfolioForm = (props) => {
       alert("You have reached the maximum number of 9 photographer images");
       return;
     }
-  
-    const file = event.target.files[0];
-    // 判断是否选择了文件
-    if (file) {
-      console.log("File selected");
-  
-      // 创建 Image 对象
-      const img = new Image();
-  
-      // 将文件对象转换为 URL，使用canvas api
-      img.onload = async () => {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-  
-        const maxWidth = 800;
-        const scaleSize = maxWidth / img.width;
-        canvas.width = maxWidth;
-        canvas.height = img.height * scaleSize;
-  
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-  
-        // 将 canvas 转换为 Blob 对象
-        canvas.toBlob(async (blob) => {
-          // 获取文件大小（以字节为单位）
-          const fileSizeInBytes = blob.size;
-          // 将字节转换为千字节（KB）
-          const fileSizeInKB = (fileSizeInBytes / 1024).toFixed(2); // 保留两位小数
-          
-          console.log(`Uploaded file size: ${fileSizeInKB} KB`);
-  
-          // 将 Blob 转换为 Base64 编码
-          const reader = new FileReader();
-          reader.onloadend = async () => {
-            const base64Image = reader.result;
-  
-            if (useModelForm) {
-              const data = {
-                id: profile.id,
-                model_image: base64Image,
-                // "model_info.model_images": [...model_images, base64Image],
-              };
-  
-              try {
-                const response = await axios.put(`${import.meta.env.VITE_API_DOMAIN}/api/modelImageUpload`, data, {
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                });
-  
-                console.log('User Image updated successfully');
-  
-                const updatedImages = [...model_images, base64Image];
-                setProfile({ ...profile, model_info: { ...profile.model_info, model_images: updatedImages } });
-              } catch (error) {
-                console.error('Error updating user data:', error);
-              }
-            } else if (usePhotographerForm) {
-              const data = {
-                id: profile.id,
-                photographer_image: base64Image,
-              };
-  
-              try {
-                const response = await axios.put(`${import.meta.env.VITE_API_DOMAIN}/api/photographerImageUpload`, data, {
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                });
-  
-                console.log('User data updated successfully');
-  
-                const updatedImages = [...photographer_images, base64Image];
-                setProfile({ ...profile, photographer_info: { ...profile.photographer_info, photographer_images: updatedImages } });
-              } catch (error) {
-                console.error('Error updating user data:', error);
-              }
-            }
+
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+      setIsModalOpen(true); // 打开裁剪模态框
+    }
+  };
+
+  // 处理裁剪后的图片保存
+  const handleSave = async () => {
+    if (editor) {
+      const canvas = editor.getImageScaledToCanvas();
+      const base64Image = canvas.toDataURL("image/jpeg");
+
+      try {
+        if (useModelForm) {
+          const data = {
+            id: profile.id,
+            model_image: base64Image,
           };
-          reader.readAsDataURL(blob); // 开始读取 Blob 对象并转换为 Base64 编码
-        }, 'image/jpeg', 0.8); // 这里你可以设置压缩质量
-      };
-  
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
+          await axios.put(`${import.meta.env.VITE_API_DOMAIN}/api/modelImageUpload`, data, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          const updatedImages = [...model_images, base64Image];
+          setProfile({ ...profile, model_info: { ...profile.model_info, model_images: updatedImages } });
+        } else if (usePhotographerForm) {
+          const data = {
+            id: profile.id,
+            photographer_image: base64Image,
+          };
+          await axios.put(`${import.meta.env.VITE_API_DOMAIN}/api/photographerImageUpload`, data, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          const updatedImages = [...photographer_images, base64Image];
+          setProfile({ ...profile, photographer_info: { ...profile.photographer_info, photographer_images: updatedImages } });
+        }
+
+        console.log("Image uploaded successfully");
+      } catch (error) {
+        console.error("Error uploading image:", error);
+      }
+
+      setIsModalOpen(false); // 关闭模态框
     }
   };
   
+  const handleScaleChange = (e) => {
+    setScale(parseFloat(e.target.value));
+  };
 
   //处理照片删除
   const handleDeleteImage = async (index) => {
@@ -349,6 +319,52 @@ const PortfolioForm = (props) => {
                 className="hidden"
               />
             </div>
+            <Modal
+              isOpen={isModalOpen}
+              onRequestClose={() => setIsModalOpen(false)}
+              contentLabel="Crop Image"
+              className="flex justify-center items-center"
+              overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+            >
+              {file && (
+                <div className="bg-white p-6 rounded-lg shadow-md">
+                  <div className="flex justify-center mb-4">
+                    <AvatarEditor
+                      ref={setEditor}
+                      image={file}
+                      width={250}
+                      height={250}
+                      border={50}
+                      borderRadius={0}
+                      color={[255, 255, 255, 0.6]}
+                      scale={scale}
+                      rotate={0}
+                    />
+                  </div>
+                  <div className="mb-4 flex justify-center">
+                    <label htmlFor="scale" className="block text-gray-700 text-sm font-bold mb-2">
+                      Zoom:
+                    </label>
+                    <input
+                      type="range"
+                      id="scale"
+                      name="scale"
+                      min="1"
+                      max="2"
+                      step="0.01"
+                      value={scale}
+                      onChange={handleScaleChange}
+                      className="ml-2"
+                    />
+                  </div>
+                  <div className="flex justify-center mt-4">
+                    <button onClick={handleSave} className="bg-dark-gray text-black py-2 px-4 rounded hover:bg-blue-700">
+                      Save Image
+                    </button>
+                  </div>
+                </div>
+              )}
+            </Modal>
   
             <div className="mt-10">
               <h2 className="mb-5 font-bold">Level of experience:</h2>
