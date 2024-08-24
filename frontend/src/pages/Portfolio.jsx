@@ -51,8 +51,8 @@ const Portfolio = ({ token }) => {
     <>
       <div className="flex flex-col h-screen">
         <Navbar token={token}/>
-        <div className="flex flex-1 mt-16">
-          <Sidebar className="pl-24"/>
+        <div className="flex flex-1">
+          {/* <Sidebar className="pl-24"/> */}
           <PortfolioForm profile={profile} onProfileUpdate={handleProfileUpdate}/>
 
         </div>

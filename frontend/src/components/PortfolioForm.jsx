@@ -279,9 +279,9 @@ const PortfolioForm = (props) => {
   
 
   return (
-    <div className="bg-white p-6 w-full md:w-3/5 lg:w-2/3 rounded-lg shadow-md mx-auto">
+    <div className="bg-gray p-6 w-full md:w-3/5 lg:w-2/3 shadow-md mx-auto">
       <h2 className="text-xl font-bold mb-4 text-center">My Portfolio of...</h2>
-      <div className="navbar m-0 w-full bg-white flex">
+      <div className="navbar m-0 w-full bg-white flex rounded-md">
         <a 
           className={`btn text-xl w-1/2 flex justify-center ${useModelForm ? 'bg-gray-300 text-black' : 'btn-ghost'}`} 
           onClick={() => { setUseModelForm(true); setUsePhotographerForm(false); }}>
@@ -319,7 +319,7 @@ const PortfolioForm = (props) => {
               {numOfModelImages < 9 && (
                 <button
                   type="button"
-                  className="relative w-full pb-[100%] transform transition duration-300 ease-in-out hover:scale-95 active:scale-90"
+                  className="relative bg-dark-gray w-full pb-[100%] transform transition duration-300 ease-in-out hover:scale-95 active:scale-90"
                   onClick={handleButtonClick}
                 >
                   <div className="absolute inset-0 h-full w-full object-cover rounded-lg flex justify-center items-center shadow-lg bg-gray-50">

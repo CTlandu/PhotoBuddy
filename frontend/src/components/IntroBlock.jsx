@@ -22,7 +22,7 @@ const IntroBlock = () => {
             Find Your Perfect Creative Match at <b className="text-pink-white">PhotoBuddy</b>
             </p>
             <button className="btn btn-primary mx-1" onClick={onLogin}> Sign Up</button>
-            <button className="btn bg-pink-white mx-1"><a href="/about">Learn More (Click me!)</a></button>
+            <button className="btn bg-green mx-1"><a href="/about">Learn More (Click me!)</a></button>
           </div>
           <img
             src={HeroImage}

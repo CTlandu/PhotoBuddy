@@ -62,9 +62,9 @@ function FindMatches({ token}) {
 
   return (
     <>
-      <div className="flex flex-col h-screen">
+      <div className="flex flex-col h-screen bg-base-200">
         <Navbar token={token}/>
-        <div className="flex mt-16 justify-center">
+        <div className="flex mt-16 justify-center bg-base">
           <div className='font-bold flex items-center mr-5'>Find:</div>
           <button
             className={`btn mr-5 ${selectedRole === 'model' ? 'btn-primary' : 'btn-outline'}`}
