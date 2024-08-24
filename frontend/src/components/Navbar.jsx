@@ -98,7 +98,7 @@ const Navbar = ({ token }) => {
           </a>
   
           {/* 中间部分 - 菜单项 */}
-          <div className="hidden lg:flex ml-4">
+          <div className="hidden lg:flex md:flex ml-4 ">
             <ul className="menu menu-horizontal px-1">
               <li>
                 <a href="/about" className="btn btn-primary text-md mx-2">
@@ -114,7 +114,7 @@ const Navbar = ({ token }) => {
           </div>
   
           {/* 小屏幕下的下拉菜单 */}
-          <div className="lg:hidden ml-2 relative">
+          <div className="lg:hidden md:hidden ml-2 relative">
             <details className="dropdown" ref={mobileMenuRef}>
               <summary className="btn btn-ghost p-1 focus:outline-none flex items-center">
                 <svg
