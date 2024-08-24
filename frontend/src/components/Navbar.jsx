@@ -10,6 +10,7 @@ import emptyAvatar from "../assets/empty_avatar.jpg";
 const Navbar = ({ token }) => {
   const [avatar, setAvatar] = useState(null);
   const [loading, setLoading] = useState(true);
+
   const menuRef = useRef(null); // 头像部分的菜单
   const mobileMenuRef = useRef(null); // 小屏幕下的菜单
 
@@ -90,7 +91,7 @@ const Navbar = ({ token }) => {
   return (
     <>
     {!loading && (
-      <div className="navbar bg-base-100 mt-2 flex justify-between items-center">
+      <div className="navbar bg-base-100 flex justify-between items-center">
         {/* 左侧部分 - PhotoBuddy Logo 和 菜单项 */}
         <div className="flex items-center ml-4 lg:ml-24">
           <a className="btn btn-ghost text-xl" href="/">
@@ -131,7 +132,7 @@ const Navbar = ({ token }) => {
                   ></path>
                 </svg>
               </summary>
-              <ul className="dropdown-content bg-dark-gray text-gray-800 rounded-lg w-44 p-3 mt-2 shadow-lg absolute z-50 left-0">
+              <ul className="dropdown-content bg-base-100 rounded-lg w-44 p-3 mt-2 shadow-lg absolute z-50 left-0">
                 <li className="hover:bg-green rounded-md">
                   <a href="/about" className="block px-4 py-2">
                     About
@@ -188,6 +189,7 @@ const Navbar = ({ token }) => {
               </li>
             )}
           </ul>
+
         </div>
       </div>
     )}
