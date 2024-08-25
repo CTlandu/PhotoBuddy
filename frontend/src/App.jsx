@@ -131,9 +131,8 @@ function App() {
 
   return (
     <>
-    <div className='App'>
-      <CookieConsent />
-    </div>
+    {/** 页面打开时，询问用户关于cookie协议设置 */}
+    <CookieConsent />
     
     <SuperTokensWrapper>
       <BrowserRouter>
