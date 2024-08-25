@@ -24,6 +24,7 @@ import { useEffect, useState, createContext } from 'react'
 import Portfolio from './pages/Portfolio';
 import FindMatches from './pages/FindMatches';
 import About from './pages/About';
+import CookieConsent from './components/CookieConsent';
 
 // const APP_NAME = import.meta.env.VITE_APP_NAME;
 // const API_DOMAIN = import.meta.env.VITE_APP_API_DOMAIN;
@@ -130,6 +131,10 @@ function App() {
 
   return (
     <>
+    <div className='App'>
+      <CookieConsent />
+    </div>
+    
     <SuperTokensWrapper>
       <BrowserRouter>
         <Routes>
