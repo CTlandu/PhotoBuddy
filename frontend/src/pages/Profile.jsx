@@ -49,7 +49,7 @@ const Profile = ({ token }) => {
 
   return (
     <>
-      <div className="flex flex-col h-screen bg-base-200">
+      <div className="flex flex-col h-screen bg-base-00">
         {/** 通过给Navbar设置一个key，并在handleProfileUpdate里改变key，来实现每次personalform里头像更新的时候，navbar被重新加载 */}
         <Navbar token={token} key={navbarKey}/>
         <div className="flex flex-1">
