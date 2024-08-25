@@ -102,7 +102,9 @@ SuperTokens.init({
                 }
             }
       }),
-      Session.init()
+      Session.init({
+        tokenTransferMethod: "header"
+      })
   ]
 });
 
