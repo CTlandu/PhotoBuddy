@@ -157,7 +157,7 @@ const Navbar = ({ token }) => {
               <li className="flex items-center">
                 <details className="relative" ref={menuRef}>
                   <summary
-                    className="flex items-center justify-center h-9 overflow-hidden"
+                    className="flex items-center justify-center overflow-hidden"
                     onClick={(e) => e.stopPropagation()}
                   >
                     <button
