@@ -290,7 +290,7 @@ const PortfolioForm = (props) => {
       <h2 className="text-xl font-bold mb-4 text-center text-black dark:text-white">
         My Portfolio of...
       </h2>
-      <div className="navbar m-0 w-full bg-gray-100 dark:bg-gray-800 flex rounded-md shadow-md">
+      <div className="navbar m-0 w-full bg-gray-100 dark:bg-gray-800 flex rounded-md">
         <a
           className={`btn text-xl w-1/2 flex justify-center py-2 transition-colors duration-300 ${
             useModelForm
@@ -522,11 +522,11 @@ const PortfolioForm = (props) => {
             </div>
 
             <div className="mt-10">
-              <h2 className="mb-5 font-bold text-black dark:text-white">
+              <h2 className="mb-5 font-bold text-gray-800 dark:text-gray-200">
                 Level of experience:
               </h2>
               <select
-                className="select select-bordered w-full max-w-xs bg-white dark:bg-gray-700 text-black dark:text-white"
+                className="select select-bordered w-full max-w-xs bg-white text-gray-800 dark:bg-gray-700 dark:text-gray-200"
                 value={photographerExperience}
                 onChange={handlePhotographerExperienceChange}
               >
@@ -537,6 +537,7 @@ const PortfolioForm = (props) => {
                 <option value="I'm a professional">I'm a professional</option>
               </select>
             </div>
+
 
             <div className="mt-10">
               <h2 className="mb-5 font-bold text-black dark:text-white">
@@ -605,7 +606,7 @@ const PortfolioForm = (props) => {
                 Introduce yourself as a Photographer:
               </h2>
               <textarea
-                className="textarea textarea-bordered textarea-md w-full bg-white dark:bg-gray-700 text-black dark:text-white"
+                className="textarea textarea-bordered textarea-md w-full bg-white text-gray-800 dark:bg-gray-700 dark:text-gray-200"
                 placeholder="Photographer Bio"
                 value={photographerBio}
                 onChange={handlePhotographerBioChange}
