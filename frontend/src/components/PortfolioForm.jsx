@@ -375,12 +375,59 @@ const PortfolioForm = (props) => {
               />
             </div>
 
+            <Modal
+              isOpen={isModalOpen}
+              onRequestClose={() => setIsModalOpen(false)}
+              contentLabel="Crop Image"
+              className="flex justify-center items-center"
+              overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+            >
+              {file && (
+                <div className="bg-white p-6 rounded-lg shadow-md">
+                  <div className="flex justify-center mb-4">
+                    <AvatarEditor
+                      ref={setEditor}
+                      image={file}
+                      width={250}
+                      height={250}
+                      border={50}
+                      borderRadius={0}
+                      color={[255, 255, 255, 0.6]}
+                      scale={scale}
+                      rotate={0}
+                    />
+                  </div>
+                  <div className="mb-4 flex justify-center">
+                    <label htmlFor="scale" className="block text-gray-700 text-sm font-bold mb-2">
+                      Zoom:
+                    </label>
+                    <input
+                      type="range"
+                      id="scale"
+                      name="scale"
+                      min="1"
+                      max="2"
+                      step="0.01"
+                      value={scale}
+                      onChange={handleScaleChange}
+                      className="ml-2"
+                    />
+                  </div>
+                  <div className="flex justify-center mt-4">
+                    <button onClick={handleSave} className="bg-dark-gray text-black py-2 px-4 rounded hover:bg-blue-700">
+                      Save Image
+                    </button>
+                  </div>
+                </div>
+              )}
+            </Modal>
+
             <div className="mt-10">
               <h2 className="mb-5 font-bold text-black dark:text-white">
                 Level of experience:
               </h2>
               <select
-                className="select select-bordered w-full max-w-xs bg-white dark:bg-gray-700 text-black dark:text-white"
+                className="select select-bordered w-full max-w-xs bg-white text-gray-800 dark:bg-gray-700 dark:text-gray-200"
                 value={modelExperience}
                 onChange={handleModelExperienceChange}
               >
@@ -453,7 +500,7 @@ const PortfolioForm = (props) => {
                 Introduce yourself as a model:
               </h2>
               <textarea
-                className="textarea textarea-bordered textarea-md w-full bg-white dark:bg-gray-700 text-black dark:text-white"
+                className="textarea textarea-bordered textarea-md w-full bg-white text-gray-800 dark:bg-gray-700 dark:text-gray-200"
                 placeholder="Model Bio"
                 value={modelBio}
                 onChange={handleModelBioChange}
@@ -520,6 +567,53 @@ const PortfolioForm = (props) => {
                 className="hidden"
               />
             </div>
+
+            <Modal
+              isOpen={isModalOpen}
+              onRequestClose={() => setIsModalOpen(false)}
+              contentLabel="Crop Image"
+              className="flex justify-center items-center"
+              overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+            >
+              {file && (
+                <div className="bg-white p-6 rounded-lg shadow-md">
+                  <div className="flex justify-center mb-4">
+                    <AvatarEditor
+                      ref={setEditor}
+                      image={file}
+                      width={250}
+                      height={250}
+                      border={50}
+                      borderRadius={0}
+                      color={[255, 255, 255, 0.6]}
+                      scale={scale}
+                      rotate={0}
+                    />
+                  </div>
+                  <div className="mb-4 flex justify-center">
+                    <label htmlFor="scale" className="block text-gray-700 text-sm font-bold mb-2">
+                      Zoom:
+                    </label>
+                    <input
+                      type="range"
+                      id="scale"
+                      name="scale"
+                      min="1"
+                      max="2"
+                      step="0.01"
+                      value={scale}
+                      onChange={handleScaleChange}
+                      className="ml-2"
+                    />
+                  </div>
+                  <div className="flex justify-center mt-4">
+                    <button onClick={handleSave} className="bg-dark-gray text-black py-2 px-4 rounded hover:bg-blue-700">
+                      Save Image
+                    </button>
+                  </div>
+                </div>
+              )}
+            </Modal>
 
             <div className="mt-10">
               <h2 className="mb-5 font-bold text-gray-800 dark:text-gray-200">
