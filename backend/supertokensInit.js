@@ -81,6 +81,7 @@ function superTokensInit()
             // ),
             Session.init({
               exposeAccessTokenToFrontendInCookieBasedAuth: true,
+              cookieSameSite: 'Lax',
             }) // initializes session features
           ]
       });
