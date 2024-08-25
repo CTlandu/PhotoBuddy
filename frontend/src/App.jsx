@@ -103,7 +103,8 @@ SuperTokens.init({
             }
       }),
       Session.init({
-        tokenTransferMethod: "header"
+        tokenTransferMethod: "header",
+        maxRetryAttemptsForSessionRefresh: 10,
       })
   ]
 });

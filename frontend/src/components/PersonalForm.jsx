@@ -148,7 +148,7 @@ const PersonalForm = (props) => {
             <div>
               <label
                 htmlFor="preferredName"
-                className="block text-white text-sm font-bold mb-2 mt-2"
+                className="block text-gray-700 text-sm font-bold mb-2 mt-2"
               >
                 *First Name
               </label>
@@ -174,7 +174,7 @@ const PersonalForm = (props) => {
                 value={formData.lastName}
                 onChange={handleChange}
                 maxLength="20" // 限制输入长度为20个字符
-                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray"
+                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray text-white"
               />
             </div>
             <div>
@@ -190,7 +190,7 @@ const PersonalForm = (props) => {
                 value={formData.pronouns}
                 onChange={handleChange}
                 maxLength="10" // 限制输入长度为20个字符
-                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray"
+                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray text-white"
               />
             </div>
           </div>
@@ -206,7 +206,7 @@ const PersonalForm = (props) => {
             type="text"
             name="email"
             readOnly
-            className="border w-full rounded py-2 px-3 leading-tight bg-dark-gray mr-3"
+            className="border w-full rounded py-2 px-3 leading-tight bg-dark-gray mr-3 text-white"
           />
 
           <div>
@@ -221,7 +221,7 @@ const PersonalForm = (props) => {
               name="birthday"
               value={formData.birthday}
               onChange={handleChange}
-              className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray"
+              className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3 text-white"
             />
           </div>
 
@@ -239,7 +239,7 @@ const PersonalForm = (props) => {
               onChange={handleChange}
               min="00501"
               max="99950"
-              className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray"
+              className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray text-white"
             />
           </div>
 
@@ -260,7 +260,7 @@ const PersonalForm = (props) => {
                 name="contact.phoneNumber"
                 onChange={handleChange}
                 maxLength={10}
-                className="border w-full rounded py-2 px-3 leading-tight bg-dark-gray mr-3"
+                className="border w-full rounded py-2 px-3 leading-tight bg-dark-gray mr-3 text-white"
               />
               <div className="flex items-center">
                 <div className="font-bold mr-2">Show on Profile Card</div>
@@ -289,7 +289,7 @@ const PersonalForm = (props) => {
                 type="url"
                 name="contact.instagram"
                 onChange={handleChange}
-                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3"
+                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3 text-white"
               />
               <div className="flex items-center">
                 <div className="font-bold mr-2">Show on Profile Card</div>
@@ -318,7 +318,7 @@ const PersonalForm = (props) => {
                 type="url"
                 name="contact.linkedin"
                 onChange={handleChange}
-                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3"
+                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3 text-white"
               />
               <div className="flex items-center">
                 <div className="font-bold mr-2">Show on Profile Card</div>
@@ -347,7 +347,7 @@ const PersonalForm = (props) => {
                 type="url"
                 name="contact.facebook"
                 onChange={handleChange}
-                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3"
+                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3 text-white"
               />
               <div className="flex items-center">
                 <div className="font-bold mr-2">Show on Profile Card</div>
@@ -376,7 +376,7 @@ const PersonalForm = (props) => {
                 type="url"
                 name="contact.twitter"
                 onChange={handleChange}
-                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3"
+                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3 text-white"
               />
               <div className="flex items-center">
                 <div className="font-bold mr-2">Show on Profile Card</div>
@@ -396,7 +396,7 @@ const PersonalForm = (props) => {
         <div className="flex justify-center mt-4">
           <button
             type="submit"
-            className="bg-dark-gray text-black py-2 px-4 rounded hover:bg-blue-700"
+            className="bg-dark-gray text-white py-2 px-4 rounded hover:bg-blue-700 "
           >
             Save
           </button>
