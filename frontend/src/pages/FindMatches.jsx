@@ -102,8 +102,8 @@ function FindMatches({ token}) {
             onPageChange={handlePageClick}
             containerClassName={'pagination flex justify-center items-center space-x-2'}
             activeClassName={'active bg-blue-500 text-white rounded-lg px-3 py-1'}
-            pageClassName={'page-item rounded-lg'}
-            pageLinkClassName={'page-link text-blue-500 hover:bg-blue-100 transition-colors duration-200 px-3 py-1 rounded-lg'}
+            pageClassName={'page-item rounded-md'}
+            pageLinkClassName={'page-link text-white hover:bg-blue-100 transition-colors duration-200 px-3 py-1 rounded-lg'}
             previousClassName={'page-item'}
             previousLinkClassName={'btn btn-outline text-blue-500 border-blue-500 hover:bg-blue-100 transition-colors duration-200 px-3 py-1 rounded-lg'}
             nextClassName={'page-item'}
