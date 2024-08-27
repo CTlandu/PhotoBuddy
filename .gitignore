@@ -14,10 +14,10 @@ dist-ssr
 *.local
 
 # env
-.env.development
-.env.production
-/fronend/.env.development
-/frontend/.env.production
+# .env.development
+# .env.production
+# /fronend/.env.development
+# /frontend/.env.production
 
 # Editor directories and files
 .vscode/*
