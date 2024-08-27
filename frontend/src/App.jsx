@@ -99,6 +99,9 @@ SuperTokens.init({
                         window.location.reload();
                       }
                     }
+                    else{
+                      console.log("SuperTokens: action is not SUCCESS. Check either supertoken or mongoDB connection");
+                    }
                 }
             }
       }),
