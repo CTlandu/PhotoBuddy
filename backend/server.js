@@ -52,15 +52,6 @@ console.log("CORS_ORIGIN", process.env.CORS_ORIGIN);
 // IMPORTANT: CORS should be before the below line.
 app.use(middleware());
 
-app.use((req, res, next) => {
-  res.cookie('cookieName', 'cookieValue', {
-    httpOnly: true, // 确保 cookie 只能通过 HTTP 请求访问，防止 XSS 攻击
-    secure: process.env.NODE_ENV === 'production', // 在生产环境中使用 HTTPS
-    sameSite: 'None', // 或者 'None' 或 'Strict'，根据你的需求设置
-  });
-  next();
-});
-
 
 
 /**
