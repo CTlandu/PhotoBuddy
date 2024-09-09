@@ -2,8 +2,6 @@
 A Web Project using MERN (MongoDB,Express.js, React.js, Node.js) Stack, a startup website for connecting photographers/models, helping them find the right matches.
 =======
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
 
 PhotoBuddy 是一个摄影师和模特之间的匹配和交流平台，基于 MERN Stack 开发。此项目分为前端（`frontend`）和后端（`backend`）两个部分，通过 Docker 容器化进行部署。
 
@@ -40,5 +38,10 @@ PhotoBuddy/
 3. 打开浏览器，访问 http://localhost:3001，即可看到前端页面。
 
 4. 打开浏览器，访问 http://localhost:4000/auth/dashboard，即可查看supertoken后端用户数据（需要用户名和密码）若不开发后端则用不太到这里。
+
+## GitHub Collab 注意事项
+1. master分支是项目主分支，请勿随意修改。
+2. 开发新功能时，请fork dev分支并新建属于自己的分支，开发完成后合并到dev分支。
+3. 每次准备开发前，先pull一下dev分支，避免代码冲突。
 
 
