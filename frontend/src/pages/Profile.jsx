@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import axios from 'axios';
 // import Cookies from "universal-cookie"
-import Sidebar from '../components/Sidebar';
 import PersonalForm from '../components/PersonalForm';
 import Session from 'supertokens-auth-react/recipe/session';
 
@@ -53,7 +52,6 @@ const Profile = ({ token }) => {
         {/** 通过给Navbar设置一个key，并在handleProfileUpdate里改变key，来实现每次personalform里头像更新的时候，navbar被重新加载 */}
         <Navbar token={token} key={navbarKey}/>
         <div className="flex flex-1">
-          {/* <Sidebar /> */}
           <PersonalForm profile={profile} onProfileUpdate={handleProfileUpdate}/>
 
         </div>
