@@ -1,4 +1,8 @@
 import React from 'react';
+import ImageSlider from './ImageSlider';
+
+
+
 import { useState,useEffect } from 'react';
 import Empty_Avatar from '../assets/empty_avatar.jpg';
 
@@ -166,52 +170,11 @@ const PhotographerCard = (props) => {
                   )}
                 </div>
               </div>
+            <ImageSlider profile={profile}/>
 
-              {/** Carousel 部分 */}
-              <div className="relative w-full overflow-hidden mt-4">
-                <div
-                  className="flex transition-transform ease-in-out duration-300"
-                  style={{
-                    transform: `translateX(-${currentIndex * 100}%)`,
-                    width: `${profile.photographer_info?.photographer_images.length * 8}%`,
-                  }}
-                >
-                  {profile.photographer_info?.photographer_images && profile.photographer_info.photographer_images.length > 0 ? (
-                    profile.photographer_info.photographer_images.map((image, index) => (
-                      <div key={index} className="flex-shrink-0 w-full p-1">
-                        <div className="w-full aspect-square relative rounded-lg overflow-hidden">
-                          <img
-                            src={image}
-                            alt={`Photographer Image ${index + 1}`}
-                            className="absolute inset-0 w-full h-full object-cover"
-                          />
-                        </div>
-                      </div>
-                    ))
-                  ) : (
-                    <p>No images to display.</p>
-                  )}
-                </div>
+              {/** Legacy version found in ModelCard.jsx */}
 
-                {/* 左右滑动按钮 */}
-                <button
-                  className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-200 text-black rounded-full p-2 m-2"
-                  onClick={handlePrev}
-                >
-                  &lt;
-                </button>
-                <button
-                  className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-200 text-black rounded-full p-2 m-2"
-                  onClick={handleNext}
-                >
-                  &gt;
-                </button>
 
-                {/** 图片数量指示器 */}
-                <div className="text-center mt-2">
-                  <p>{currentIndex + 1} / {profile.photographer_info?.photographer_images.length}</p>
-                </div>
-              </div>
             </div>
 
             <form

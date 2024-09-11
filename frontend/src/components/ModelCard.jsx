@@ -1,4 +1,6 @@
 import React from 'react';
+import ImageSlider from './ImageSlider';
+
 import { useState,useEffect } from 'react';
 import Empty_Avatar from '../assets/empty_avatar.jpg';
 
@@ -38,6 +40,7 @@ const ModelCard = (props) => {
   
     return age;
   };
+
   
 
   return (
@@ -171,8 +174,11 @@ const ModelCard = (props) => {
                   )}
                 </div>
               </div>
-
-              {/** Carousel 部分 */}
+            <ImageSlider profile={profile}/>
+            
+              {
+              /*
+              Carousel 部分
               <div className="relative w-full overflow-hidden mt-4">
                 <div
                   className="flex transition-transform ease-in-out duration-300"
@@ -198,7 +204,7 @@ const ModelCard = (props) => {
                   )}
                 </div>
 
-                {/* 左右滑动按钮 */}
+                 左右滑动按钮 
                 <button
                   className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-200 text-black rounded-full p-2 m-2"
                   onClick={handlePrev}
@@ -212,12 +218,15 @@ const ModelCard = (props) => {
                   &gt;
                 </button>
 
-                {/** 图片数量指示器 */}
+                 图片数量指示器
                 <div className="text-center mt-2">
                   <p>{currentIndex + 1} / {profile.model_info?.model_images.length}</p>
                 </div>
               </div>
+            */}
+
             </div>
+
 
             <form
               method="dialog"
