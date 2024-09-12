@@ -1,10 +1,11 @@
 import React from 'react';
-import ImageSlider from './ImageSlider';
+import ImageSlider from './ModelImageSlider';
 
 
 
 import { useState,useEffect } from 'react';
 import Empty_Avatar from '../assets/empty_avatar.jpg';
+import PhotographerImageSlider from './PhotographerImageSlider';
 
 const PhotographerCard = (props) => {
 
@@ -170,7 +171,7 @@ const PhotographerCard = (props) => {
                   )}
                 </div>
               </div>
-            <ImageSlider profile={profile}/>
+            <PhotographerImageSlider profile={profile}/>
 
               {/** Legacy version found in ModelCard.jsx */}
 

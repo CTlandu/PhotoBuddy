@@ -1,5 +1,5 @@
 import React from 'react';
-import ImageSlider from './ImageSlider';
+import ModelImageSlider from './ModelImageSlider';
 
 import { useState,useEffect } from 'react';
 import Empty_Avatar from '../assets/empty_avatar.jpg';
@@ -174,7 +174,7 @@ const ModelCard = (props) => {
                   )}
                 </div>
               </div>
-            <ImageSlider profile={profile}/>
+            <ModelImageSlider profile={profile}/>
             
               {
               /*

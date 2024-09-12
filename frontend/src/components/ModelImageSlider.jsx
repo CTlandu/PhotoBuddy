@@ -3,7 +3,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useState } from 'react';
 
-export default function ImageSlider({ profile }) {
+export default function ModelImageSlider({ profile }) {
   // 添加一个 state 用来存储当前的图片 index
   const [currentIndex, setCurrentIndex] = useState(0);
 
