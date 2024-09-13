@@ -7,6 +7,17 @@ import Blitzen_Wang from "../assets/Blitzen_Wang.png";
 const About = ({ token }) => {
   const [activeAccordion, setActiveAccordion] = useState("tech-stack");
 
+  const toggleAccordion = (accordionName) => {
+    if (activeAccordion === accordionName) {
+      // 如果点击的已经是打开的 collapse，则关闭它
+      setActiveAccordion(null);
+    } else {
+      // 否则，打开新的 collapse
+      setActiveAccordion(accordionName);
+      console.log(accordionName);
+    }
+  };
+
   // handle跳转至TFP的accordian
   const handleScrollToTFP = () => {
     setActiveAccordion("tfp");
@@ -126,10 +137,10 @@ const About = ({ token }) => {
           {/* Major Contributors Accordion */}
           <div className="collapse collapse-arrow bg-base-200">
             <input
-              type="radio"
+              type="checkbox"
               name="my-accordion-2"
               checked={activeAccordion === "contributors"}
-              onChange={() => setActiveAccordion("contributors")}
+              onChange={() => toggleAccordion("contributors")}
             />
             <div className="collapse-title text-xl font-bold">
               Major Contributors
@@ -182,10 +193,10 @@ const About = ({ token }) => {
           {/* Tech Stack Accrodian */}
           <div className="collapse collapse-arrow bg-base-200">
             <input
-              type="radio"
+              type="checkbox"
               name="my-accordion-2"
               checked={activeAccordion === "tech-stack"}
-              onChange={() => setActiveAccordion("tech-stack")}
+              onChange={() => toggleAccordion("tech-stack")}
             />
             <div className="collapse-title text-xl font-bold">Tech Stack</div>
             <div className="collapse-content">
@@ -290,10 +301,10 @@ const About = ({ token }) => {
           {/* Website Features Accordian */}
           <div className="collapse collapse-arrow bg-base-200">
             <input
-              type="radio"
+              type="checkbox"
               name="my-accordion-2"
               checked={activeAccordion === "features"}
-              onChange={() => setActiveAccordion("features")}
+              onChange={() => toggleAccordion("features")}
             />
             <div className="collapse-title text-xl font-bold">
               Website Features
@@ -316,10 +327,10 @@ const About = ({ token }) => {
             className="collapse collapse-arrow bg-base-200"
           >
             <input
-              type="radio"
+              type="checkbox"
               name="my-accordion-2"
               checked={activeAccordion === "purpose"}
-              onChange={() => setActiveAccordion("purpose")}
+              onChange={() => toggleAccordion("purpose")}
             />
             <div className="collapse-title text-xl font-bold">Our Purpose</div>
             <div className="collapse-content">
@@ -336,10 +347,10 @@ const About = ({ token }) => {
           {/* What is TFP Accordian */}
           <div id="tfp-section" className="collapse collapse-arrow bg-base-200">
             <input
-              type="radio"
+              type="checkbox"
               name="my-accordion-2"
               checked={activeAccordion === "tfp"}
-              onChange={() => setActiveAccordion("tfp")}
+              onChange={() => toggleAccordion("tfp")}
             />
             <div className="collapse-title text-xl font-bold">
               What is <i>"Trade for Portoflio</i> (TFP)"?
