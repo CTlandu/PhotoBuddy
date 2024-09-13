@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Colin_Photo from "../assets/生日照.png";
 import mongodb_logo from "../assets/mongodb_logo.png";
+import Blitzen_Wang from "../assets/Blitzen_Wang.png";
 
 const About = ({ token }) => {
   const [activeAccordion, setActiveAccordion] = useState("tech-stack");
@@ -40,7 +41,6 @@ const About = ({ token }) => {
                 />
               </div>
               <div className="w-full md:w-3/4 md:pl-6">
-                <h2 className="text-2xl font-semibold mb-4">About Me</h2>
                 <p className="text-gray-600">
                   Hi, I'm Colin, the founder of <b>PhotoBuddy</b>.
                 </p>
@@ -78,12 +78,12 @@ const About = ({ token }) => {
             <span className="text-red">*</span> PhotoBuddy is still on its{" "}
             <span className="text-red">early stage</span>, so some of the
             functionalities are still under development. Please reach out to me
-            if you have any comments, I really appreciate it!
+            if you have any comments or would like to work together.
             <br />
-            <span className="text-red">**</span> I'm also looking for any{" "}
+            {/* <span className="text-red">**</span> I'm also looking for any{" "}
             <span className="text-red">Web/Software Development Job</span>{" "}
             Opportunity. Please let me know if you are willing to give me an
-            interview opportunity
+            interview opportunity */}
           </p>
           <div className="flex mb-4 items-center justify-center">
             <a
@@ -107,11 +107,6 @@ const About = ({ token }) => {
                 </g>
               </svg>
             </a>
-            <button className="btn btn-link">
-              <a href="https://ctlandu.github.io/" target="_blank">
-                Personal Website
-              </a>
-            </button>
             <a href="https://github.com/CTlandu/PhotoBuddy">
               <svg
                 svg
@@ -126,6 +121,62 @@ const About = ({ token }) => {
                 />
               </svg>
             </a>
+          </div>
+
+          {/* Major Contributors Accordion */}
+          <div className="collapse collapse-arrow bg-base-200">
+            <input
+              type="radio"
+              name="my-accordion-2"
+              checked={activeAccordion === "contributors"}
+              onChange={() => setActiveAccordion("contributors")}
+            />
+            <div className="collapse-title text-xl font-bold">
+              Major Contributors
+            </div>
+            <div className="collapse-content">
+              <ul className="list-none flex flex-wrap justify-center md:flex-row md:space-x-4">
+                {/* Colin Tang */}
+                <li className="mb-4 flex flex-col items-center">
+                  <img
+                    src={Colin_Photo}
+                    alt="Colin Tang"
+                    className="w-16 h-16 object-cover rounded-full"
+                  />
+                  <p className="mt-2 text-center text-sm">
+                    <a
+                      href="https://github.com/ctlandu"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 hover:underline text-sm"
+                    >
+                      Jizhou (Colin) Tang
+                    </a>
+                  </p>
+                  <p className="mt-2 text-center text-sm">Project Lead</p>
+                </li>
+
+                {/* Blitzen Wang */}
+                <li className="mb-4 flex flex-col items-center">
+                  <img
+                    src={Blitzen_Wang}
+                    alt="Jingyang (Blitzen) Wang"
+                    className="w-16 h-16 object-cover rounded-full"
+                  />
+                  <p className="mt-2 text-center text-sm">
+                    <a
+                      href="https://github.com/blitzenwang"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 hover:underline text-sm"
+                    >
+                      Jingyang (Blitzen) Wang
+                    </a>
+                  </p>
+                  <p className="mt-2 text-center text-sm">Frontend Lead</p>
+                </li>
+              </ul>
+            </div>
           </div>
 
           {/* Tech Stack Accrodian */}
