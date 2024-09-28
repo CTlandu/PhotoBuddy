@@ -29,7 +29,7 @@ const PlaceAutocomplete = () => {
       >
         <input
           type="text"
-          placeholder="输入地点"
+          placeholder="Enter a place"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
           style={{ width: "300px", padding: "10px" }}

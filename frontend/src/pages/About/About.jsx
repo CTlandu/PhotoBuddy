@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Navbar from "../components/Navbar";
-import Colin_Photo from "../assets/生日照.png";
-import mongodb_logo from "../assets/mongodb_logo.png";
-import Blitzen_Wang from "../assets/Blitzen_Wang.png";
+import Navbar from "../../components/Navbar";
+import Colin_Photo from "../../assets/Colin_Tang.png";
+import mongodb_logo from "../../assets/mongodb_logo.png";
+import Blitzen_Wang from "../../assets/Blitzen_Wang.png";
 
 const About = ({ token }) => {
   const [activeAccordion, setActiveAccordion] = useState("tech-stack");

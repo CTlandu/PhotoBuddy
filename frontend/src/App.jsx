@@ -20,15 +20,13 @@ import Session from "supertokens-auth-react/recipe/session";
 import * as reactRouterDom from "react-router-dom";
 // import createStore from 'react-auth-kit/createStore'
 // import AuthProvider from 'react-auth-kit/AuthProvider'
-import Login from "./pages/Login";
-import Home from "./pages/Home";
+import Home from "./pages/Home/Home";
 import NoPage from "./pages/NoPage";
-import Register from "./pages/Register";
-import Profile from "./pages/Profile";
+import Profile from "./pages/Profile/Profile";
 import { useEffect, useState, createContext } from "react";
-import Portfolio from "./pages/Portfolio";
-import FindMatches from "./pages/FindMatches";
-import About from "./pages/About";
+import Portfolio from "./pages/Portfolio/Portfolio";
+import FindMatches from "./pages/FindMatches/FindMatches";
+import About from "./pages/About/About";
 import CookieConsent from "./components/CookieConsent";
 import Test from "./pages/Test";
 

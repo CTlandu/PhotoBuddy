@@ -243,6 +243,24 @@ const PersonalForm = (props) => {
             />
           </div>
 
+          <div>
+            <label
+              htmlFor="location"
+              className="block text-gray-700 text-sm font-bold mb-2 mt-2"
+            >
+              Area of Activity
+            </label>
+            <input
+              type="number"
+              name="zipcode"
+              value={formData.zipcode}
+              onChange={handleChange}
+              min="00501"
+              max="99950"
+              className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray text-white"
+            />
+          </div>
+
           <h2 className="text-xl font-bold mt-8 text-center">Contact</h2>
 
           {/** Phone Number电话号码 */}

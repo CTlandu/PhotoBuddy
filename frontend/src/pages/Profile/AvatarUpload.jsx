@@ -1,19 +1,18 @@
-import React, { useState, useRef } from 'react';
-import AvatarEditor from 'react-avatar-editor';
-import Modal from 'react-modal';
-import 'react-image-crop/dist/ReactCrop.css';
-import axios from 'axios';
-import emtpyAvatar from '../assets/empty_avatar.jpg';
+import React, { useState, useRef } from "react";
+import AvatarEditor from "react-avatar-editor";
+import Modal from "react-modal";
+import "react-image-crop/dist/ReactCrop.css";
+import axios from "axios";
+import emtpyAvatar from "../../assets/empty_avatar.jpg";
 
-Modal.setAppElement('#root'); // 设置根元素，防止辅助技术焦点陷阱
+Modal.setAppElement("#root"); // 设置根元素，防止辅助技术焦点陷阱
 
-function AvatarUpload({profile, onSave}) {
+function AvatarUpload({ profile, onSave }) {
   const [file, setFile] = useState(null);
   const [editor, setEditor] = useState(null);
   const [scale, setScale] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const fileInputRef = useRef(null);
-
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -27,7 +26,7 @@ function AvatarUpload({profile, onSave}) {
   const handleSave = async () => {
     if (editor) {
       const canvas = editor.getImageScaledToCanvas();
-      const base64Image = canvas.toDataURL('image/jpeg');
+      const base64Image = canvas.toDataURL("image/jpeg");
 
       const data = {
         id: profile.id,
@@ -35,16 +34,19 @@ function AvatarUpload({profile, onSave}) {
       };
 
       try {
-        const response = await axios.put(`${import.meta.env.VITE_API_DOMAIN}/api/profile`, data, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        console.log('User data updated successfully:', response.data);
+        const response = await axios.put(
+          `${import.meta.env.VITE_API_DOMAIN}/api/profile`,
+          data,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log("User data updated successfully:", response.data);
         onSave(response.data.user); // 通知父组件数据已更新
-
       } catch (error) {
-        console.error('Error updating user data:', error);
+        console.error("Error updating user data:", error);
       }
       setIsModalOpen(false); // 关闭模态框
     }
@@ -58,7 +60,10 @@ function AvatarUpload({profile, onSave}) {
     <div className="bg-white p-6 rounded-lg">
       <form onSubmit={(e) => e.preventDefault()}>
         <div className="mb-4 relative">
-          <div className="avatar flex justify-center cursor-pointer relative group" onClick={handleClick}>
+          <div
+            className="avatar flex justify-center cursor-pointer relative group"
+            onClick={handleClick}
+          >
             <div className="w-24 rounded-full scale-125 overflow-hidden">
               <img
                 src={profile.avatar || emtpyAvatar}
@@ -103,7 +108,10 @@ function AvatarUpload({profile, onSave}) {
               />
             </div>
             <div className="mb-4 flex justify-center">
-              <label htmlFor="scale" className="block text-gray-700 text-sm font-bold mb-2">
+              <label
+                htmlFor="scale"
+                className="block text-gray-700 text-sm font-bold mb-2"
+              >
                 Zoom:
               </label>
               <input
@@ -119,7 +127,11 @@ function AvatarUpload({profile, onSave}) {
               />
             </div>
             <div className="flex justify-center mt-4">
-              <button type="button" onClick={handleSave} className="bg-dark-gray text-black py-2 px-4 rounded hover:bg-blue-700">
+              <button
+                type="button"
+                onClick={handleSave}
+                className="bg-dark-gray text-black py-2 px-4 rounded hover:bg-blue-700"
+              >
                 Save Avatar
               </button>
             </div>

@@ -2,7 +2,7 @@ import React from "react";
 import ModelImageSlider from "./ModelImageSlider";
 
 import { useState, useEffect } from "react";
-import Empty_Avatar from "../assets/empty_avatar.jpg";
+import Empty_Avatar from "../../assets/empty_avatar.jpg";
 
 const ModelCard = (props) => {
   const [profile, setProfile] = useState(props.fetched_profile);
