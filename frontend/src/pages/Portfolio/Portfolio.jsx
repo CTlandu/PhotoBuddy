@@ -47,8 +47,10 @@ const Portfolio = ({ token }) => {
 
   return (
     <>
-      <div className="flex flex-col h-screen">
+      <div className="top-0 left-0 w-full z-50">
         <Navbar token={token} />
+      </div>
+      <div className="flex flex-col bg-base-200">
         <div className="flex flex-1">
           <PortfolioForm
             profile={profile}

@@ -66,7 +66,9 @@ function FindMatches({ token }) {
   return (
     <>
       <div className="flex flex-col h-screen bg-base-200">
-        <Navbar token={token} />
+        <div className="top-0 left-0 w-full z-50">
+          <Navbar token={token} />
+        </div>
         <SlowLoadBanner />
         <div className="flex mt-16 justify-center bg-base">
           <div className="font-bold flex items-center mr-5">Find:</div>

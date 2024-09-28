@@ -35,10 +35,12 @@ const About = ({ token }) => {
 
   return (
     <>
-      <Navbar token={token} />
+      <div className="top-0 left-0 w-full z-50">
+        <Navbar token={token} />
+      </div>
       <div className="min-h-screen flex flex-col items-center p-6 bg-base-200">
         <div className="max-w-4xl w-full  shadow-md rounded-lg p-8">
-          <h1 className="text-4xl font-bold text-center text-blue-600 mb-6">
+          <h1 className="text-4xl font-bold text-center text-blue-400 mb-6">
             About PhotoBuddy
           </h1>
 
@@ -52,8 +54,9 @@ const About = ({ token }) => {
                 />
               </div>
               <div className="w-full md:w-3/4 md:pl-6">
-                <p className="text-gray-600">
-                  Hi, I'm Colin, the founder of <b>PhotoBuddy</b>.
+                <p>
+                  Hi, I'm Colin, the founder of{" "}
+                  <b className="text-light-pupple">PhotoBuddy</b>.
                 </p>
                 <p>
                   <br />I have a passion for <b>Photography</b> and{" "}
@@ -200,7 +203,7 @@ const About = ({ token }) => {
             />
             <div className="collapse-title text-xl font-bold">Tech Stack</div>
             <div className="collapse-content">
-              <p className="text-gray-600 mb-4">
+              <p className="mb-4">
                 This website is built using the following technologies:
               </p>
               <div className="flex flex-wrap justify-center">
@@ -273,7 +276,7 @@ const About = ({ token }) => {
                   <p className="text-center mt-2">MongoDB</p>
                 </div>
               </div>
-              <ul className="list-disc list-inside text-gray-600 mt-2">
+              <ul className="list-disc list-inside mt-2">
                 <li>
                   <strong>React.js:</strong> A JavaScript library for building
                   front-end user interfaces.
@@ -310,7 +313,7 @@ const About = ({ token }) => {
               Website Features
             </div>
             <div className="collapse-content">
-              <ul className="list-disc list-inside text-gray-600">
+              <ul className="list-disc list-inside">
                 <li>User profiles with customizable portfolios</li>
                 <li>Matchmaking system to connect models and photographers</li>
                 <li>Secure messaging system to facilitate communication</li>
@@ -334,7 +337,7 @@ const About = ({ token }) => {
             />
             <div className="collapse-title text-xl font-bold">Our Purpose</div>
             <div className="collapse-content">
-              <p className="text-gray-600">
+              <p className="">
                 PhotoBuddy was created with the intention of helping amateur
                 photo creators build their portfolios through collaboration. We
                 believe that everyone should have the opportunity to showcase
@@ -356,7 +359,7 @@ const About = ({ token }) => {
               What is <i>"Trade for Portoflio</i> (TFP)"?
             </div>
             <div className="collapse-content">
-              <p className="text-gray-600">
+              <p className="">
                 "Trade for Portfolio" is a common practice in the photography
                 and modeling industry where both parties collaborate without
                 exchanging money. Instead, photographers and models offer their

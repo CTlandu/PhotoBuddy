@@ -24,9 +24,8 @@ const Navbar = ({ token }) => {
         // 如果1秒后还没有收到token，则应该是真的没有了，遂呈现未登录状态的Navbar
         console.log("Navbar没收到Token!");
         setLoading(false); // 如果没有token，不发起请求，直接结束loading状态
-    }, 1000);
+      }, 1000);
     }
-    
   }, [token]);
 
   async function fetchAvatar() {
@@ -72,7 +71,10 @@ const Navbar = ({ token }) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         menuRef.current.removeAttribute("open");
       }
-      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target)
+      ) {
         mobileMenuRef.current.removeAttribute("open");
       }
     };
@@ -90,116 +92,114 @@ const Navbar = ({ token }) => {
 
   return (
     <>
-    {!loading && (
-      <div className="navbar bg-base-100 flex justify-between items-center">
-        {/* 左侧部分 - PhotoBuddy Logo 和 菜单项 */}
-        <div className="flex items-center ml-4 lg:ml-24">
-          <a className="btn btn-ghost text-xl" href="/">
-            PhotoBuddy
-          </a>
-  
-          {/* 中间部分 - 菜单项 */}
-          <div className="hidden lg:flex md:flex ml-4 ">
-            <ul className="menu menu-horizontal px-1">
-              <li>
-                <a href="/about" className="btn btn-primary text-md mx-2">
-                  About
-                </a>
-              </li>
-              <li>
-                <a href="/findmatches" className="btn btn-secondary text-md mx-2">
-                  Find Matches!
-                </a>
-              </li>
-            </ul>
-          </div>
-  
-          {/* 小屏幕下的下拉菜单 */}
-          <div className="lg:hidden md:hidden ml-2 relative">
-            <details className="dropdown" ref={mobileMenuRef}>
-              <summary className="btn btn-ghost p-1 focus:outline-none flex items-center">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  className="inline-block w-8 h-8 stroke-current text-gray-700"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  ></path>
-                </svg>
-              </summary>
-              <ul className="dropdown-content bg-base-100 rounded-lg w-44 p-3 mt-2 shadow-lg absolute z-50 left-0">
-                <li className="hover:bg-green rounded-md">
-                  <a href="/about" className="block px-4 py-2">
+      {!loading && (
+        <div className="navbar bg-base-100 flex justify-between items-center">
+          {/* 左侧部分 - PhotoBuddy Logo 和 菜单项 */}
+          <div className="flex items-center ml-4 lg:ml-24">
+            <a className="btn btn-ghost text-xl" href="/">
+              PhotoBuddy
+            </a>
+
+            {/* 中间部分 - 菜单项 */}
+            <div className="hidden lg:flex md:flex ml-4 ">
+              <ul className="menu menu-horizontal px-1">
+                <li>
+                  <a href="/about" className="btn btn-primary text-md mx-2">
                     About
                   </a>
                 </li>
-                <li className="hover:bg-purple rounded-md">
-                  <a href="/findmatches" className="block px-4 py-2">
+                <li>
+                  <a
+                    href="/findmatches"
+                    className="btn btn-secondary text-md mx-2"
+                  >
                     Find Matches!
                   </a>
                 </li>
               </ul>
-            </details>
+            </div>
+
+            {/* 小屏幕下的下拉菜单 */}
+            <div className="lg:hidden md:hidden ml-2 relative">
+              <details className="dropdown" ref={mobileMenuRef}>
+                <summary className="btn btn-ghost p-1 focus:outline-none flex items-center">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    className="inline-block w-8 h-8 stroke-current text-gray-700"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M4 6h16M4 12h16M4 18h16"
+                    ></path>
+                  </svg>
+                </summary>
+                <ul className="dropdown-content bg-base-100 rounded-lg w-44 p-3 mt-2 shadow-lg absolute z-50 left-0">
+                  <li className="hover:bg-green rounded-md">
+                    <a href="/about" className="block px-4 py-2">
+                      About
+                    </a>
+                  </li>
+                  <li className="hover:bg-purple rounded-md">
+                    <a href="/findmatches" className="block px-4 py-2">
+                      Find Matches!
+                    </a>
+                  </li>
+                </ul>
+              </details>
+            </div>
           </div>
 
-
-        </div>
-  
-        {/* 右侧部分 - 登录/头像 */}
-        <div className="flex-none mr-4 lg:mr-24">
-          <ul className="menu menu-horizontal px-1">
-            {token ? (
-              <li className="flex items-center">
-                <details className="relative" ref={menuRef}>
-                  <summary
-                    className="flex items-center justify-center overflow-hidden"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <button
-                      className="flex items-center justify-center h-auto overflow-hidden"
-                      onClick={() =>
-                        (menuRef.current.open = !menuRef.current.open)
-                      }
+          {/* 右侧部分 - 登录/头像 */}
+          <div className="flex-none mr-4 lg:mr-24">
+            <ul className="menu menu-horizontal px-1">
+              {token ? (
+                <li className="flex items-center">
+                  <details className="relative" ref={menuRef}>
+                    <summary
+                      className="flex items-center justify-center overflow-hidden"
+                      onClick={(e) => e.stopPropagation()}
                     >
-                      <img
-                        className="w-8 h-8 md:w-10 md:h-10 object-cover rounded-full"
-                        src={avatar || emptyAvatar}
-                        alt="Avatar"
-                      />
-                    </button>
-                  </summary>
-                  <ul className="bg-base-100 rounded-t-none p-2 absolute right-0 top-12 z-50">
-                    <li>
-                      <a href="/profile">Profile</a>
-                    </li>
-                    <li>
-                      <a href="/portfolio">Portfolio</a>
-                    </li>
-                    <li>
-                      <button onClick={onLogout}>Logout</button>
-                    </li>
-                  </ul>
-                </details>
-              </li>
-            ) : (
-              <li>
-                <button onClick={onLogin}>Log in/Sign up</button>
-              </li>
-            )}
-          </ul>
-
+                      <button
+                        className="flex items-center justify-center h-auto overflow-hidden"
+                        onClick={() =>
+                          (menuRef.current.open = !menuRef.current.open)
+                        }
+                      >
+                        <img
+                          className="w-8 h-8 md:w-10 md:h-10 object-cover rounded-full"
+                          src={avatar || emptyAvatar}
+                          alt="Avatar"
+                        />
+                      </button>
+                    </summary>
+                    <ul className="bg-base-100 rounded-t-none p-2 absolute right-0 top-12 z-50">
+                      <li>
+                        <a href="/profile">Profile</a>
+                      </li>
+                      <li>
+                        <a href="/portfolio">Portfolio</a>
+                      </li>
+                      <li>
+                        <button onClick={onLogout}>Logout</button>
+                      </li>
+                    </ul>
+                  </details>
+                </li>
+              ) : (
+                <li>
+                  <button onClick={onLogin}>Log in/Sign up</button>
+                </li>
+              )}
+            </ul>
+          </div>
         </div>
-      </div>
-    )}
-    </>     
+      )}
+    </>
   );
-  
-  
 };
 
 export default Navbar;
