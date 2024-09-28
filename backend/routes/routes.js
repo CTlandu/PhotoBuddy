@@ -103,13 +103,11 @@ router.put("/updateProfile", async (req, res) => {
 });
 
 
-
-// 摄影师照片上传
+// 摄影师图片上传 API
 router.put('/photographerImageUpload', async (req, res) => {
   const { id, photographer_image } = req.body;
 
   try {
-    // 打印出收到的数据，检查其结构
     console.log('Received ID:', id);
     console.log('Image Received');
 
@@ -125,10 +123,11 @@ router.put('/photographerImageUpload', async (req, res) => {
       user.photographer_info.photographer_images = [];
     }
 
-   // 确保 photographer_image 是字符串
-   if (typeof photographer_image === 'string') {
-    // 将新的图片添加到现有的 photographer_images 数组中
-    user.photographer_info.photographer_images.push(photographer_image);
+    // 确保 photographer_image 是字符串
+    if (typeof photographer_image === 'string') {
+      
+      // 将新的图片添加到现有的 photographer_images 数组中
+      user.photographer_info.photographer_images.push(photographer_image);
     } else {
       throw new Error('Invalid image format');
     }
@@ -142,6 +141,7 @@ router.put('/photographerImageUpload', async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+
 
 
 // 删除用户指定的摄影师图片

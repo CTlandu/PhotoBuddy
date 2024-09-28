@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import AvatarEditor from "react-avatar-editor";
 import Modal from "react-modal";
 import axios from "axios";
+import ImageUploader from "./ImageUploader";
 
 const PortfolioForm = (props) => {
   // 判断当前显示哪一个form
@@ -33,172 +34,96 @@ const PortfolioForm = (props) => {
 
   const [successMessage, setSuccessMessage] = useState("");
 
-  // 图片上传相关的State
-  const [file, setFile] = useState(null);
-  const [editor, setEditor] = useState(null);
-  const [scale, setScale] = useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
   // 获取model_image列表以及其长度
   const model_images = profile.model_info.model_images || [];
-  const numOfModelImages = model_images.length;
 
   // 获取photographer_image列表以及其长度
   const photographer_images =
     profile.photographer_info.photographer_images || [];
-  const numOfPhotographerImages = photographer_images.length;
 
-  // 用于引用隐藏的文件输入
-  const fileInputRef = useRef(null);
-
-  // 处理按钮点击，触发文件选择
-  const handleButtonClick = () => {
-    fileInputRef.current.click();
+  const handleModelUploadImage = (newImage) => {
+    const updatedImages = [...model_images, newImage];
+    // 更新 profile 里的 model_images
+    setProfile({
+      ...profile,
+      model_info: {
+        ...profile.model_info,
+        model_images: updatedImages, // 更新图片数组，包含新上传的图片
+      },
+    });
   };
 
-  // 处理文件选择
-  const handleFileChange = (event) => {
-    if (useModelForm && numOfModelImages >= 9) {
-      alert("You have reached the maximum number of 9 model images");
-      return;
-    } else if (usePhotographerForm && numOfPhotographerImages >= 9) {
-      alert("You have reached the maximum number of 9 photographer images");
-      return;
-    }
-
-    const selectedFile = event.target.files[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      setIsModalOpen(true); // 打开裁剪模态框
-    }
+  const handlePhotographerUploadImage = (newImage) => {
+    const updatedImages = [...photographer_images, newImage];
+    // 更新 profile 里的 photographer_images
+    setProfile({
+      ...profile,
+      photographer_info: {
+        ...profile.photographer_info,
+        photographer_images: updatedImages, // 更新图片数组，包含新上传的图片
+      },
+    });
   };
 
-  // 处理裁剪后的图片保存
-  const handleSave = async () => {
-    if (editor) {
-      const canvas = editor.getImageScaledToCanvas();
-      const base64Image = canvas.toDataURL("image/jpeg");
+  const handleDeleteModelImage = async (index) => {
+    const updatedImages = model_images.filter((_, i) => i !== index); // 过滤掉被删除的图片
 
-      try {
-        if (useModelForm) {
-          const data = {
-            id: profile.id,
-            model_image: base64Image,
-          };
-          await axios.put(
-            `${import.meta.env.VITE_API_DOMAIN}/api/modelImageUpload`,
-            data,
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          const updatedImages = [...model_images, base64Image];
-          setProfile({
-            ...profile,
-            model_info: { ...profile.model_info, model_images: updatedImages },
-          });
-        } else if (usePhotographerForm) {
-          const data = {
-            id: profile.id,
-            photographer_image: base64Image,
-          };
-          await axios.put(
-            `${import.meta.env.VITE_API_DOMAIN}/api/photographerImageUpload`,
-            data,
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          );
-          const updatedImages = [...photographer_images, base64Image];
-          setProfile({
-            ...profile,
-            photographer_info: {
-              ...profile.photographer_info,
-              photographer_images: updatedImages,
-            },
-          });
-        }
-
-        console.log("Image uploaded successfully");
-      } catch (error) {
-        console.error("Error uploading image:", error);
-      }
-
-      setIsModalOpen(false); // 关闭模态框
-    }
-  };
-
-  const handleScaleChange = (e) => {
-    setScale(parseFloat(e.target.value));
-  };
-
-  //处理照片删除
-  const handleDeleteImage = async (index) => {
     try {
-      if (useModelForm) {
-        const imageToDelete = model_images[index];
-        const updatedImages = model_images.filter((_, i) => i !== index);
-
-        const data = {
-          id: profile.id,
-          model_image: imageToDelete, // 指定要删除的图片
-        };
-
-        // 发送删除请求到后端
-        const response = await axios.delete(
-          `${import.meta.env.VITE_API_DOMAIN}/api/modelImageDelete`,
-          {
-            data: data,
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        console.log("Model image deleted successfully:", response.data);
-
-        // 删除成功后，更新前端的图片列表
-        setProfile({
-          ...profile,
-          model_info: { ...profile.model_info, model_images: updatedImages },
-        });
-      } else if (usePhotographerForm) {
-        const imageToDelete = photographer_images[index];
-        const updatedImages = photographer_images.filter((_, i) => i !== index);
-
-        const data = {
-          id: profile.id,
-          photographer_image: imageToDelete, // 指定要删除的图片
-        };
-
-        // 发送删除请求到后端
-        const response = await axios.delete(
-          `${import.meta.env.VITE_API_DOMAIN}/api/photographerImageDelete`,
-          {
-            data: data,
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        console.log("Photographer image deleted successfully:", response.data);
-
-        // 删除成功后，更新前端的图片列表
-        setProfile({
-          ...profile,
-          photographer_info: {
-            ...profile.photographer_info,
-            photographer_images: updatedImages,
+      const imageToDelete = model_images[index]; // 获取要删除的图片
+      // 如果需要调用API删除服务器中的图片
+      await axios.delete(
+        `${import.meta.env.VITE_API_DOMAIN}/api/modelImageDelete`,
+        {
+          data: {
+            id: profile.id,
+            model_image: imageToDelete, // 指定要删除的图片
           },
-        });
-      }
+        }
+      );
+
+      // 更新 React 状态，触发重新渲染
+      setProfile({
+        ...profile,
+        model_info: {
+          ...profile.model_info,
+          model_images: updatedImages, // 使用过滤后的图片数组
+        },
+      });
+
+      console.log("Image deleted successfully");
     } catch (error) {
       console.error("Error deleting image:", error);
+    }
+  };
+
+  const handleDeletePhotographerImage = async (index) => {
+    const updatedImages = photographer_images.filter((_, i) => i !== index); // 过滤掉被删除的图片
+
+    try {
+      const imageToDelete = photographer_images[index]; // 获取要删除的图片
+      // 调用API删除服务器中的图片
+      await axios.delete(
+        `${import.meta.env.VITE_API_DOMAIN}/api/photographerImageDelete`, // 改为摄影师图片的API路径
+        {
+          data: {
+            id: profile.id,
+            photographer_image: imageToDelete, // 指定要删除的图片
+          },
+        }
+      );
+
+      // 更新 React 状态，触发重新渲染
+      setProfile({
+        ...profile,
+        photographer_info: {
+          ...profile.photographer_info,
+          photographer_images: updatedImages, // 使用过滤后的图片数组
+        },
+      });
+
+      console.log("Photographer image deleted successfully");
+    } catch (error) {
+      console.error("Error deleting photographer image:", error);
     }
   };
 
@@ -319,109 +244,43 @@ const PortfolioForm = (props) => {
         </a>
       </div>
 
+      {useModelForm ? (
+        <>
+          <h2 className="text-base font-bold mb-4 text-center text-gray-600 dark:text-gray-400">
+            Submit up to 9 photos to showcase your model experiences:
+          </h2>
+          <ImageUploader
+            useModelForm={true}
+            images={model_images}
+            onDeleteImage={handleDeleteModelImage}
+            onUploadImage={handleModelUploadImage}
+            maxImages={9}
+            profileId={profile.id}
+            apiUrl={`${import.meta.env.VITE_API_DOMAIN}/api/modelImageUpload`}
+          />
+        </>
+      ) : (
+        <>
+          <h2 className="text-base font-bold mb-4 text-center text-gray-600 dark:text-gray-400">
+            Submit up to 9 photos to showcase your photographer experiences:
+          </h2>
+          <ImageUploader
+            useModelForm={false}
+            images={photographer_images}
+            onDeleteImage={handleDeletePhotographerImage}
+            onUploadImage={handlePhotographerUploadImage}
+            maxImages={9}
+            profileId={profile.id}
+            apiUrl={`${
+              import.meta.env.VITE_API_DOMAIN
+            }/api/photographerImageUpload`}
+          />
+        </>
+      )}
+
       <form onSubmit={handleSubmit}>
         {useModelForm && (
           <>
-            <h2 className="text-base font-bold mb-4 text-center text-gray-600 dark:text-gray-400">
-              Submit up to 9 photos to showcase your model experiences:
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {model_images &&
-                model_images.map((image, index) => (
-                  <div className="relative w-full pb-[100%]" key={index}>
-                    <img
-                      src={image}
-                      alt=""
-                      className="absolute inset-0 h-full w-full object-cover rounded-lg"
-                    />
-                    <button
-                      onClick={() => handleDeleteImage(index)}
-                      className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
-                    >
-                      x
-                    </button>
-                  </div>
-                ))}
-              {numOfModelImages < 9 && (
-                <button
-                  type="button"
-                  className="relative bg-gray-200 dark:bg-gray-700 w-full pb-[100%] transform transition duration-300 ease-in-out hover:scale-95 active:scale-90"
-                  onClick={handleButtonClick}
-                >
-                  <div className="absolute inset-0 h-full w-full object-cover rounded-lg flex justify-center items-center shadow-lg">
-                    <svg
-                      className="w-10 h-10 text-gray-600 dark:text-gray-300"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2M12 4v12m0-12 4 4m-4-4L8 8"
-                      />
-                    </svg>
-                  </div>
-                </button>
-              )}
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                className="hidden"
-              />
-            </div>
-
-            <Modal
-              isOpen={isModalOpen}
-              onRequestClose={() => setIsModalOpen(false)}
-              contentLabel="Crop Image"
-              className="flex justify-center items-center"
-              overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
-            >
-              {file && (
-                <div className="bg-white p-6 rounded-lg shadow-md">
-                  <div className="flex justify-center mb-4">
-                    <AvatarEditor
-                      ref={setEditor}
-                      image={file}
-                      width={250}
-                      height={250}
-                      border={50}
-                      borderRadius={0}
-                      color={[255, 255, 255, 0.6]}
-                      scale={scale}
-                      rotate={0}
-                    />
-                  </div>
-                  <div className="mb-4 flex justify-center">
-                    <label htmlFor="scale" className="block text-gray-700 text-sm font-bold mb-2">
-                      Zoom:
-                    </label>
-                    <input
-                      type="range"
-                      id="scale"
-                      name="scale"
-                      min="1"
-                      max="2"
-                      step="0.01"
-                      value={scale}
-                      onChange={handleScaleChange}
-                      className="ml-2"
-                    />
-                  </div>
-                  <div className="flex justify-center mt-4">
-                    <button onClick={handleSave} className="bg-dark-gray text-black py-2 px-4 rounded hover:bg-blue-700">
-                      Save Image
-                    </button>
-                  </div>
-                </div>
-              )}
-            </Modal>
-
             <div className="mt-10">
               <h2 className="mb-5 font-bold text-black dark:text-white">
                 Level of experience:
@@ -515,106 +374,6 @@ const PortfolioForm = (props) => {
 
         {usePhotographerForm && (
           <>
-            <h2 className="text-base font-bold mb-4 text-center text-gray-600 dark:text-gray-400">
-              Submit up to 9 photos to showcase your photographer experiences:
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {photographer_images &&
-                photographer_images.map((image, index) => (
-                  <div className="relative w-full pb-[100%]" key={index}>
-                    <img
-                      src={image}
-                      alt=""
-                      className="absolute inset-0 h-full w-full object-cover rounded-lg"
-                    />
-                    <button
-                      onClick={() => handleDeleteImage(index)}
-                      className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
-                    >
-                      x
-                    </button>
-                  </div>
-                ))}
-              {numOfPhotographerImages < 9 && (
-                <button
-                  type="button"
-                  className="relative w-full pb-[100%] transform transition duration-300 ease-in-out hover:scale-95 active:scale-90 bg-gray-200 dark:bg-gray-700"
-                  onClick={handleButtonClick}
-                >
-                  <div className="absolute inset-0 h-full w-full object-cover rounded-lg flex justify-center items-center shadow-lg">
-                    <svg
-                      className="w-10 h-10 text-gray-600 dark:text-gray-300"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M4 15v2a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3v-2M12 4v12m0-12 4 4m-4-4L8 8"
-                      />
-                    </svg>
-                  </div>
-                </button>
-              )}
-              <input
-                type="file"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                className="hidden"
-              />
-            </div>
-
-            <Modal
-              isOpen={isModalOpen}
-              onRequestClose={() => setIsModalOpen(false)}
-              contentLabel="Crop Image"
-              className="flex justify-center items-center"
-              overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
-            >
-              {file && (
-                <div className="bg-white p-6 rounded-lg shadow-md">
-                  <div className="flex justify-center mb-4">
-                    <AvatarEditor
-                      ref={setEditor}
-                      image={file}
-                      width={250}
-                      height={250}
-                      border={50}
-                      borderRadius={0}
-                      color={[255, 255, 255, 0.6]}
-                      scale={scale}
-                      rotate={0}
-                    />
-                  </div>
-                  <div className="mb-4 flex justify-center">
-                    <label htmlFor="scale" className="block text-gray-700 text-sm font-bold mb-2">
-                      Zoom:
-                    </label>
-                    <input
-                      type="range"
-                      id="scale"
-                      name="scale"
-                      min="1"
-                      max="2"
-                      step="0.01"
-                      value={scale}
-                      onChange={handleScaleChange}
-                      className="ml-2"
-                    />
-                  </div>
-                  <div className="flex justify-center mt-4">
-                    <button onClick={handleSave} className="bg-dark-gray text-black py-2 px-4 rounded hover:bg-blue-700">
-                      Save Image
-                    </button>
-                  </div>
-                </div>
-              )}
-            </Modal>
-
             <div className="mt-10">
               <h2 className="mb-5 font-bold text-gray-800 dark:text-gray-200">
                 Level of experience:
@@ -631,7 +390,6 @@ const PortfolioForm = (props) => {
                 <option value="I'm a professional">I'm a professional</option>
               </select>
             </div>
-
 
             <div className="mt-10">
               <h2 className="mb-5 font-bold text-black dark:text-white">
