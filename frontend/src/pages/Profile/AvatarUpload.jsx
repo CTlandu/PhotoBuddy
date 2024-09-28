@@ -57,7 +57,7 @@ function AvatarUpload({ profile, onSave }) {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg">
+    <div className="bg-white dark:bg-dark-gray p-6 rounded-lg">
       <form onSubmit={(e) => e.preventDefault()}>
         <div className="mb-4 relative">
           <div

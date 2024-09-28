@@ -1,9 +1,8 @@
 import React from "react";
 import { useState, useEffect, useRef } from "react";
-import AvatarEditor from "react-avatar-editor";
-import Modal from "react-modal";
 import axios from "axios";
 import ImageUploader from "./ImageUploader";
+import ExperienceForm from "./ExperienceForm";
 
 const PortfolioForm = (props) => {
   // 判断当前显示哪一个form
@@ -215,12 +214,12 @@ const PortfolioForm = (props) => {
       <h2 className="text-xl font-bold mb-4 text-center text-black dark:text-white">
         My Portfolio of...
       </h2>
-      <div className="navbar m-0 w-full bg-gray-100 dark:bg-gray-800 flex rounded-md">
+      <div className="navbar m-0 w-full flex rounded-md">
         <a
           className={`btn text-xl w-1/2 flex justify-center py-2 transition-colors duration-300 ${
             useModelForm
               ? "bg-blue-500 text-white shadow-lg"
-              : "bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-blue-400 dark:hover:bg-gray-500"
+              : "bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-blue-400 dark:hover:bg-gray-500"
           }`}
           onClick={() => {
             setUseModelForm(true);
@@ -233,7 +232,7 @@ const PortfolioForm = (props) => {
           className={`btn text-xl w-1/2 flex justify-center py-2 transition-colors duration-300 ${
             usePhotographerForm
               ? "bg-blue-500 text-white shadow-lg"
-              : "bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-blue-400 dark:hover:bg-gray-500"
+              : "bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 hover:bg-blue-400 dark:hover:bg-gray-500"
           }`}
           onClick={() => {
             setUsePhotographerForm(true);
@@ -280,197 +279,30 @@ const PortfolioForm = (props) => {
 
       <form onSubmit={handleSubmit}>
         {useModelForm && (
-          <>
-            <div className="mt-10">
-              <h2 className="mb-5 font-bold text-black dark:text-white">
-                Level of experience:
-              </h2>
-              <select
-                className="select select-bordered w-full max-w-xs bg-white text-gray-800 dark:bg-gray-700 dark:text-gray-200"
-                value={modelExperience}
-                onChange={handleModelExperienceChange}
-              >
-                <option value="">Select your experience</option>
-                <option value="I just started!">I just started!</option>
-                <option value="< 1 year">&lt; 1 year</option>
-                <option value="1 - 3 years">1 - 3 years</option>
-                <option value="I'm a professional">I'm a professional</option>
-              </select>
-            </div>
-
-            <div className="mt-10">
-              <h2 className="mb-5 font-bold text-black dark:text-white">
-                I am looking for:
-              </h2>
-              <div className="flex items-center">
-                <h3 className="mr-2 text-black dark:text-white">
-                  Make friends & Network
-                </h3>
-                <input
-                  type="checkbox"
-                  value="Make friends & Network"
-                  onChange={handleModelLookingForChange}
-                  checked={modelLookingFor.includes("Make friends & Network")}
-                  className="checkbox border-gray-300 dark:border-gray-600"
-                />
-              </div>
-              <div className="flex items-center">
-                <h3 className="mr-2 text-black dark:text-white">
-                  Trade for Portfolio (mutually free)
-                </h3>
-                <input
-                  type="checkbox"
-                  value="Trade for Portfolio"
-                  onChange={handleModelLookingForChange}
-                  checked={modelLookingFor.includes("Trade for Portfolio")}
-                  className="checkbox border-gray-300 dark:border-gray-600"
-                />
-              </div>
-              <div className="flex items-center">
-                <h3 className="mr-2 text-black dark:text-white">
-                  An experienced photographer (I'm willing to pay)
-                </h3>
-                <input
-                  type="checkbox"
-                  value="An experienced photographer"
-                  onChange={handleModelLookingForChange}
-                  checked={modelLookingFor.includes(
-                    "An experienced photographer"
-                  )}
-                  className="checkbox border-gray-300 dark:border-gray-600"
-                />
-              </div>
-              <div className="flex items-center">
-                <h3 className="mr-2 text-black dark:text-white">
-                  Business Opportunity
-                </h3>
-                <input
-                  type="checkbox"
-                  value="Business Opportunity"
-                  onChange={handleModelLookingForChange}
-                  checked={modelLookingFor.includes("Business Opportunity")}
-                  className="checkbox border-gray-300 dark:border-gray-600"
-                />
-              </div>
-            </div>
-
-            <div className="mt-10">
-              <h2 className="mb-5 font-bold text-black dark:text-white">
-                Introduce yourself as a model:
-              </h2>
-              <textarea
-                className="textarea textarea-bordered textarea-md w-full bg-white text-gray-800 dark:bg-gray-700 dark:text-gray-200"
-                placeholder="Model Bio"
-                value={modelBio}
-                onChange={handleModelBioChange}
-                maxLength={250}
-              ></textarea>
-              <div className="text-right text-sm text-gray-500 dark:text-gray-400">
-                {modelBio.length}/{250} characters
-              </div>
-            </div>
-          </>
+          <ExperienceForm
+            experienceLevel={modelExperience}
+            lookingFor={modelLookingFor}
+            bio={modelBio}
+            handleExperienceChange={handleModelExperienceChange}
+            handleLookingForChange={handleModelLookingForChange}
+            handleBioChange={handleModelBioChange}
+            isModel={true}
+          />
         )}
 
         {usePhotographerForm && (
-          <>
-            <div className="mt-10">
-              <h2 className="mb-5 font-bold text-gray-800 dark:text-gray-200">
-                Level of experience:
-              </h2>
-              <select
-                className="select select-bordered w-full max-w-xs bg-white text-gray-800 dark:bg-gray-700 dark:text-gray-200"
-                value={photographerExperience}
-                onChange={handlePhotographerExperienceChange}
-              >
-                <option value="">Select your experience</option>
-                <option value="I just started!">I just started!</option>
-                <option value="< 1 year">&lt; 1 year</option>
-                <option value="1 - 3 years">1 - 3 years</option>
-                <option value="I'm a professional">I'm a professional</option>
-              </select>
-            </div>
-
-            <div className="mt-10">
-              <h2 className="mb-5 font-bold text-black dark:text-white">
-                I am looking for:
-              </h2>
-              <div className="flex items-center">
-                <h3 className="mr-2 text-black dark:text-white">
-                  Make friends & Network
-                </h3>
-                <input
-                  type="checkbox"
-                  value="Make friends & Network"
-                  onChange={handlePhotographerLookingForChange}
-                  checked={photographerLookingFor.includes(
-                    "Make friends & Network"
-                  )}
-                  className="checkbox border-gray-300 dark:border-gray-600"
-                />
-              </div>
-              <div className="flex items-center">
-                <h3 className="mr-2 text-black dark:text-white">
-                  Trade for Portfolio (mutually free)
-                </h3>
-                <input
-                  type="checkbox"
-                  value="Trade for Portfolio"
-                  onChange={handlePhotographerLookingForChange}
-                  checked={photographerLookingFor.includes(
-                    "Trade for Portfolio"
-                  )}
-                  className="checkbox border-gray-300 dark:border-gray-600"
-                />
-              </div>
-              <div className="flex items-center">
-                <h3 className="mr-2 text-black dark:text-white">
-                  A model with experiences
-                </h3>
-                <input
-                  type="checkbox"
-                  value="A model with experiences"
-                  onChange={handlePhotographerLookingForChange}
-                  checked={photographerLookingFor.includes(
-                    "A model with experiences"
-                  )}
-                  className="checkbox border-gray-300 dark:border-gray-600"
-                />
-              </div>
-              <div className="flex items-center">
-                <h3 className="mr-2 text-black dark:text-white">
-                  Business Opportunity
-                </h3>
-                <input
-                  type="checkbox"
-                  value="Business Opportunity"
-                  onChange={handlePhotographerLookingForChange}
-                  checked={photographerLookingFor.includes(
-                    "Business Opportunity"
-                  )}
-                  className="checkbox border-gray-300 dark:border-gray-600"
-                />
-              </div>
-            </div>
-
-            <div className="mt-10">
-              <h2 className="mb-5 font-bold text-black dark:text-white">
-                Introduce yourself as a Photographer:
-              </h2>
-              <textarea
-                className="textarea textarea-bordered textarea-md w-full bg-white text-gray-800 dark:bg-gray-700 dark:text-gray-200"
-                placeholder="Photographer Bio"
-                value={photographerBio}
-                onChange={handlePhotographerBioChange}
-                maxLength={250}
-              ></textarea>
-              <div className="text-right text-sm text-gray-500 dark:text-gray-400">
-                {photographerBio.length}/{250} characters
-              </div>
-            </div>
-          </>
+          <ExperienceForm
+            experienceLevel={photographerExperience}
+            lookingFor={photographerLookingFor}
+            bio={photographerBio}
+            handleExperienceChange={handlePhotographerExperienceChange}
+            handleLookingForChange={handlePhotographerLookingForChange}
+            handleBioChange={handlePhotographerBioChange}
+            isModel={false}
+          />
         )}
 
+        {/* Button for saving information changes*/}
         <div className="flex justify-center">
           <button className="btn btn-primary mt-4 w-1/2" type="submit">
             {useModelForm ? "Save Model Info" : "Save Photographer Info"}
@@ -478,7 +310,7 @@ const PortfolioForm = (props) => {
         </div>
 
         {successMessage && (
-          <div className="mt-4 text-green-500 dark:text-green-400 text-center">
+          <div className="mt-4 text-green dark:text-green text-center">
             {successMessage}
           </div>
         )}

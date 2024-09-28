@@ -136,8 +136,10 @@ const PersonalForm = (props) => {
 
   return (
     // <div className="bg-white p-6 w-full rounded-lg shadow-md">
-    <div className="bg-white p-6 w-full md:w-3/4 lg:w-2/3  rounded-lg shadow-md mx-auto">
-      <h2 className="text-xl font-bold mb-4 text-center">Personal Info</h2>
+    <div className="bg-white dark:bg-dark-gray p-6 w-full md:w-3/4 lg:w-2/3  rounded-lg shadow-md mx-auto">
+      <h2 className="dark:text-white text-xl font-bold mb-4 text-center">
+        Personal Info
+      </h2>
       <div className="avatar flex justify-center">
         <AvatarUpload profile={props.profile} onSave={handleAvatarSave} />
       </div>
@@ -148,7 +150,7 @@ const PersonalForm = (props) => {
             <div>
               <label
                 htmlFor="preferredName"
-                className="block text-gray-700 text-sm font-bold mb-2 mt-2"
+                className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
               >
                 *First Name
               </label>
@@ -164,7 +166,7 @@ const PersonalForm = (props) => {
             <div>
               <label
                 htmlFor="lastName"
-                className="block text-gray-700 text-sm font-bold mb-2 mt-2"
+                className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
               >
                 *Last Name
               </label>
@@ -180,7 +182,7 @@ const PersonalForm = (props) => {
             <div>
               <label
                 htmlFor="pronouns"
-                className="block text-gray-700 text-sm font-bold mb-2 mt-2"
+                className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
               >
                 Pronouns
               </label>
@@ -197,7 +199,7 @@ const PersonalForm = (props) => {
 
           <label
             htmlFor="email"
-            className="block text-gray-700 text-sm font-bold mb-2 mt-2"
+            className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
           >
             *Email
           </label>
@@ -212,7 +214,7 @@ const PersonalForm = (props) => {
           <div>
             <label
               htmlFor="birthday"
-              className="block text-gray-700 text-sm font-bold mb-2 mt-2"
+              className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
             >
               Birthday
             </label>
@@ -228,7 +230,7 @@ const PersonalForm = (props) => {
           <div>
             <label
               htmlFor="zipcode"
-              className="block text-gray-700 text-sm font-bold mb-2 mt-2"
+              className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
             >
               Zipcode
             </label>
@@ -246,7 +248,7 @@ const PersonalForm = (props) => {
           <div>
             <label
               htmlFor="location"
-              className="block text-gray-700 text-sm font-bold mb-2 mt-2"
+              className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
             >
               Area of Activity
             </label>
@@ -261,13 +263,15 @@ const PersonalForm = (props) => {
             />
           </div>
 
-          <h2 className="text-xl font-bold mt-8 text-center">Contact</h2>
+          <h2 className="text-xl font-bold mt-8 text-center dark:text-white ">
+            Contact
+          </h2>
 
           {/** Phone Number电话号码 */}
           <div>
             <label
               htmlFor="phone"
-              className="block text-gray-700 text-sm font-bold mb-2 mt-2"
+              className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
             >
               Phone Number
             </label>
@@ -281,7 +285,9 @@ const PersonalForm = (props) => {
                 className="border w-full rounded py-2 px-3 leading-tight bg-dark-gray mr-3 text-white"
               />
               <div className="flex items-center">
-                <div className="font-bold mr-2">Show on Profile Card</div>
+                <div className="dark:text-white font-bold mr-2">
+                  Show on Profile Card
+                </div>
                 <input
                   type="checkbox"
                   name="phoneNumber_preferred"
@@ -297,7 +303,7 @@ const PersonalForm = (props) => {
           <div>
             <label
               htmlFor="instagram"
-              className="block text-gray-700 text-sm font-bold mb-2 mt-2"
+              className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
             >
               Instagram
             </label>
@@ -310,7 +316,9 @@ const PersonalForm = (props) => {
                 className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3 text-white"
               />
               <div className="flex items-center">
-                <div className="font-bold mr-2">Show on Profile Card</div>
+                <div className="font-bold mr-2 dark:text-white">
+                  Show on Profile Card
+                </div>
                 <input
                   type="checkbox"
                   name="instagram_preferred"
@@ -326,7 +334,7 @@ const PersonalForm = (props) => {
           <div>
             <label
               htmlFor="linkedin"
-              className="block text-gray-700 text-sm font-bold mb-2 mt-2"
+              className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
             >
               LinkedIn
             </label>
@@ -339,7 +347,9 @@ const PersonalForm = (props) => {
                 className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3 text-white"
               />
               <div className="flex items-center">
-                <div className="font-bold mr-2">Show on Profile Card</div>
+                <div className="font-bold mr-2 dark:text-white ">
+                  Show on Profile Card
+                </div>
                 <input
                   type="checkbox"
                   name="linkedin_preferred"
@@ -355,7 +365,7 @@ const PersonalForm = (props) => {
           <div>
             <label
               htmlFor="facebook"
-              className="block text-gray-700 text-sm font-bold mb-2 mt-2"
+              className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
             >
               Facebook
             </label>
@@ -368,7 +378,9 @@ const PersonalForm = (props) => {
                 className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3 text-white"
               />
               <div className="flex items-center">
-                <div className="font-bold mr-2">Show on Profile Card</div>
+                <div className="font-bold mr-2 dark:text-white ">
+                  Show on Profile Card
+                </div>
                 <input
                   type="checkbox"
                   name="facebook_preferred"
@@ -384,7 +396,7 @@ const PersonalForm = (props) => {
           <div>
             <label
               htmlFor="twitter"
-              className="block text-gray-700 text-sm font-bold mb-2 mt-2"
+              className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
             >
               X
             </label>
@@ -397,7 +409,9 @@ const PersonalForm = (props) => {
                 className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3 text-white"
               />
               <div className="flex items-center">
-                <div className="font-bold mr-2">Show on Profile Card</div>
+                <div className="font-bold mr-2 dark:text-white ">
+                  Show on Profile Card
+                </div>
                 <input
                   type="checkbox"
                   name="twitter_preferred"
@@ -414,7 +428,7 @@ const PersonalForm = (props) => {
         <div className="flex justify-center mt-4">
           <button
             type="submit"
-            className="bg-dark-gray text-white py-2 px-4 rounded hover:bg-blue-700 "
+            className="bg-dark-gray dark:bg-gray-400 text-white py-2 px-4 rounded hover:bg-blue-300 dark:hover:bg-green-500"
           >
             Save
           </button>
