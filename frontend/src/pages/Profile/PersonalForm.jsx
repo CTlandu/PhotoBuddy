@@ -1,8 +1,9 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import Session from "supertokens-auth-react/recipe/session";
 import axios from "axios";
 import AvatarUpload from "./AvatarUpload";
+import SocialMedia from "./SocialMedia";
+import BasicInfo from "./BasicInfo";
 
 const PersonalForm = (props) => {
   /**
@@ -135,338 +136,35 @@ const PersonalForm = (props) => {
   };
 
   return (
-    // <div className="bg-white p-6 w-full rounded-lg shadow-md">
-    <div className="bg-white dark:bg-dark-gray p-6 w-full md:w-3/4 lg:w-2/3  rounded-lg shadow-md mx-auto">
-      <h2 className="dark:text-white text-xl font-bold mb-4 text-center">
-        Personal Info
-      </h2>
-      <div className="avatar flex justify-center">
-        <AvatarUpload profile={props.profile} onSave={handleAvatarSave} />
-      </div>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-6">
-          {/* 把三个信息并排显示 */}
-          <div className="flex flex-row justify-between items-center">
-            <div>
-              <label
-                htmlFor="preferredName"
-                className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
-              >
-                *First Name
-              </label>
-              <input
-                type="text"
-                name="preferredName"
-                value={formData.preferredName}
-                onChange={handleChange}
-                maxLength="20"
-                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray text-white"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="lastName"
-                className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
-              >
-                *Last Name
-              </label>
-              <input
-                type="text"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                maxLength="20" // 限制输入长度为20个字符
-                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray text-white"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="pronouns"
-                className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
-              >
-                Pronouns
-              </label>
-              <input
-                type="text"
-                name="pronouns"
-                value={formData.pronouns}
-                onChange={handleChange}
-                maxLength="10" // 限制输入长度为20个字符
-                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray text-white"
-              />
-            </div>
-          </div>
+    <>
+      <div className="bg-white dark:bg-dark-gray p-6 w-full md:w-3/4 lg:w-2/3 rounded-lg shadow-md mx-auto">
+        <h2 className="dark:text-white text-xl font-bold mb-4 text-center">
+          Personal Info
+        </h2>
 
-          <label
-            htmlFor="email"
-            className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
-          >
-            *Email
-          </label>
-          <input
-            value={formData.email}
-            type="text"
-            name="email"
-            readOnly
-            className="border w-full rounded py-2 px-3 leading-tight bg-dark-gray mr-3 text-white"
+        <div className="avatar flex justify-center">
+          <AvatarUpload profile={props.profile} onSave={handleAvatarSave} />
+        </div>
+
+        <form onSubmit={handleSubmit}>
+          <BasicInfo formData={formData} handleChange={handleChange} />
+          <SocialMedia
+            contact={formData.contact}
+            handleChange={handleChange}
+            handleCheckboxChange={handleCheckboxChange}
           />
 
-          <div>
-            <label
-              htmlFor="birthday"
-              className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
+          <div className="flex justify-center mt-4">
+            <button
+              type="submit"
+              className="bg-dark-gray dark:bg-gray-400 text-white py-2 px-4 rounded hover:bg-blue-300 dark:hover:bg-green-500"
             >
-              Birthday
-            </label>
-            <input
-              type="date"
-              name="birthday"
-              value={formData.birthday}
-              onChange={handleChange}
-              className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3 text-white"
-            />
+              Save
+            </button>
           </div>
-
-          <div>
-            <label
-              htmlFor="zipcode"
-              className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
-            >
-              Zipcode
-            </label>
-            <input
-              type="number"
-              name="zipcode"
-              value={formData.zipcode}
-              onChange={handleChange}
-              min="00501"
-              max="99950"
-              className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray text-white"
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="location"
-              className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
-            >
-              Area of Activity
-            </label>
-            <input
-              type="number"
-              name="zipcode"
-              value={formData.zipcode}
-              onChange={handleChange}
-              min="00501"
-              max="99950"
-              className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray text-white"
-            />
-          </div>
-
-          <h2 className="text-xl font-bold mt-8 text-center dark:text-white ">
-            Contact
-          </h2>
-
-          {/** Phone Number电话号码 */}
-          {/* <div>
-            <label
-              htmlFor="phone"
-              className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
-            >
-              Phone Number
-            </label>
-            <div className="flex items-center">
-              <input
-                value={formData.contact.phoneNumber}
-                type="text"
-                name="contact.phoneNumber"
-                onChange={handleChange}
-                maxLength={10}
-                className="border w-full rounded py-2 px-3 leading-tight bg-dark-gray mr-3 text-white"
-              />
-              <div className="flex items-center">
-                <div className="dark:text-white font-bold mr-2">
-                  Show on Profile Card
-                </div>
-                <input
-                  type="checkbox"
-                  name="phoneNumber_preferred"
-                  checked={formData.contact.phoneNumber_preferred}
-                  onChange={handleCheckboxChange}
-                  className="checkbox border-gray"
-                />
-              </div>
-            </div>
-          </div> */}
-
-          {/** Instagram */}
-          <div>
-            <label
-              htmlFor="instagram"
-              className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
-            >
-              Instagram
-            </label>
-            <div className="flex items-center justify-between">
-              {/* Instagram base URL and input */}
-              <div className="flex items-center w-3/4">
-                <span className="text-gray-500 dark:text-gray-400">
-                  https://www.instagram.com/
-                </span>
-                <input
-                  value={formData.contact.instagram} // This should only hold the ID part, not the full URL
-                  type="text"
-                  name="contact.instagram"
-                  onChange={handleChange}
-                  className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray text-white"
-                  placeholder="Your Instagram ID"
-                />
-              </div>
-              {/* Show on Profile Card */}
-              <div className="flex items-center ml-4">
-                <div className="font-bold mr-2 dark:text-white">
-                  Show on Profile Card
-                </div>
-                <input
-                  type="checkbox"
-                  name="instagram_preferred"
-                  checked={formData.contact.instagram_preferred}
-                  onChange={handleCheckboxChange}
-                  className="checkbox border-gray"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/** LinkedIn */}
-          <div>
-            <label
-              htmlFor="linkedin"
-              className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
-            >
-              LinkedIn
-            </label>
-            <div className="flex items-center justify-between">
-              {/* LinkedIn base URL and input */}
-              <div className="flex items-center w-3/4">
-                <span className="text-gray-500 dark:text-gray-400">
-                  https://www.linkedin.com/in/
-                </span>
-                <input
-                  value={formData.contact.linkedin} // This should only hold the ID part, not the full URL
-                  type="text"
-                  name="contact.linkedin"
-                  onChange={handleChange}
-                  className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray text-white"
-                  placeholder="Your LinkedIn ID"
-                />
-              </div>
-              {/* Show on Profile Card */}
-              <div className="flex items-center ml-4">
-                <div className="font-bold mr-2 dark:text-white">
-                  Show on Profile Card
-                </div>
-                <input
-                  type="checkbox"
-                  name="linkedin_preferred"
-                  checked={formData.contact.linkedin_preferred}
-                  onChange={handleCheckboxChange}
-                  className="checkbox border-gray"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/** Facebook */}
-          <div>
-            <label
-              htmlFor="facebook"
-              className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
-            >
-              Facebook
-            </label>
-            <div className="flex items-center justify-between">
-              {/* Facebook base URL and input */}
-              <div className="flex items-center w-3/4">
-                <span className="text-gray-500 dark:text-gray-400">
-                  https://www.facebook.com/
-                </span>
-                <input
-                  value={formData.contact.facebook} // Only hold the Facebook ID or username
-                  type="text"
-                  name="contact.facebook"
-                  onChange={handleChange}
-                  className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray text-white"
-                  placeholder="Your Facebook ID or Username"
-                />
-              </div>
-              {/* Show on Profile Card */}
-              <div className="flex items-center ml-4">
-                <div className="font-bold mr-2 dark:text-white">
-                  Show on Profile Card
-                </div>
-                <input
-                  type="checkbox"
-                  name="facebook_preferred"
-                  checked={formData.contact.facebook_preferred}
-                  onChange={handleCheckboxChange}
-                  className="checkbox border-gray"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/** Twitter(X) */}
-          <div>
-            <label
-              htmlFor="twitter"
-              className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
-            >
-              X
-            </label>
-            <div className="flex items-center justify-between">
-              {/* Twitter(X) base URL and input */}
-              <div className="flex items-center w-3/4">
-                <span className="text-gray-500 dark:text-gray-400">
-                  https://X.com/
-                </span>
-                <input
-                  value={formData.contact.twitter} // Only holds the Twitter username
-                  type="text"
-                  name="contact.twitter"
-                  onChange={handleChange}
-                  className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray text-white"
-                  placeholder="Your Twitter Username"
-                />
-              </div>
-              {/* Show on Profile Card */}
-              <div className="flex items-center ml-4">
-                <div className="font-bold mr-2 dark:text-white">
-                  Show on Profile Card
-                </div>
-                <input
-                  type="checkbox"
-                  name="twitter_preferred"
-                  checked={formData.contact.twitter_preferred}
-                  onChange={handleCheckboxChange}
-                  className="checkbox border-gray"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Other input fields */}
-        <div className="flex justify-center mt-4">
-          <button
-            type="submit"
-            className="bg-dark-gray dark:bg-gray-400 text-white py-2 px-4 rounded hover:bg-blue-300 dark:hover:bg-green-500"
-          >
-            Save
-          </button>
-        </div>
-      </form>
-    </div>
+        </form>
+      </div>
+    </>
   );
 };
 
