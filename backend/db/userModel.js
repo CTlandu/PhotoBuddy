@@ -15,8 +15,8 @@ const PhotographerInfoSchema = new mongoose.Schema({
 });
 
 const ContactSchema = new mongoose.Schema({
-  phoneNumber: { type: String, default: null },
-  phoneNumber_preferred: { type: Boolean, default: false },
+  // phoneNumber: { type: String, default: null },
+  // phoneNumber_preferred: { type: Boolean, default: false },
   instagram: { type: String, default: null },
   instagram_preferred: { type: Boolean, default: false },
   linkedin: { type: String, default: null },

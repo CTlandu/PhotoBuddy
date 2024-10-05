@@ -268,7 +268,7 @@ const PersonalForm = (props) => {
           </h2>
 
           {/** Phone Number电话号码 */}
-          <div>
+          {/* <div>
             <label
               htmlFor="phone"
               className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
@@ -297,7 +297,7 @@ const PersonalForm = (props) => {
                 />
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/** Instagram */}
           <div>
@@ -307,15 +307,23 @@ const PersonalForm = (props) => {
             >
               Instagram
             </label>
-            <div className="flex items-center">
-              <input
-                value={formData.contact.instagram}
-                type="url"
-                name="contact.instagram"
-                onChange={handleChange}
-                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3 text-white"
-              />
-              <div className="flex items-center">
+            <div className="flex items-center justify-between">
+              {/* Instagram base URL and input */}
+              <div className="flex items-center w-3/4">
+                <span className="text-gray-500 dark:text-gray-400">
+                  https://www.instagram.com/
+                </span>
+                <input
+                  value={formData.contact.instagram} // This should only hold the ID part, not the full URL
+                  type="text"
+                  name="contact.instagram"
+                  onChange={handleChange}
+                  className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray text-white"
+                  placeholder="Your Instagram ID"
+                />
+              </div>
+              {/* Show on Profile Card */}
+              <div className="flex items-center ml-4">
                 <div className="font-bold mr-2 dark:text-white">
                   Show on Profile Card
                 </div>
@@ -338,16 +346,24 @@ const PersonalForm = (props) => {
             >
               LinkedIn
             </label>
-            <div className="flex items-center">
-              <input
-                value={formData.contact.linkedin}
-                type="url"
-                name="contact.linkedin"
-                onChange={handleChange}
-                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3 text-white"
-              />
-              <div className="flex items-center">
-                <div className="font-bold mr-2 dark:text-white ">
+            <div className="flex items-center justify-between">
+              {/* LinkedIn base URL and input */}
+              <div className="flex items-center w-3/4">
+                <span className="text-gray-500 dark:text-gray-400">
+                  https://www.linkedin.com/in/
+                </span>
+                <input
+                  value={formData.contact.linkedin} // This should only hold the ID part, not the full URL
+                  type="text"
+                  name="contact.linkedin"
+                  onChange={handleChange}
+                  className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray text-white"
+                  placeholder="Your LinkedIn ID"
+                />
+              </div>
+              {/* Show on Profile Card */}
+              <div className="flex items-center ml-4">
+                <div className="font-bold mr-2 dark:text-white">
                   Show on Profile Card
                 </div>
                 <input
@@ -369,16 +385,24 @@ const PersonalForm = (props) => {
             >
               Facebook
             </label>
-            <div className="flex items-center">
-              <input
-                value={formData.contact.facebook}
-                type="url"
-                name="contact.facebook"
-                onChange={handleChange}
-                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3 text-white"
-              />
-              <div className="flex items-center">
-                <div className="font-bold mr-2 dark:text-white ">
+            <div className="flex items-center justify-between">
+              {/* Facebook base URL and input */}
+              <div className="flex items-center w-3/4">
+                <span className="text-gray-500 dark:text-gray-400">
+                  https://www.facebook.com/
+                </span>
+                <input
+                  value={formData.contact.facebook} // Only hold the Facebook ID or username
+                  type="text"
+                  name="contact.facebook"
+                  onChange={handleChange}
+                  className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray text-white"
+                  placeholder="Your Facebook ID or Username"
+                />
+              </div>
+              {/* Show on Profile Card */}
+              <div className="flex items-center ml-4">
+                <div className="font-bold mr-2 dark:text-white">
                   Show on Profile Card
                 </div>
                 <input
@@ -400,16 +424,24 @@ const PersonalForm = (props) => {
             >
               X
             </label>
-            <div className="flex items-center">
-              <input
-                value={formData.contact.twitter}
-                type="url"
-                name="contact.twitter"
-                onChange={handleChange}
-                className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3 text-white"
-              />
-              <div className="flex items-center">
-                <div className="font-bold mr-2 dark:text-white ">
+            <div className="flex items-center justify-between">
+              {/* Twitter(X) base URL and input */}
+              <div className="flex items-center w-3/4">
+                <span className="text-gray-500 dark:text-gray-400">
+                  https://X.com/
+                </span>
+                <input
+                  value={formData.contact.twitter} // Only holds the Twitter username
+                  type="text"
+                  name="contact.twitter"
+                  onChange={handleChange}
+                  className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray text-white"
+                  placeholder="Your Twitter Username"
+                />
+              </div>
+              {/* Show on Profile Card */}
+              <div className="flex items-center ml-4">
+                <div className="font-bold mr-2 dark:text-white">
                   Show on Profile Card
                 </div>
                 <input
