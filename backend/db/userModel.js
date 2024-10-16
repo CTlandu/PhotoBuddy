@@ -15,8 +15,8 @@ const PhotographerInfoSchema = new mongoose.Schema({
 });
 
 const ContactSchema = new mongoose.Schema({
-  phoneNumber: { type: String, default: null },
-  phoneNumber_preferred: { type: Boolean, default: false },
+  // phoneNumber: { type: String, default: null },
+  // phoneNumber_preferred: { type: Boolean, default: false },
   instagram: { type: String, default: null },
   instagram_preferred: { type: Boolean, default: false },
   linkedin: { type: String, default: null },
@@ -27,31 +27,45 @@ const ContactSchema = new mongoose.Schema({
   facebook_preferred: { type: Boolean, default: false },
 });
 
-const UserSchema = new mongoose.Schema({
-  // identifier
-  id: { type: String, required: [true, "please provide an id"], unique: [true, "id already exists!"] },
-  email: { type: String, required: [true, "please provide an email!"] },
+const UserSchema = new mongoose.Schema(
+  {
+    // identifier
+    id: {
+      type: String,
+      required: [true, "please provide an id"],
+      unique: [true, "id already exists!"],
+    },
+    email: { type: String, required: [true, "please provide an email!"] },
 
-  timeJoined: { type: Date, default: null },
-  preferredName: { type: String, default: null },
-  lastName: { type: String, default: null },
-  pronouns: { type: String, default: null },
-  birthday: { type: Date, default: null },
-  zipcode: { type: String, default: null },
+    timeJoined: { type: Date, default: null },
+    preferredName: { type: String, default: null },
+    lastName: { type: String, default: null },
+    pronouns: { type: String, default: null },
+    birthday: { type: Date, default: null },
+    zipcode: { type: String, default: null },
+    addresses: [
+      {
+        formattedAddress: String,
+        placeId: String,
+        lat: Number,
+        lng: Number,
+      },
+    ],
 
-  // 头像
-  avatar: { type: String, default: null },
+    // 头像
+    avatar: { type: String, default: null },
 
-  // Contact
-  contact: { type: ContactSchema, default: {} },
+    // Contact
+    contact: { type: ContactSchema, default: {} },
 
-  // consolidated model info
-  model_info: { type: ModelInfoSchema, default: {} },
+    // consolidated model info
+    model_info: { type: ModelInfoSchema, default: {} },
 
-  // consolidated photographer info
-  photographer_info: { type: PhotographerInfoSchema, default: {} },
-
-}, { timestamps: true });
+    // consolidated photographer info
+    photographer_info: { type: PhotographerInfoSchema, default: {} },
+  },
+  { timestamps: true }
+);
 
 // "create a user table or collection if there is no table with that name already".
 module.exports = mongoose.models.User || mongoose.model("User", UserSchema);

@@ -138,7 +138,7 @@ const PhotographerCard = (props) => {
                 {profile.contact.instagram_preferred && (
                   <p>
                     <a
-                      href={profile.contact.instagram}
+                      href={`https://www.instagram.com/${profile.contact.instagram}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-green hover:underline"
@@ -151,7 +151,7 @@ const PhotographerCard = (props) => {
                 {profile.contact.linkedin_preferred && (
                   <p>
                     <a
-                      href={profile.contact.linkedin}
+                      href={`https://www.linkedin.com/in/${profile.contact.linkedin}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-green hover:underline"
@@ -164,7 +164,7 @@ const PhotographerCard = (props) => {
                 {profile.contact.twitter_preferred && (
                   <p>
                     <a
-                      href={profile.contact.twitter}
+                      href={`https://www.X.com/${profile.contact.twitter}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-green hover:underline"
@@ -177,7 +177,7 @@ const PhotographerCard = (props) => {
                 {profile.contact.facebook_preferred && (
                   <p>
                     <a
-                      href={profile.contact.facebook}
+                      href={`https://www.facebook.com/${profile.contact.facebook}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-green hover:underline"

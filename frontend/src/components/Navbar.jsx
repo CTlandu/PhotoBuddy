@@ -184,6 +184,9 @@ const Navbar = ({ token }) => {
                         <a href="/portfolio">Portfolio</a>
                       </li>
                       <li>
+                        <a href="/usersettings">Settings</a>
+                      </li>
+                      <li>
                         <button onClick={onLogout}>Logout</button>
                       </li>
                     </ul>

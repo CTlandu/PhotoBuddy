@@ -29,6 +29,7 @@ import FindMatches from "./pages/FindMatches/FindMatches";
 import About from "./pages/About/About";
 import CookieConsent from "./components/CookieConsent";
 import Test from "./pages/Test";
+import User_Settings from "./pages/User_Settings/User_Settings";
 
 // const APP_NAME = import.meta.env.VITE_APP_NAME;
 // const API_DOMAIN = import.meta.env.VITE_APP_API_DOMAIN;
@@ -203,6 +204,14 @@ function App() {
               element={
                 <SessionAuth>
                   <Portfolio token={accessToken} />
+                </SessionAuth>
+              }
+            ></Route>
+            <Route
+              path="/usersettings"
+              element={
+                <SessionAuth>
+                  <User_Settings token={accessToken} />
                 </SessionAuth>
               }
             ></Route>
