@@ -11,6 +11,15 @@ const BasicInfo = ({ formData, handleChange, setFormData }) => {
     }));
   }, [addresses, setFormData]);
 
+  // 计算年龄的函数
+  const calculateAge = (birthday) => {
+    const ageDifMs = Date.now() - new Date(birthday).getTime();
+    const ageDate = new Date(ageDifMs);
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+  };
+
+  const age = formData.birthday ? calculateAge(formData.birthday) : null;
+
   return (
     <div className="mb-6">
       <div className="flex flex-row justify-between items-center">
@@ -69,53 +78,74 @@ const BasicInfo = ({ formData, handleChange, setFormData }) => {
         </div>
       </div>
 
-      {/* Email, Birthday, Zipcode 等其他基本信息字段 */}
-      <label
-        htmlFor="email"
-        className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
-      >
-        *Email
-      </label>
-      <input
-        value={formData.email}
-        type="text"
-        name="email"
-        readOnly
-        className="border w-full rounded py-2 px-3 leading-tight bg-dark-gray mr-3 text-white"
-      />
+      {/* Email */}
+      <div className="mb-4">
+        <label
+          htmlFor="email"
+          className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
+        >
+          *Email
+        </label>
+        <div className="flex flex-col sm:flex-row items-start sm:items-center">
+          <input
+            value={formData.email}
+            type="text"
+            name="email"
+            readOnly
+            className="border rounded py-2 px-3 leading-tight bg-dark-gray text-white w-full sm:w-auto flex-grow mb-2 sm:mb-0"
+          />
+          <div className="flex items-center sm:ml-4 w-full sm:w-auto justify-start sm:justify-end">
+            <label
+              htmlFor="showEmailOnCard"
+              className="dark:text-white whitespace-nowrap font-bold mr-2"
+            >
+              Show Email on Profile Card
+            </label>
+            <input
+              type="checkbox"
+              id="showEmailOnCard"
+              name="showEmailOnCard"
+              checked={formData.showEmailOnCard}
+              onChange={handleChange}
+              className="checkbox border-gray"
+            />
+          </div>
+        </div>
+      </div>
 
-      <div>
+      {/* Birthday */}
+      <div className="mb-4">
         <label
           htmlFor="birthday"
           className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
         >
           Birthday
         </label>
-        <input
-          type="date"
-          name="birthday"
-          value={formData.birthday}
-          onChange={handleChange}
-          className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray mr-3 text-white"
-        />
-      </div>
-
-      <div>
-        <label
-          htmlFor="zipcode"
-          className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
-        >
-          Zipcode
-        </label>
-        <input
-          type="number"
-          name="zipcode"
-          value={formData.zipcode}
-          onChange={handleChange}
-          min="00501"
-          max="99950"
-          className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray text-white"
-        />
+        <div className="flex flex-col sm:flex-row items-start sm:items-center">
+          <input
+            type="date"
+            name="birthday"
+            value={formData.birthday}
+            onChange={handleChange}
+            className="border rounded py-2 px-3 leading-tight bg-dark-gray text-white w-full sm:w-auto flex-grow mb-2 sm:mb-0"
+          />
+          <div className="flex items-center sm:ml-4 w-full sm:w-auto justify-start sm:justify-end">
+            <label
+              htmlFor="showAgeOnCard"
+              className="dark:text-white whitespace-nowrap font-bold mr-2"
+            >
+              Show Age {age ? `(${age})` : ""} on Profile Card
+            </label>
+            <input
+              type="checkbox"
+              id="showAgeOnCard"
+              name="showAgeOnCard"
+              checked={formData.showAgeOnCard}
+              onChange={handleChange}
+              className="checkbox border-gray"
+            />
+          </div>
+        </div>
       </div>
 
       {/* Address Autocomplete */}

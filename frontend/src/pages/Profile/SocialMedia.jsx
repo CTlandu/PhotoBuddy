@@ -15,9 +15,9 @@ const SocialMedia = ({ contact, handleChange, handleCheckboxChange }) => {
         >
           Instagram
         </label>
-        <div className="flex items-center justify-between">
-          <div className="flex items-center w-3/4">
-            <span className="text-gray-500 dark:text-gray-400">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
+          <div className="flex items-center w-full sm:w-3/4 mb-2 sm:mb-0">
+            <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">
               https://www.instagram.com/
             </span>
             <input
@@ -29,23 +29,24 @@ const SocialMedia = ({ contact, handleChange, handleCheckboxChange }) => {
               placeholder="Your Instagram ID"
             />
           </div>
-          <div className="flex items-center ml-4">
-            <div className="font-bold mr-2 dark:text-white">
-              Show on Profile Card
-            </div>
-            <input
-              type="checkbox"
-              name="instagram_preferred"
-              checked={contact.instagram_preferred}
-              onChange={handleCheckboxChange}
-              className="checkbox border-gray"
-            />
+          <div className="flex items-center w-full sm:w-auto sm:ml-4">
+            <label className="flex items-center cursor-pointer">
+              <span className="font-bold mr-2 dark:text-white whitespace-nowrap">
+                Show on Profile Card
+              </span>
+              <input
+                type="checkbox"
+                name="instagram_preferred"
+                checked={contact.instagram_preferred}
+                onChange={handleCheckboxChange}
+                className="checkbox border-gray"
+              />
+            </label>
           </div>
         </div>
       </div>
 
-      {/* LinkedIn, Facebook, Twitter 类似结构 */}
-      {/** LinkedIn */}
+      {/* LinkedIn */}
       <div>
         <label
           htmlFor="linkedin"
@@ -53,14 +54,13 @@ const SocialMedia = ({ contact, handleChange, handleCheckboxChange }) => {
         >
           LinkedIn
         </label>
-        <div className="flex items-center justify-between">
-          {/* LinkedIn base URL and input */}
-          <div className="flex items-center w-3/4">
-            <span className="text-gray-500 dark:text-gray-400">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
+          <div className="flex items-center w-full sm:w-3/4 mb-2 sm:mb-0">
+            <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">
               https://www.linkedin.com/in/
             </span>
             <input
-              value={contact.linkedin} // This should only hold the ID part, not the full URL
+              value={contact.linkedin}
               type="text"
               name="contact.linkedin"
               onChange={handleChange}
@@ -68,23 +68,24 @@ const SocialMedia = ({ contact, handleChange, handleCheckboxChange }) => {
               placeholder="Your LinkedIn ID"
             />
           </div>
-          {/* Show on Profile Card */}
-          <div className="flex items-center ml-4">
-            <div className="font-bold mr-2 dark:text-white">
-              Show on Profile Card
-            </div>
-            <input
-              type="checkbox"
-              name="linkedin_preferred"
-              checked={contact.linkedin_preferred}
-              onChange={handleCheckboxChange}
-              className="checkbox border-gray"
-            />
+          <div className="flex items-center w-full sm:w-auto sm:ml-4">
+            <label className="flex items-center cursor-pointer">
+              <span className="font-bold mr-2 dark:text-white whitespace-nowrap">
+                Show on Profile Card
+              </span>
+              <input
+                type="checkbox"
+                name="linkedin_preferred"
+                checked={contact.linkedin_preferred}
+                onChange={handleCheckboxChange}
+                className="checkbox border-gray"
+              />
+            </label>
           </div>
         </div>
       </div>
 
-      {/** Facebook */}
+      {/* Facebook */}
       <div>
         <label
           htmlFor="facebook"
@@ -92,14 +93,13 @@ const SocialMedia = ({ contact, handleChange, handleCheckboxChange }) => {
         >
           Facebook
         </label>
-        <div className="flex items-center justify-between">
-          {/* Facebook base URL and input */}
-          <div className="flex items-center w-3/4">
-            <span className="text-gray-500 dark:text-gray-400">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
+          <div className="flex items-center w-full sm:w-3/4 mb-2 sm:mb-0">
+            <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">
               https://www.facebook.com/
             </span>
             <input
-              value={contact.facebook} // Only hold the Facebook ID or username
+              value={contact.facebook}
               type="text"
               name="contact.facebook"
               onChange={handleChange}
@@ -107,23 +107,24 @@ const SocialMedia = ({ contact, handleChange, handleCheckboxChange }) => {
               placeholder="Your Facebook ID or Username"
             />
           </div>
-          {/* Show on Profile Card */}
-          <div className="flex items-center ml-4">
-            <div className="font-bold mr-2 dark:text-white">
-              Show on Profile Card
-            </div>
-            <input
-              type="checkbox"
-              name="facebook_preferred"
-              checked={contact.facebook_preferred}
-              onChange={handleCheckboxChange}
-              className="checkbox border-gray"
-            />
+          <div className="flex items-center w-full sm:w-auto sm:ml-4">
+            <label className="flex items-center cursor-pointer">
+              <span className="font-bold mr-2 dark:text-white whitespace-nowrap">
+                Show on Profile Card
+              </span>
+              <input
+                type="checkbox"
+                name="facebook_preferred"
+                checked={contact.facebook_preferred}
+                onChange={handleCheckboxChange}
+                className="checkbox border-gray"
+              />
+            </label>
           </div>
         </div>
       </div>
 
-      {/** Twitter(X) */}
+      {/* Twitter(X) */}
       <div>
         <label
           htmlFor="twitter"
@@ -131,14 +132,13 @@ const SocialMedia = ({ contact, handleChange, handleCheckboxChange }) => {
         >
           X
         </label>
-        <div className="flex items-center justify-between">
-          {/* Twitter(X) base URL and input */}
-          <div className="flex items-center w-3/4">
-            <span className="text-gray-500 dark:text-gray-400">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
+          <div className="flex items-center w-full sm:w-3/4 mb-2 sm:mb-0">
+            <span className="text-gray-500 dark:text-gray-400 text-sm sm:text-base">
               https://X.com/
             </span>
             <input
-              value={contact.twitter} // Only holds the Twitter username
+              value={contact.twitter}
               type="text"
               name="contact.twitter"
               onChange={handleChange}
@@ -146,18 +146,19 @@ const SocialMedia = ({ contact, handleChange, handleCheckboxChange }) => {
               placeholder="Your Twitter Username"
             />
           </div>
-          {/* Show on Profile Card */}
-          <div className="flex items-center ml-4">
-            <div className="font-bold mr-2 dark:text-white">
-              Show on Profile Card
-            </div>
-            <input
-              type="checkbox"
-              name="twitter_preferred"
-              checked={contact.twitter_preferred}
-              onChange={handleCheckboxChange}
-              className="checkbox border-gray"
-            />
+          <div className="flex items-center w-full sm:w-auto sm:ml-4">
+            <label className="flex items-center cursor-pointer">
+              <span className="font-bold mr-2 dark:text-white whitespace-nowrap">
+                Show on Profile Card
+              </span>
+              <input
+                type="checkbox"
+                name="twitter_preferred"
+                checked={contact.twitter_preferred}
+                onChange={handleCheckboxChange}
+                className="checkbox border-gray"
+              />
+            </label>
           </div>
         </div>
       </div>

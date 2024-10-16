@@ -36,13 +36,14 @@ const UserSchema = new mongoose.Schema(
       unique: [true, "id already exists!"],
     },
     email: { type: String, required: [true, "please provide an email!"] },
+    showEmailOnCard: { type: Boolean, default: false },
 
     timeJoined: { type: Date, default: null },
     preferredName: { type: String, default: null },
     lastName: { type: String, default: null },
     pronouns: { type: String, default: null },
     birthday: { type: Date, default: null },
-    zipcode: { type: String, default: null },
+    showAgeOnCard: { type: Boolean, default: false },
     addresses: [
       {
         formattedAddress: String,

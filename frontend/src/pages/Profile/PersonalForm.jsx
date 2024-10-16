@@ -21,12 +21,13 @@ const PersonalForm = (props) => {
   const [formData, setFormData] = useState({
     id: props.profile.id || "", // 从 props 中获取用户 ID
     email: props.profile.email || "", // 从 props 中获取用户邮箱
+    showEmailOnCard: props.profile.showEmailOnCard || false,
 
     preferredName: props.profile.preferredName || "",
     lastName: props.profile.lastName || "",
     pronouns: props.profile.pronouns || "",
     birthday: props.profile.birthday ? formatDate(props.profile.birthday) : "",
-    zipcode: props.profile.zipcode || "",
+    showAgeOnCard: props.profile.showAgeOnCard || false,
     addresses: props.profile.addresses || [], // 新增地址字段
 
     // Contact - 使用安全的默认值
@@ -56,8 +57,9 @@ const PersonalForm = (props) => {
       birthday: props.profile.birthday
         ? formatDate(props.profile.birthday)
         : "",
-      zipcode: props.profile.zipcode || "",
       addresses: props.profile.addresses || [], // 新增地址字段
+      showEmailOnCard: props.profile.showEmailOnCard || false,
+      showAgeOnCard: props.profile.showAgeOnCard || false,
       // Contact
       contact: {
         phoneNumber: props.profile.contact.phoneNumber || "",
@@ -85,10 +87,15 @@ const PersonalForm = (props) => {
     需要根据 id 字段来正确更新嵌套对象中的值。可以使用 name 属性来区分不同的字段： 
    */
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
 
     setFormData((prevFormData) => {
-      if (name.includes(".")) {
+      if (type === "checkbox") {
+        return {
+          ...prevFormData,
+          [name]: checked,
+        };
+      } else if (name.includes(".")) {
         const [parentKey, childKey] = name.split(".");
         return {
           ...prevFormData,

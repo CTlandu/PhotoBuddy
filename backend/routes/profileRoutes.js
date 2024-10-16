@@ -29,6 +29,8 @@ router.put("/profile", async (req, res) => {
     avatar,
     contact,
     addresses,
+    showEmailOnCard,
+    showAgeOnCard,
   } = req.body;
   try {
     const user = await User.findOne({ id });
@@ -40,6 +42,10 @@ router.put("/profile", async (req, res) => {
     user.lastName = lastName !== undefined ? lastName : user.lastName;
     user.pronouns = pronouns !== undefined ? pronouns : user.pronouns;
     user.birthday = birthday !== undefined ? birthday : user.birthday;
+    user.showEmailOnCard =
+      showEmailOnCard !== undefined ? showEmailOnCard : user.showEmailOnCard;
+    user.showAgeOnCard =
+      showAgeOnCard !== undefined ? showAgeOnCard : user.showAgeOnCard;
     user.zipcode = zipcode !== undefined ? zipcode : user.zipcode;
     user.avatar = avatar !== undefined ? avatar : user.avatar;
     user.addresses = addresses || user.addresses;
