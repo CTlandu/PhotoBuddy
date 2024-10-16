@@ -4,6 +4,7 @@ import Navbar from "../../components/Navbar";
 import axios from "axios";
 // import Cookies from "universal-cookie"
 import PersonalForm from "./PersonalForm";
+import PortfolioForm from "../Portfolio/PortfolioForm";
 import Session from "supertokens-auth-react/recipe/session";
 
 const Profile = ({ token }) => {
@@ -49,13 +50,16 @@ const Profile = ({ token }) => {
 
   return (
     <>
-      <div className="flex flex-col bg-base-200">
-        {/** 通过给Navbar设置一个key，并在handleProfileUpdate里改变key，来实现每次personalform里头像更新的时候，navbar被重新加载 */}
+      <div className="flex flex-col bg-base-200 min-h-screen">
         <div className="top-0 left-0 w-full z-50">
           <Navbar token={token} key={navbarKey} />
         </div>
-        <div className="flex flex-1">
+        <div className="flex flex-col flex-1 items-center">
           <PersonalForm
+            profile={profile}
+            onProfileUpdate={handleProfileUpdate}
+          />
+          <PortfolioForm
             profile={profile}
             onProfileUpdate={handleProfileUpdate}
           />
