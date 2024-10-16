@@ -186,7 +186,7 @@ const PortfolioForm = (props) => {
 
     try {
       const response = await axios.put(
-        `${import.meta.env.VITE_API_DOMAIN}/api/updateProfile`, // 使用统一的API路径
+        `${import.meta.env.VITE_API_DOMAIN}/api/updatePortfolio`, // 使用统一的API路径
         data,
         {
           headers: {
@@ -310,8 +310,8 @@ const PortfolioForm = (props) => {
         </div>
 
         {successMessage && (
-          <div className="mt-4 text-green dark:text-green text-center">
-            {successMessage}
+          <div className="mt-2 text-center bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded">
+            Portfoliosuccessfully saved!
           </div>
         )}
       </form>
