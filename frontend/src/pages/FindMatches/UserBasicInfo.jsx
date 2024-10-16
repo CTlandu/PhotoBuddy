@@ -5,18 +5,40 @@ import {
   FaTwitter,
   FaFacebook,
   FaEnvelope,
+  FaBirthdayCake,
+  FaUserCircle,
 } from "react-icons/fa";
 
 const UserBasicInfo = ({ profile, calculateAge, role }) => {
   const roleInfo = profile[`${role}_info`] || {};
-  const experience = roleInfo[`${role}_experience`] || "";
-  const lookingFor = roleInfo[`${role}_lookingfor`] || [];
+  // const experience = roleInfo[`${role}_experience`] || "";
+  // const lookingFor = roleInfo[`${role}_lookingfor`] || [];
   const biography = roleInfo[`${role}_bio`] || "";
 
+  const addressColors = [
+    "bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-200",
+    "bg-gray-300 text-gray-800 dark:bg-gray-600 dark:text-gray-100",
+    "bg-gray-400 text-gray-900 dark:bg-gray-500 dark:text-gray-50",
+  ];
+
+  // 创建一个函数来生成唯一的地址字符串
+  const getUniqueAddressString = (address) => {
+    const parts = [];
+    if (address.city) parts.push(address.city);
+    if (address.state) parts.push(address.state);
+    if (address.country) parts.push(address.country);
+    return parts.join(", ");
+  };
+
+  // 使用 Set 来去除重复的地址
+  const uniqueAddresses = profile.addresses
+    ? [...new Set(profile.addresses.map(getUniqueAddressString))]
+    : [];
+
   return (
-    <div className="mb-6">
-      <div className="flex items-center space-x-6 mb-4">
-        <div className="avatar">
+    <div className="mt-6 mb-1 flex flex-col items-center">
+      <div className="flex items-center justify-center mb-4">
+        <div className="avatar mr-4">
           <div className="w-24 h-24 rounded-full overflow-hidden">
             {profile.avatar && (
               <img
@@ -28,34 +50,50 @@ const UserBasicInfo = ({ profile, calculateAge, role }) => {
           </div>
         </div>
         <div>
-          {profile.birthday && (
-            <p className="text-lg">
-              {calculateAge(profile.birthday)} years old
-            </p>
-          )}
-          {profile.pronouns && <p className="text-lg">{profile.pronouns}</p>}
-          {profile.addresses && profile.addresses.length > 0 && (
-            <div className="mt-2">
-              {profile.addresses.map((address, index) => (
-                <span
-                  key={index}
-                  className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-                >
-                  {address.city && address.state
-                    ? `${address.city}, ${address.state}`
-                    : address.formattedAddress || "Address not available"}
-                </span>
-              ))}
-            </div>
-          )}
-          {profile.showEmailOnCard && profile.email && (
-            <p className="text-lg flex items-center mt-2">
-              <FaEnvelope className="mr-2" /> {profile.email}
-            </p>
-          )}
+          <h1 className="text-2xl font-serif italic mb-2">
+            {profile.preferredName}
+          </h1>
+          <div className="space-y-2">
+            {profile.birthday && profile.showAgeOnCard && (
+              <p className="text-base flex items-center">
+                <FaBirthdayCake className="mr-2 text-blue-500" />
+                <span className="font-semibold">Age:</span>
+                <span className="ml-2">{calculateAge(profile.birthday)}</span>
+              </p>
+            )}
+            {profile.pronouns && (
+              <p className="text-base flex items-center">
+                <FaUserCircle className="mr-2 text-green-500" />
+                <span className="font-semibold">Pronouns:</span>
+                <span className="ml-2">{profile.pronouns}</span>
+              </p>
+            )}
+          </div>
         </div>
       </div>
-      <div className="flex justify-center space-x-4 mb-4">
+
+      {uniqueAddresses.length > 0 && (
+        <div className="mt-2 text-center">
+          {uniqueAddresses.map((addressString, index) => (
+            <span
+              key={index}
+              className={`inline-block ${
+                addressColors[index % addressColors.length]
+              } rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2`}
+            >
+              {addressString}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {profile.showEmailOnCard && profile.email && (
+        <p className="text-base flex items-center justify-center mt-2">
+          <FaEnvelope className="mr-2" /> {profile.email}
+        </p>
+      )}
+
+      <div className="flex justify-center space-x-4 mt-4">
         {["instagram", "linkedin", "twitter", "facebook"].map(
           (platform) =>
             profile.contact[`${platform}_preferred`] && (
@@ -74,31 +112,13 @@ const UserBasicInfo = ({ profile, calculateAge, role }) => {
             )
         )}
       </div>
-      <div className="mt-4">
-        <h3 className="text-xl font-semibold mb-2">Experience</h3>
-        <div className="flex flex-wrap">
-          <span className="inline-block bg-green-200 rounded-full px-3 py-1 text-sm font-semibold text-green-700 mr-2 mb-2">
-            {experience}
-          </span>
-        </div>
-      </div>
-      <div className="mt-4">
-        <h3 className="text-xl font-semibold mb-2">Looking for</h3>
-        <div className="flex flex-wrap">
-          {lookingFor.map((item, index) => (
-            <span
-              key={index}
-              className="inline-block bg-blue-200 rounded-full px-3 py-1 text-sm font-semibold text-blue-700 mr-2 mb-2"
-            >
-              {item}
-            </span>
-          ))}
-        </div>
-      </div>
+
       {biography && (
-        <div className="mt-4">
-          <h3 className="text-xl font-semibold mb-2">Biography</h3>
-          <p>{biography}</p>
+        <div className="mt-4 text-center w-full">
+          <h3 className="text-xl font-semibold mb-2">About Me</h3>
+          <p className="italic bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
+            {biography}
+          </p>
         </div>
       )}
     </div>

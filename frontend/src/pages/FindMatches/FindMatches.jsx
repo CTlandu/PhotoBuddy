@@ -12,8 +12,8 @@ function FindMatches({ token }) {
   const profilesPerPage = 6;
 
   const handleRoleSelection = (role) => {
+    setIsLoading(true); // 开始加载
     setSelectedRole(role);
-    fetchProfiles(role);
     setCurrentPage(0);
   };
 
@@ -35,9 +35,10 @@ function FindMatches({ token }) {
 
       const data = await response.json();
       setProfiles(data);
-      setIsLoading(false);
     } catch (error) {
-      setIsLoading(false);
+      console.error("Error fetching profiles:", error);
+    } finally {
+      setIsLoading(false); // 无论成功还是失败，都结束加载
     }
   };
 
@@ -81,48 +82,53 @@ function FindMatches({ token }) {
           </button>
         </div>
 
-        <div className="grid gap-6 mt-16 px-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {!isLoading &&
-            displayProfiles.map((profile, index) => (
-              <div key={index} className="p-2">
-                <ProfileCard
-                  profile={profile}
-                  isLoading={isLoading}
-                  modal_index={`modal-${index}`}
-                  role={selectedRole}
-                />
-              </div>
-            ))}
-        </div>
-
-        <div className="flex justify-center mt-8">
-          <ReactPaginate
-            previousLabel={"Previous"}
-            nextLabel={"Next"}
-            pageCount={Math.ceil(profiles.length / profilesPerPage)}
-            onPageChange={handlePageClick}
-            containerClassName={
-              "pagination flex justify-center items-center space-x-2"
-            }
-            activeClassName={
-              "active bg-blue-500 text-white rounded-lg px-3 py-1"
-            }
-            pageClassName={"page-item rounded-md"}
-            pageLinkClassName={
-              "page-link text-white hover:bg-blue-100 transition-colors duration-200 px-3 py-1 rounded-lg"
-            }
-            previousClassName={"page-item"}
-            previousLinkClassName={
-              "btn btn-outline text-blue-500 border-blue-500 hover:bg-blue-100 transition-colors duration-200 px-3 py-1 rounded-lg"
-            }
-            nextClassName={"page-item"}
-            nextLinkClassName={
-              "btn btn-outline text-green border-green hover:bg-blue-100 transition-colors duration-200 px-3 py-1 rounded-lg"
-            }
-            breakLabel={"..."}
-            breakClassName={"break-me text-blue-500"}
-          />
-        </div>
+        {isLoading ? (
+          <div className="flex justify-center items-center mt-16">
+            <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+          </div>
+        ) : (
+          <>
+            <div className="grid gap-6 mt-16 px-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {displayProfiles.map((profile, index) => (
+                <div key={index} className="p-2">
+                  <ProfileCard
+                    profile={profile}
+                    modal_index={`modal-${index}`}
+                    role={selectedRole}
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="flex justify-center mt-8">
+              <ReactPaginate
+                previousLabel={"Previous"}
+                nextLabel={"Next"}
+                pageCount={Math.ceil(profiles.length / profilesPerPage)}
+                onPageChange={handlePageClick}
+                containerClassName={
+                  "pagination flex justify-center items-center space-x-2"
+                }
+                activeClassName={
+                  "active bg-blue-500 text-white rounded-lg px-3 py-1"
+                }
+                pageClassName={"page-item rounded-md"}
+                pageLinkClassName={
+                  "page-link text-white hover:bg-blue-100 transition-colors duration-200 px-3 py-1 rounded-lg"
+                }
+                previousClassName={"page-item"}
+                previousLinkClassName={
+                  "btn btn-outline text-blue-500 border-blue-500 hover:bg-blue-100 transition-colors duration-200 px-3 py-1 rounded-lg"
+                }
+                nextClassName={"page-item"}
+                nextLinkClassName={
+                  "btn btn-outline text-green border-green hover:bg-blue-100 transition-colors duration-200 px-3 py-1 rounded-lg"
+                }
+                breakLabel={"..."}
+                breakClassName={"break-me text-blue-500"}
+              />
+            </div>
+          </>
+        )}
       </div>
     </>
   );

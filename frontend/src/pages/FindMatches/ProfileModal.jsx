@@ -15,18 +15,14 @@ const ProfileModal = ({ profile, modal_index, role, calculateAge }) => {
             <FaStar className="text-yellow-500" />
           </button>
         </div>
-        <h2 className="text-2xl font-serif italic text-center mb-4">
-          {role.charAt(0).toUpperCase() + role.slice(1)}
-        </h2>
-        <h1 className="text-3xl font-serif italic text-center mb-6">
-          {profile.preferredName}
-        </h1>
 
-        <UserBasicInfo
-          profile={profile}
-          calculateAge={calculateAge}
-          role={role}
-        />
+        <div className="flex justify-center">
+          <UserBasicInfo
+            profile={profile}
+            calculateAge={calculateAge}
+            role={role}
+          />
+        </div>
 
         <ProfileImageSlider profile={profile} role={role} />
       </div>
