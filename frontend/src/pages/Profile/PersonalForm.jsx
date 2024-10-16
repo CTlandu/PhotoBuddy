@@ -175,10 +175,7 @@ const PersonalForm = (props) => {
           />
 
           <div className="flex justify-center mt-4">
-            <button
-              type="submit"
-              className="bg-dark-gray dark:bg-gray-400 text-white py-2 px-4 rounded hover:bg-blue-300 dark:hover:bg-green-500"
-            >
+            <button type="submit" button className="btn btn-primary mt-4 w-1/2">
               Save Personal Info
             </button>
           </div>
