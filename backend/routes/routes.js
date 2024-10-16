@@ -8,7 +8,7 @@ const profileRoutes = require("./profileRoutes");
 
 // 使用子路由
 router.use("/api", userRoutes);
-router.use("/api", addressRoutes);
+// router.use("/api", addressRoutes);
 router.use("/api", imageRoutes);
 router.use("/api", profileRoutes);
 

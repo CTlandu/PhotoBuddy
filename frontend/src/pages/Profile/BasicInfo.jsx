@@ -124,12 +124,11 @@ const BasicInfo = ({ formData, handleChange, setFormData }) => {
           htmlFor="addresses"
           className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
         >
-          Areas of Activity (We use this to find your matches)
+          Addresses (Max. 3. We use them to find your matches)
         </label>
         <AddressAutoComplete
           addresses={addresses}
           setAddresses={setAddresses}
-          userId={formData.id}
         />
       </div>
     </div>

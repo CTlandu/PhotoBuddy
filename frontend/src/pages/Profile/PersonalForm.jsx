@@ -16,6 +16,8 @@ const PersonalForm = (props) => {
     return isoString.split("T")[0];
   };
 
+  const [showSaveAlert, setShowSaveAlert] = useState(false);
+
   const [formData, setFormData] = useState({
     id: props.profile.id || "", // 从 props 中获取用户 ID
     email: props.profile.email || "", // 从 props 中获取用户邮箱
@@ -127,7 +129,12 @@ const PersonalForm = (props) => {
         formData
       );
       console.log("Form data updated successfully:", response.data);
-      window.location.reload(); // submit后重新加载页面
+      // 移除这行
+      // window.location.reload();
+      // 替换为更优雅的状态更新
+      props.onProfileUpdate(response.data.user);
+      setShowSaveAlert(true);
+      setTimeout(() => setShowSaveAlert(false), 3000); // 3秒后隐藏提示
     } catch (error) {
       console.error("Error updating user data:", error);
     }
@@ -168,6 +175,11 @@ const PersonalForm = (props) => {
               Save
             </button>
           </div>
+          {showSaveAlert && (
+            <div className="mt-2 text-center bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded">
+              Profile successfully saved!
+            </div>
+          )}
         </form>
       </div>
     </>

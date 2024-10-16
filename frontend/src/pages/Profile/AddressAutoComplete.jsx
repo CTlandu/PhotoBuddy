@@ -4,8 +4,7 @@ import axios from "axios";
 
 const libraries = ["places"];
 
-const AddressAutocomplete = ({ userId }) => {
-  const [addresses, setAddresses] = useState([]);
+const AddressAutocomplete = ({ addresses, setAddresses }) => {
   const [address, setAddress] = useState("");
   const autocompleteRef = useRef(null);
 
@@ -14,22 +13,6 @@ const AddressAutocomplete = ({ userId }) => {
     googleMapsApiKey: "AIzaSyAb93DCAS5kRcLsqtkJ3gjqYsz7gQcorXY", // 替换为你的 API Key
     libraries,
   });
-
-  useEffect(() => {
-    const fetchAddresses = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_API_DOMAIN}/api/profile/address`,
-          { params: { id: userId } }
-        );
-        setAddresses(response.data.addresses);
-      } catch (error) {
-        console.error("Error fetching addresses:", error);
-      }
-    };
-
-    fetchAddresses();
-  }, [userId]);
 
   const handlePlaceChanged = () => {
     if (autocompleteRef.current) {
@@ -47,7 +30,7 @@ const AddressAutocomplete = ({ userId }) => {
           addresses.length < 3 &&
           !addresses.some((addr) => addr.placeId === placeId)
         ) {
-          handleAddAddress(newAddress);
+          setAddresses([...addresses, newAddress]);
         }
 
         setAddress(""); // 清空输入框
@@ -55,38 +38,10 @@ const AddressAutocomplete = ({ userId }) => {
     }
   };
 
-  const handleAddAddress = async (newAddress) => {
-    try {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_DOMAIN}/api/profile/address`,
-        {
-          id: userId, // 从 props 中获取用户 ID
-          address: newAddress,
-        }
-      );
-      console.log("Address added:", response.data);
-      setAddresses(response.data.addresses);
-    } catch (error) {
-      console.error("Error adding address:", error);
-    }
-  };
-
-  const handleRemoveAddress = async (placeId) => {
-    try {
-      const response = await axios.delete(
-        `${import.meta.env.VITE_API_DOMAIN}/api/profile/address`,
-        {
-          data: {
-            id: userId, // 从 props 中获取用户 ID
-            placeId,
-          },
-        }
-      );
-      console.log("Address removed:", response.data);
-      setAddresses(response.data.addresses);
-    } catch (error) {
-      console.error("Error removing address:", error);
-    }
+  const handleRemoveAddress = (e, placeId) => {
+    e.preventDefault(); // 阻止事件冒泡和默认行为
+    e.stopPropagation();
+    setAddresses(addresses.filter((addr) => addr.placeId !== placeId));
   };
 
   if (!isLoaded) return <div>Loading...</div>;
@@ -96,7 +51,6 @@ const AddressAutocomplete = ({ userId }) => {
       <Autocomplete
         onLoad={(autocomplete) => {
           autocompleteRef.current = autocomplete;
-          console.log("Autocomplete loaded:", autocomplete);
         }}
         onPlaceChanged={handlePlaceChanged}
       >
@@ -105,7 +59,7 @@ const AddressAutocomplete = ({ userId }) => {
           placeholder={
             addresses.length >= 3
               ? "You can only put 3 addresses max"
-              : "Enter an address"
+              : "Around where are you gonna take photos?"
           }
           value={address}
           onChange={(e) => setAddress(e.target.value)}
@@ -113,16 +67,16 @@ const AddressAutocomplete = ({ userId }) => {
           disabled={addresses.length >= 3}
         />
       </Autocomplete>
-      <ul className="list-none p-0">
+      <ul className="list-none p-0 flex flex-wrap gap-2">
         {addresses.map((addr, index) => (
           <li
             key={index}
-            className="flex justify-between items-center bg-blue-500 text-white p-2 mb-1 rounded"
+            className="flex items-center bg-blue-500 text-white p-2 rounded-full text-sm"
           >
-            <span>{addr.formattedAddress}</span>
+            <span className="mr-2">{addr.formattedAddress}</span>
             <button
-              onClick={() => handleRemoveAddress(addr.placeId)}
-              className="text-red-500 hover:text-red-700 ml-2"
+              onClick={(e) => handleRemoveAddress(e, addr.placeId)}
+              className="bg-white text-red-500 rounded-full w-5 h-5 flex items-center justify-center hover:bg-red-100"
             >
               &times;
             </button>
