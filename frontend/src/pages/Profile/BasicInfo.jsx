@@ -129,6 +129,7 @@ const BasicInfo = ({ formData, handleChange, setFormData }) => {
         <AddressAutoComplete
           addresses={addresses}
           setAddresses={setAddresses}
+          userId={formData.id}
         />
       </div>
     </div>

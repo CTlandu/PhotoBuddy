@@ -1,25 +1,28 @@
-const dotenv = require('dotenv');
-const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
+const dotenv = require("dotenv");
+const envFile =
+  process.env.NODE_ENV === "production"
+    ? ".env.production"
+    : ".env.development";
 dotenv.config({ path: envFile });
-const bodyParser = require('body-parser');
-const express = require('express');
+const bodyParser = require("body-parser");
+const express = require("express");
 // bcrypt 将用户的明文密码转换为一个加密的哈希值。这个哈希值是不可逆的，即无法从哈希值直接还原出原始密码。
 //当用户尝试登录时，bcrypt 可以将用户输入的明文密码与存储在数据库中的哈希值进行比较，判断密码是否正确。
 // const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 // require database connection
-const dbConnect = require('./db/dbConnect');
+const dbConnect = require("./db/dbConnect");
 const User = require("./db/userModel");
 // 老的auth模块
 // const auth = require('./auth');
 // const { auth } = require("express-oauth2-jwt-bearer");
 
 const cors = require("cors");
-const {middleware} = require("supertokens-node/framework/express");
+const { middleware } = require("supertokens-node/framework/express");
 
 // // import supertoken packages
-const supertokens =require("supertokens-node");
+const supertokens = require("supertokens-node");
 // const Session = require("supertokens-node/recipe/session");
 // const EmailPassword = require("supertokens-node/recipe/emailpassword");
 // const EmailVerification = require("supertokens-node/recipe/emailverification");
@@ -35,24 +38,26 @@ supertokensInit();
 // express app
 const app = express();
 
-app.use(bodyParser.json({limit: '2mb'}));
-app.use(bodyParser.urlencoded({limit: '2mb', extended:true}))
+app.use(bodyParser.json({ limit: "2mb" }));
+app.use(bodyParser.urlencoded({ limit: "2mb", extended: true }));
 
-app.use(cors({
-  origin: process.env.CORS_ORIGIN,
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  allowedHeaders: ["content-type", "Authorization", ...supertokens.getAllCORSHeaders()],
-  credentials: true,
-  optionsSuccessStatus: 204,
-}));
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    allowedHeaders: [
+      "content-type",
+      "Authorization",
+      ...supertokens.getAllCORSHeaders(),
+    ],
+    credentials: true,
+    optionsSuccessStatus: 204,
+  })
+);
 console.log("CORS_ORIGIN", process.env.CORS_ORIGIN);
-
-
 
 // IMPORTANT: CORS should be before the below line.
 app.use(middleware());
-
-
 
 /**
  * CORS 是一种机制，允许来自一个域的网页能够请求另一个域的资源。它通过添加一些特定的 HTTP 头来告诉浏览器允许来自不同源的请求。
@@ -84,8 +89,7 @@ app.use((req, res, next) => {
     "GET, POST, PUT, DELETE, PATCH, OPTIONS"
   );
   next();
-})
-
+});
 
 // listen for requests
 const port = process.env.PORT;
@@ -93,10 +97,8 @@ app.listen(port, () => {
   console.log(`服务器启动在${port}端口`);
 });
 
-
-const apiRoutes = require('./routes/routes');
-app.use('/api',apiRoutes);
+const apiRoutes = require("./routes/routes");
+app.use("", apiRoutes);
 
 // Add this AFTER all your routes
-app.use(errorHandler())
-
+app.use(errorHandler());

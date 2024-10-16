@@ -119,6 +119,7 @@ const PersonalForm = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Submitting form data:", formData); // 调试输出
     try {
       // 发送请求到后端api
       const response = await axios.put(
