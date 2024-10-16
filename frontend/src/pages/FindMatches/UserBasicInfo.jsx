@@ -7,6 +7,8 @@ import {
   FaEnvelope,
   FaBirthdayCake,
   FaUserCircle,
+  FaCamera,
+  FaUserTie,
 } from "react-icons/fa";
 
 const UserBasicInfo = ({ profile, calculateAge, role }) => {
@@ -35,6 +37,31 @@ const UserBasicInfo = ({ profile, calculateAge, role }) => {
     ? [...new Set(profile.addresses.map(getUniqueAddressString))]
     : [];
 
+  const getRoleIcon = (role) => {
+    switch (role.toLowerCase()) {
+      case "photographer":
+        return <FaCamera className="mr-1" />;
+      case "model":
+        return <FaUserTie className="mr-1" />;
+      default:
+        return null;
+    }
+  };
+
+  const socialMediaIcons = {
+    instagram: FaInstagram,
+    linkedin: FaLinkedin,
+    twitter: FaTwitter,
+    facebook: FaFacebook,
+  };
+
+  const socialMediaColors = {
+    instagram: "text-pink-600 hover:text-pink-700",
+    linkedin: "text-blue-600 hover:text-blue-700",
+    twitter: "text-blue-400 hover:text-blue-500",
+    facebook: "text-blue-800 hover:text-blue-900",
+  };
+
   return (
     <div className="mt-6 mb-1 flex flex-col items-center">
       <div className="flex items-center justify-center mb-4">
@@ -50,9 +77,15 @@ const UserBasicInfo = ({ profile, calculateAge, role }) => {
           </div>
         </div>
         <div>
-          <h1 className="text-2xl font-serif italic mb-2">
-            {profile.preferredName}
-          </h1>
+          <div className="flex items-center mb-2">
+            <h1 className="text-2xl font-serif italic">
+              {profile.preferredName}
+            </h1>
+            <span className="bg-blue-100 text-blue-800 text-xs font-medium ml-2 px-2.5 py-0.5 rounded-full dark:bg-blue-900 dark:text-blue-300 flex items-center">
+              {getRoleIcon(role)}
+              {role.charAt(0).toUpperCase() + role.slice(1)}
+            </span>
+          </div>
           <div className="space-y-2">
             {profile.birthday && profile.showAgeOnCard && (
               <p className="text-base flex items-center">
@@ -74,23 +107,29 @@ const UserBasicInfo = ({ profile, calculateAge, role }) => {
 
       {uniqueAddresses.length > 0 && (
         <div className="mt-2 text-center">
-          {uniqueAddresses.map((addressString, index) => (
-            <span
-              key={index}
-              className={`inline-block ${
-                addressColors[index % addressColors.length]
-              } rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2`}
-            >
-              {addressString}
-            </span>
-          ))}
+          {uniqueAddresses.map(
+            (addressString, index) =>
+              addressString && (
+                <span
+                  key={index}
+                  className={`inline-block ${
+                    addressColors[index % addressColors.length]
+                  } rounded-full px-3 py-1 text-sm font-semibold mr-2 mb-2`}
+                >
+                  {addressString}
+                </span>
+              )
+          )}
         </div>
       )}
 
       {profile.showEmailOnCard && profile.email && (
-        <p className="text-base flex items-center justify-center mt-2">
+        <a
+          href={`mailto:${profile.email}`}
+          className="text-base flex items-center justify-center mt-2 hover:text-blue-600 transition-colors duration-200"
+        >
           <FaEnvelope className="mr-2" /> {profile.email}
-        </p>
+        </a>
       )}
 
       <div className="flex justify-center space-x-4 mt-4">
@@ -99,15 +138,16 @@ const UserBasicInfo = ({ profile, calculateAge, role }) => {
             profile.contact[`${platform}_preferred`] && (
               <a
                 key={platform}
-                href={`https://www.${platform}.com/${profile.contact[platform]}`}
+                href={`https://www.${platform}.com/${
+                  platform == "linkedin" ? "in/" : ""
+                }${profile.contact[platform]}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-2xl text-gray-600 hover:text-gray-800"
+                className={`text-2xl ${socialMediaColors[platform]} transition-colors duration-200 flex items-center justify-center w-8 h-8`}
               >
-                {platform === "instagram" && <FaInstagram />}
-                {platform === "linkedin" && <FaLinkedin />}
-                {platform === "twitter" && <FaTwitter />}
-                {platform === "facebook" && <FaFacebook />}
+                {React.createElement(socialMediaIcons[platform], {
+                  className: "w-5 h-5",
+                })}
               </a>
             )
         )}

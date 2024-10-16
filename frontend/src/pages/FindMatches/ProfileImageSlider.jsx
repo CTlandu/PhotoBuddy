@@ -32,6 +32,50 @@ const ProfileImageSlider = ({ profile, role }) => {
 
   return (
     <div className="relative w-full overflow-hidden mt-4">
+      <style jsx>{`
+        .arrow-button {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background-color: rgba(0, 0, 0, 0.5);
+          color: white;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          transition: background-color 0.3s;
+          z-index: 50;
+          border: none;
+          outline: none;
+        }
+        .arrow-button:hover {
+          background-color: rgba(0, 0, 0, 0.7);
+        }
+        .arrow-button:active {
+          background-color: rgba(0, 0, 0, 0.9);
+        }
+        @media (prefers-color-scheme: dark) {
+          .arrow-button {
+            background-color: rgba(255, 255, 255, 0.5);
+            color: black;
+          }
+          .arrow-button:hover {
+            background-color: rgba(255, 255, 255, 0.7);
+          }
+          .arrow-button:active {
+            background-color: rgba(255, 255, 255, 0.9);
+          }
+        }
+        .arrow-button:focus {
+          outline: none;
+        }
+        .arrow-button::-moz-focus-inner {
+          border: 0;
+        }
+      `}</style>
       <Slider ref={sliderRef} {...settings} className="w-full">
         {images.map((image, index) => (
           <div key={index} className="w-full p-1">
@@ -77,10 +121,22 @@ function NextArrow(props) {
   const { onClick } = props;
   return (
     <button
-      className="absolute right-0 top-1/2 transform -translate-y-1/2 text-white rounded-full p-4 text-2xl hover:bg-blue-700 transition-colors duration-300 shadow-lg z-50"
+      className="arrow-button right-2"
       onClick={onClick}
+      aria-label="Next"
     >
-      &gt;
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        className="w-6 h-6"
+      >
+        <path
+          fillRule="evenodd"
+          d="M16.28 11.47a.75.75 0 010 1.06l-7.5 7.5a.75.75 0 01-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 011.06-1.06l7.5 7.5z"
+          clipRule="evenodd"
+        />
+      </svg>
     </button>
   );
 }
@@ -89,10 +145,22 @@ function PrevArrow(props) {
   const { onClick } = props;
   return (
     <button
-      className="absolute left-0 top-1/2 transform -translate-y-1/2 text-white rounded-full p-4 text-2xl hover:bg-blue-700 transition-colors duration-300 shadow-lg z-50"
+      className="arrow-button left-2"
       onClick={onClick}
+      aria-label="Previous"
     >
-      &lt;
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        className="w-6 h-6"
+      >
+        <path
+          fillRule="evenodd"
+          d="M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z"
+          clipRule="evenodd"
+        />
+      </svg>
     </button>
   );
 }
