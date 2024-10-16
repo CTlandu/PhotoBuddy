@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import ReactPaginate from "react-paginate";
 
-import Navbar from "../../components/Navbar";
+import Navbar from "../../../components/Navbar";
 import ModelCard from "./ModelCard";
-import PhotographerCard from "./PhotographerCard";
-import SlowLoadBanner from "./SlowLoadBanner";
+import PhotographerCard from "../PhotographerCard";
+import SlowLoadBanner from "../SlowLoadBanner";
 
 function FindMatches({ token }) {
   const [modelProfiles, setModelProfiles] = useState([]);

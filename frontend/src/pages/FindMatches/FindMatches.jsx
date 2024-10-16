@@ -13,8 +13,6 @@ function FindMatches({ token }) {
 
   const handleRoleSelection = (role) => {
     setSelectedRole(role);
-    setIsLoading(true);
-    setProfiles([]);
     fetchProfiles(role);
     setCurrentPage(0);
   };
@@ -39,7 +37,6 @@ function FindMatches({ token }) {
       setProfiles(data);
       setIsLoading(false);
     } catch (error) {
-      console.error("Error fetching profiles:", error);
       setIsLoading(false);
     }
   };
@@ -57,86 +54,77 @@ function FindMatches({ token }) {
     setCurrentPage(event.selected);
   };
 
-  if (isLoading) {
-    return (
+  return (
+    <>
       <div className="flex flex-col h-screen bg-base-200">
         <div className="top-0 left-0 w-full z-50">
           <Navbar token={token} />
         </div>
         <SlowLoadBanner />
-        <div className="flex-grow flex items-center justify-center">
-          <div className="loading loading-spinner loading-lg"></div>
+        <div className="flex mt-16 justify-center bg-base">
+          <div className="font-bold flex items-center mr-5">Find:</div>
+          <button
+            className={`btn mr-5 ${
+              selectedRole === "model" ? "btn-primary" : "btn-outline"
+            }`}
+            onClick={() => handleRoleSelection("model")}
+          >
+            Model
+          </button>
+          <button
+            className={`btn ml-5 ${
+              selectedRole === "photographer" ? "btn-primary" : "btn-outline"
+            }`}
+            onClick={() => handleRoleSelection("photographer")}
+          >
+            Photographer
+          </button>
+        </div>
+
+        <div className="grid gap-6 mt-16 px-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {!isLoading &&
+            displayProfiles.map((profile, index) => (
+              <div key={index} className="p-2">
+                <ProfileCard
+                  profile={profile}
+                  isLoading={isLoading}
+                  modal_index={`modal-${index}`}
+                  role={selectedRole}
+                />
+              </div>
+            ))}
+        </div>
+
+        <div className="flex justify-center mt-8">
+          <ReactPaginate
+            previousLabel={"Previous"}
+            nextLabel={"Next"}
+            pageCount={Math.ceil(profiles.length / profilesPerPage)}
+            onPageChange={handlePageClick}
+            containerClassName={
+              "pagination flex justify-center items-center space-x-2"
+            }
+            activeClassName={
+              "active bg-blue-500 text-white rounded-lg px-3 py-1"
+            }
+            pageClassName={"page-item rounded-md"}
+            pageLinkClassName={
+              "page-link text-white hover:bg-blue-100 transition-colors duration-200 px-3 py-1 rounded-lg"
+            }
+            previousClassName={"page-item"}
+            previousLinkClassName={
+              "btn btn-outline text-blue-500 border-blue-500 hover:bg-blue-100 transition-colors duration-200 px-3 py-1 rounded-lg"
+            }
+            nextClassName={"page-item"}
+            nextLinkClassName={
+              "btn btn-outline text-green border-green hover:bg-blue-100 transition-colors duration-200 px-3 py-1 rounded-lg"
+            }
+            breakLabel={"..."}
+            breakClassName={"break-me text-blue-500"}
+          />
         </div>
       </div>
-    );
-  }
-
-  return (
-    <div className="flex flex-col h-screen bg-base-200">
-      <div className="top-0 left-0 w-full z-50">
-        <Navbar token={token} />
-      </div>
-      <SlowLoadBanner />
-      <div className="flex mt-16 justify-center bg-base">
-        <div className="font-bold flex items-center mr-5">Find:</div>
-        <button
-          className={`btn mr-5 ${
-            selectedRole === "model" ? "btn-primary" : "btn-outline"
-          }`}
-          onClick={() => handleRoleSelection("model")}
-        >
-          Model
-        </button>
-        <button
-          className={`btn ml-5 ${
-            selectedRole === "photographer" ? "btn-primary" : "btn-outline"
-          }`}
-          onClick={() => handleRoleSelection("photographer")}
-        >
-          Photographer
-        </button>
-      </div>
-
-      <div className="grid gap-6 mt-16 px-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {displayProfiles.map((profile, index) => (
-          <div key={index} className="p-2">
-            <ProfileCard
-              profile={profile}
-              isLoading={false}
-              modal_index={`modal-${index}`}
-              role={selectedRole}
-            />
-          </div>
-        ))}
-      </div>
-
-      <div className="flex justify-center mt-8">
-        <ReactPaginate
-          previousLabel={"Previous"}
-          nextLabel={"Next"}
-          pageCount={Math.ceil(profiles.length / profilesPerPage)}
-          onPageChange={handlePageClick}
-          containerClassName={
-            "pagination flex justify-center items-center space-x-2"
-          }
-          activeClassName={"active bg-blue-500 text-white rounded-lg px-3 py-1"}
-          pageClassName={"page-item rounded-md"}
-          pageLinkClassName={
-            "page-link text-white hover:bg-blue-100 transition-colors duration-200 px-3 py-1 rounded-lg"
-          }
-          previousClassName={"page-item"}
-          previousLinkClassName={
-            "btn btn-outline text-blue-500 border-blue-500 hover:bg-blue-100 transition-colors duration-200 px-3 py-1 rounded-lg"
-          }
-          nextClassName={"page-item"}
-          nextLinkClassName={
-            "btn btn-outline text-green border-green hover:bg-blue-100 transition-colors duration-200 px-3 py-1 rounded-lg"
-          }
-          breakLabel={"..."}
-          breakClassName={"break-me text-blue-500"}
-        />
-      </div>
-    </div>
+    </>
   );
 }
 

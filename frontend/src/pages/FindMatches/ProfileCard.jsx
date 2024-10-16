@@ -1,5 +1,5 @@
 import React from "react";
-import ProfileImageSlider from "./ProfileImageSlider";
+import ProfileModal from "./ProfileModal";
 
 const ProfileCard = ({ profile, isLoading, modal_index, role }) => {
   if (isLoading) {
@@ -65,68 +65,12 @@ const ProfileCard = ({ profile, isLoading, modal_index, role }) => {
         </div>
       </div>
 
-      <dialog id={modal_index} className="modal">
-        <div className="modal-box max-w-lg max-h-[90vh]">
-          <div className="flex items-center space-x-6">
-            <div className="avatar">
-              <div className="w-24 h-24 rounded-full overflow-hidden">
-                {profile.avatar && (
-                  <img
-                    src={profile.avatar}
-                    alt="Avatar"
-                    className="w-full h-full object-cover"
-                  />
-                )}
-              </div>
-            </div>
-
-            <div className="flex-1 bg-gray-200 p-4 rounded-lg">
-              <p>
-                <strong>Name:</strong> {profile.preferredName}
-              </p>
-              <p>
-                <strong>Pronouns:</strong> {profile.pronouns}
-              </p>
-              <p>
-                <strong>Email:</strong> {profile.email}
-              </p>
-              {profile.birthday && (
-                <p>
-                  <strong>Age:</strong> {calculateAge(profile.birthday)}
-                </p>
-              )}
-              <p>{profile.location || "Williamsburg, VA"}</p>
-              {profile.contact.phoneNumber_preferred && (
-                <p>{profile.contact.phoneNumber}</p>
-              )}
-              {["instagram", "linkedin", "twitter", "facebook"].map(
-                (platform) =>
-                  profile.contact[`${platform}_preferred`] && (
-                    <p key={platform}>
-                      <a
-                        href={`https://www.${platform}.com/${profile.contact[platform]}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-green hover:underline"
-                      >
-                        <strong>
-                          {platform.charAt(0).toUpperCase() + platform.slice(1)}
-                        </strong>
-                      </a>
-                    </p>
-                  )
-              )}
-            </div>
-          </div>
-          <ProfileImageSlider profile={profile} role={role} />
-        </div>
-
-        <form
-          method="dialog"
-          className="modal-backdrop"
-          onClick={() => document.getElementById(modal_index).close()}
-        ></form>
-      </dialog>
+      <ProfileModal
+        profile={profile}
+        modal_index={modal_index}
+        role={role}
+        calculateAge={calculateAge}
+      />
     </>
   );
 };
