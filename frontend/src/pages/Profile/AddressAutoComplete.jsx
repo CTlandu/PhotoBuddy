@@ -1,6 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
-import axios from "axios";
 
 const libraries = ["places"];
 
@@ -22,9 +21,30 @@ const AddressAutocomplete = ({ addresses, setAddresses }) => {
         const placeId = place.place_id;
         const lat = place.geometry.location.lat();
         const lng = place.geometry.location.lng();
-        console.log("Place details:", { formattedAddress, placeId, lat, lng });
 
-        const newAddress = { formattedAddress, placeId, lat, lng };
+        // 提取城市、州和国家信息
+        let city = "",
+          state = "",
+          country = "";
+        for (const component of place.address_components) {
+          if (component.types.includes("locality")) {
+            city = component.long_name;
+          } else if (component.types.includes("administrative_area_level_1")) {
+            state = component.short_name;
+          } else if (component.types.includes("country")) {
+            country = component.long_name;
+          }
+        }
+
+        const newAddress = {
+          formattedAddress,
+          placeId,
+          lat,
+          lng,
+          city,
+          state,
+          country,
+        };
 
         if (
           addresses.length < 3 &&
@@ -33,7 +53,7 @@ const AddressAutocomplete = ({ addresses, setAddresses }) => {
           setAddresses([...addresses, newAddress]);
         }
 
-        setAddress(""); // 清空输入框
+        setAddress("");
       }
     }
   };

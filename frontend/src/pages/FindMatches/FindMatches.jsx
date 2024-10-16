@@ -1,23 +1,20 @@
 import React, { useState, useEffect } from "react";
 import ReactPaginate from "react-paginate";
-
 import Navbar from "../../components/Navbar";
-import ModelCard from "./ModelCard";
-import PhotographerCard from "./PhotographerCard";
+import ProfileCard from "./ProfileCard";
 import SlowLoadBanner from "./SlowLoadBanner";
 
 function FindMatches({ token }) {
-  const [modelProfiles, setModelProfiles] = useState([]);
-  const [photographerProfiles, setPhotographerProfiles] = useState([]);
-  const [selectedRole, setSelectedRole] = useState("model"); // 默认选中 model
+  const [profiles, setProfiles] = useState([]);
+  const [selectedRole, setSelectedRole] = useState("model");
   const [currentPage, setCurrentPage] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const profilesPerPage = 6; // 每页展示的 Profile Card 数量
+  const profilesPerPage = 6;
 
   const handleRoleSelection = (role) => {
+    setIsLoading(true); // 开始加载
     setSelectedRole(role);
-    fetchProfiles(role);
-    setCurrentPage(0); // 切换角色时重置当前页
+    setCurrentPage(0);
   };
 
   const fetchProfiles = async (role) => {
@@ -37,27 +34,22 @@ function FindMatches({ token }) {
       }
 
       const data = await response.json();
-
-      if (role === "model") {
-        setModelProfiles(data);
-        setIsLoading(false);
-      } else if (role === "photographer") {
-        setPhotographerProfiles(data);
-        setIsLoading(false);
-      }
+      setProfiles(data);
     } catch (error) {
       console.error("Error fetching profiles:", error);
+    } finally {
+      setIsLoading(false); // 无论成功还是失败，都结束加载
     }
   };
 
   useEffect(() => {
-    fetchProfiles(selectedRole); // 页面加载时根据默认角色获取数据
+    fetchProfiles(selectedRole);
   }, [selectedRole]);
 
-  // 计算当前页显示的 profiles
-  const displayProfiles = (
-    selectedRole === "model" ? modelProfiles : photographerProfiles
-  ).slice(currentPage * profilesPerPage, (currentPage + 1) * profilesPerPage);
+  const displayProfiles = profiles.slice(
+    currentPage * profilesPerPage,
+    (currentPage + 1) * profilesPerPage
+  );
 
   const handlePageClick = (event) => {
     setCurrentPage(event.selected);
@@ -90,60 +82,53 @@ function FindMatches({ token }) {
           </button>
         </div>
 
-        {/* 自适应排列 */}
-        <div className="grid gap-6 mt-16 px-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {displayProfiles.map((profile, index) => (
-            <div key={index} className="p-2">
-              {selectedRole === "model" ? (
-                <ModelCard
-                  fetched_profile={profile}
-                  isLoading={isLoading}
-                  modal_index={`modal-${index}`}
-                />
-              ) : (
-                <PhotographerCard
-                  fetched_profile={profile}
-                  isLoading={isLoading}
-                  modal_index={`modal-${index}`}
-                />
-              )}
+        {isLoading ? (
+          <div className="flex justify-center items-center mt-16">
+            <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+          </div>
+        ) : (
+          <>
+            <div className="grid gap-6 mt-16 px-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {displayProfiles.map((profile, index) => (
+                <div key={index} className="p-2">
+                  <ProfileCard
+                    profile={profile}
+                    modal_index={`modal-${index}`}
+                    role={selectedRole}
+                  />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-
-        {/* 分页控件 */}
-        <div className="flex justify-center mt-8">
-          <ReactPaginate
-            previousLabel={"Previous"}
-            nextLabel={"Next"}
-            pageCount={Math.ceil(
-              (selectedRole === "model"
-                ? modelProfiles.length
-                : photographerProfiles.length) / profilesPerPage
-            )}
-            onPageChange={handlePageClick}
-            containerClassName={
-              "pagination flex justify-center items-center space-x-2"
-            }
-            activeClassName={
-              "active bg-blue-500 text-white rounded-lg px-3 py-1"
-            }
-            pageClassName={"page-item rounded-md"}
-            pageLinkClassName={
-              "page-link text-white hover:bg-blue-100 transition-colors duration-200 px-3 py-1 rounded-lg"
-            }
-            previousClassName={"page-item"}
-            previousLinkClassName={
-              "btn btn-outline text-blue-500 border-blue-500 hover:bg-blue-100 transition-colors duration-200 px-3 py-1 rounded-lg"
-            }
-            nextClassName={"page-item"}
-            nextLinkClassName={
-              "btn btn-outline text-green border-green hover:bg-blue-100 transition-colors duration-200 px-3 py-1 rounded-lg"
-            }
-            breakLabel={"..."}
-            breakClassName={"break-me text-blue-500"}
-          />
-        </div>
+            <div className="flex justify-center mt-8">
+              <ReactPaginate
+                previousLabel={"Previous"}
+                nextLabel={"Next"}
+                pageCount={Math.ceil(profiles.length / profilesPerPage)}
+                onPageChange={handlePageClick}
+                containerClassName={
+                  "pagination flex justify-center items-center space-x-2"
+                }
+                activeClassName={
+                  "active bg-blue-500 text-white rounded-lg px-3 py-1"
+                }
+                pageClassName={"page-item rounded-md"}
+                pageLinkClassName={
+                  "page-link text-white hover:bg-blue-100 transition-colors duration-200 px-3 py-1 rounded-lg"
+                }
+                previousClassName={"page-item"}
+                previousLinkClassName={
+                  "btn btn-outline text-blue-500 border-blue-500 hover:bg-blue-100 transition-colors duration-200 px-3 py-1 rounded-lg"
+                }
+                nextClassName={"page-item"}
+                nextLinkClassName={
+                  "btn btn-outline text-green border-green hover:bg-blue-100 transition-colors duration-200 px-3 py-1 rounded-lg"
+                }
+                breakLabel={"..."}
+                breakClassName={"break-me text-blue-500"}
+              />
+            </div>
+          </>
+        )}
       </div>
     </>
   );

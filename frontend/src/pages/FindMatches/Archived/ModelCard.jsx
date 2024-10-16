@@ -1,5 +1,5 @@
 import React from "react";
-import ModelImageSlider from "./ModelImageSlider";
+import ModelImageSlider from "../ModelImageSlider";
 
 import { useState, useEffect } from "react";
 import Empty_Avatar from "../../assets/empty_avatar.jpg";

@@ -33,6 +33,9 @@ router.get("/fetchAll", async (req, res) => {
           birthday: 1,
           zipcode: 1,
           contact: 1,
+          addresses: 1,
+          showEmailOnCard: 1,
+          showAgeOnCard: 1,
         }
       );
     } else if (role === "photographer") {
@@ -47,6 +50,9 @@ router.get("/fetchAll", async (req, res) => {
           birthday: 1,
           zipcode: 1,
           contact: 1,
+          addresses: 1,
+          showEmailOnCard: 1,
+          showAgeOnCard: 1,
         }
       );
     } else {

@@ -3,7 +3,6 @@ const User = require("./userModel"); // 确保路径正确
 require("dotenv").config();
 
 // 连接到数据库
-// 根据环境变量连接到不同的数据库
 mongoose.connect(
   `mongodb+srv://ctlandu:admin123@mernapp.hj5mpxa.mongodb.net/authDB?retryWrites=true&w=majority&appName=MERNapp`,
   {
@@ -12,18 +11,34 @@ mongoose.connect(
   }
 );
 
-const addAddressesFieldToUsers = async () => {
+const updateAddressesField = async () => {
   try {
-    // 查找所有没有 addresses 字段的用户
-    const users = await User.find({ addresses: { $exists: false } });
+    // 查找所有用户
+    const users = await User.find();
 
     for (const user of users) {
-      user.addresses = []; // 初始化为空数组
+      if (!user.addresses) {
+        user.addresses = [];
+      }
+
+      // 更新每个地址对象
+      user.addresses = user.addresses.map((address) => ({
+        ...address,
+        city: address.city || "",
+        state: address.state || "",
+        country: address.country || "",
+        formattedAddress:
+          address.formattedAddress || address.formatted_address || "",
+        placeId: address.placeId || "",
+        lat: address.lat || null,
+        lng: address.lng || null,
+      }));
+
       await user.save();
-      console.log(`Updated user ${user.id} with addresses field.`);
+      console.log(`Updated addresses for user ${user.id}`);
     }
 
-    console.log("All users updated successfully.");
+    console.log("All users' addresses updated successfully.");
   } catch (error) {
     console.error("Error updating users:", error);
   } finally {
@@ -31,4 +46,4 @@ const addAddressesFieldToUsers = async () => {
   }
 };
 
-addAddressesFieldToUsers();
+updateAddressesField();

@@ -27,6 +27,16 @@ const ContactSchema = new mongoose.Schema({
   facebook_preferred: { type: Boolean, default: false },
 });
 
+const AddressSchema = new mongoose.Schema({
+  formattedAddress: String,
+  placeId: String,
+  lat: Number,
+  lng: Number,
+  city: String,
+  state: String,
+  country: String,
+});
+
 const UserSchema = new mongoose.Schema(
   {
     // identifier
@@ -36,21 +46,15 @@ const UserSchema = new mongoose.Schema(
       unique: [true, "id already exists!"],
     },
     email: { type: String, required: [true, "please provide an email!"] },
+    showEmailOnCard: { type: Boolean, default: false },
 
     timeJoined: { type: Date, default: null },
     preferredName: { type: String, default: null },
     lastName: { type: String, default: null },
     pronouns: { type: String, default: null },
     birthday: { type: Date, default: null },
-    zipcode: { type: String, default: null },
-    addresses: [
-      {
-        formattedAddress: String,
-        placeId: String,
-        lat: Number,
-        lng: Number,
-      },
-    ],
+    showAgeOnCard: { type: Boolean, default: false },
+    addresses: [AddressSchema],
 
     // 头像
     avatar: { type: String, default: null },
