@@ -179,7 +179,7 @@ const PersonalForm = (props) => {
               type="submit"
               className="bg-dark-gray dark:bg-gray-400 text-white py-2 px-4 rounded hover:bg-blue-300 dark:hover:bg-green-500"
             >
-              Save
+              Save Personal Info
             </button>
           </div>
           {showSaveAlert && (
