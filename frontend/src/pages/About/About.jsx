@@ -101,7 +101,7 @@ const About = ({ token }) => {
           </p>
           <div className="flex mb-4 items-center justify-center">
             <a
-              href="https://www.linkedin.com/in/jizhou-tang-983771180"
+              href="https://www.linkedin.com/in/colin-tang-983771180"
               target="_blank"
               className="px-4"
             >

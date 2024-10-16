@@ -25,6 +25,7 @@ const PersonalForm = (props) => {
     pronouns: props.profile.pronouns || "",
     birthday: props.profile.birthday ? formatDate(props.profile.birthday) : "",
     zipcode: props.profile.zipcode || "",
+    addresses: props.profile.addresses || [], // 新增地址字段
 
     // Contact - 使用安全的默认值
     contact: {
@@ -54,7 +55,7 @@ const PersonalForm = (props) => {
         ? formatDate(props.profile.birthday)
         : "",
       zipcode: props.profile.zipcode || "",
-
+      addresses: props.profile.addresses || [], // 新增地址字段
       // Contact
       contact: {
         phoneNumber: props.profile.contact.phoneNumber || "",
@@ -147,7 +148,11 @@ const PersonalForm = (props) => {
         </div>
 
         <form onSubmit={handleSubmit}>
-          <BasicInfo formData={formData} handleChange={handleChange} />
+          <BasicInfo
+            formData={formData}
+            handleChange={handleChange}
+            setFormData={setFormData}
+          />
           <SocialMedia
             contact={formData.contact}
             handleChange={handleChange}

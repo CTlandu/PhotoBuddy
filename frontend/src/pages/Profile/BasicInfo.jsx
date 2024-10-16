@@ -1,6 +1,16 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import AddressAutoComplete from "./AddressAutoComplete";
 
-const BasicInfo = ({ formData, handleChange }) => {
+const BasicInfo = ({ formData, handleChange, setFormData }) => {
+  const [addresses, setAddresses] = useState(formData.addresses || []);
+
+  useEffect(() => {
+    setFormData((prevData) => ({
+      ...prevData,
+      addresses,
+    }));
+  }, [addresses, setFormData]);
+
   return (
     <div className="mb-6">
       <div className="flex flex-row justify-between items-center">
@@ -108,21 +118,17 @@ const BasicInfo = ({ formData, handleChange }) => {
         />
       </div>
 
+      {/* Address Autocomplete */}
       <div>
         <label
-          htmlFor="location"
+          htmlFor="addresses"
           className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2"
         >
-          Area of Activity
+          Areas of Activity (We use this to find your matches)
         </label>
-        <input
-          type="number"
-          name="zipcode"
-          value={formData.zipcode}
-          onChange={handleChange}
-          min="00501"
-          max="99950"
-          className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray text-white"
+        <AddressAutoComplete
+          addresses={addresses}
+          setAddresses={setAddresses}
         />
       </div>
     </div>
