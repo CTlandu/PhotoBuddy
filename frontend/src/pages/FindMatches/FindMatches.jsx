@@ -55,33 +55,40 @@ function FindMatches({ token }) {
   );
 
   return (
-    <div className="flex flex-col h-screen bg-base-200">
-      <Navbar token={token} />
-      <SlowLoadBanner />
-      <div className="flex flex-col items-center mt-16 bg-base">
-        <RoleSelector
-          selectedRole={selectedRole}
-          onRoleChange={handleRoleChange}
-        />
-        <CitySearch onCityChange={handleCityChange} />
+    <>
+      <div className="top-0 left-0 w-full z-50">
+        <Navbar token={token} />
       </div>
-      {isLoading ? (
-        <div className="flex justify-center items-center mt-16">
-          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
-        </div>
-      ) : profiles.length > 0 ? (
-        <>
-          <ProfileGrid profiles={displayProfiles} selectedRole={selectedRole} />
-          <Pagination
-            pageCount={Math.ceil(profiles.length / profilesPerPage)}
-            currentPage={currentPage}
-            onPageChange={(selected) => setCurrentPage(selected)}
+      <div className="min-h-screen flex flex-col items-center bg-base-200">
+        <SlowLoadBanner />
+        <div className="flex flex-col items-center mt-16 bg-base">
+          <RoleSelector
+            selectedRole={selectedRole}
+            onRoleChange={handleRoleChange}
           />
-        </>
-      ) : (
-        <NoProfilesPrompt city={selectedCity} selectedRole={selectedRole} />
-      )}
-    </div>
+          <CitySearch onCityChange={handleCityChange} />
+        </div>
+        {isLoading ? (
+          <div className="flex justify-center items-center mt-16">
+            <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
+          </div>
+        ) : profiles.length > 0 ? (
+          <>
+            <ProfileGrid
+              profiles={displayProfiles}
+              selectedRole={selectedRole}
+            />
+            <Pagination
+              pageCount={Math.ceil(profiles.length / profilesPerPage)}
+              currentPage={currentPage}
+              onPageChange={(selected) => setCurrentPage(selected)}
+            />
+          </>
+        ) : (
+          <NoProfilesPrompt city={selectedCity} selectedRole={selectedRole} />
+        )}
+      </div>
+    </>
   );
 }
 
