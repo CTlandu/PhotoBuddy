@@ -4,13 +4,21 @@ import { loadGoogleMapsApi } from "../../utils/googleMapsLoader";
 const CitySearch = ({ onCityChange }) => {
   const autocompleteRef = useRef(null);
   const [inputValue, setInputValue] = useState("");
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    loadGoogleMapsApi().then(initAutocomplete);
+    loadGoogleMapsApi().then(() => {
+      setIsLoaded(true);
+    });
   }, []);
 
-  const initAutocomplete = () => {
-    if (autocompleteRef.current) {
+  useEffect(() => {
+    if (
+      isLoaded &&
+      window.google &&
+      window.google.maps &&
+      window.google.maps.places
+    ) {
       const autocomplete = new window.google.maps.places.Autocomplete(
         autocompleteRef.current,
         { types: ["(cities)"] }
@@ -37,12 +45,13 @@ const CitySearch = ({ onCityChange }) => {
           const formattedCity = [city, state, country]
             .filter(Boolean)
             .join(", ");
+          console.log("Selected city:", formattedCity);
           setInputValue(formattedCity);
           onCityChange(formattedCity);
         }
       });
     }
-  };
+  }, [isLoaded, onCityChange]);
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
