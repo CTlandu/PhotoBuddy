@@ -5,6 +5,7 @@ import { redirectToAuth } from "supertokens-auth-react";
 import Session from "supertokens-auth-react/recipe/session";
 import emptyAvatar from "../assets/empty_avatar.jpg";
 import FeatureVote from "./FeaturesVote";
+import { FaLightbulb } from "react-icons/fa"; // 导入灯泡图标
 
 const Navbar = ({ token }) => {
   const [avatar, setAvatar] = useState(null);
@@ -126,7 +127,17 @@ const Navbar = ({ token }) => {
                   </a>
                 </li>
                 <li>
-                  <FeatureVote userInfo={userInfo} />
+                  {/* Suggest Feature 按钮 */}
+                  <div className="mr-4">
+                    <FeatureVote
+                      userInfo={userInfo}
+                      className="btn btn-sm btn-outline btn-accent rounded-full"
+                      title="Suggest a feature!"
+                    >
+                      <FaLightbulb className="mr-2" />
+                      Suggest a feature
+                    </FeatureVote>
+                  </div>
                 </li>
               </ul>
             </div>
@@ -149,16 +160,32 @@ const Navbar = ({ token }) => {
                     ></path>
                   </svg>
                 </summary>
-                <ul className="dropdown-content bg-base-100 rounded-lg w-44 p-3 mt-2 shadow-lg absolute z-50 left-0">
-                  <li className="hover:bg-green rounded-md">
-                    <a href="/about" className="block px-4 py-2">
+                <ul className="dropdown-content bg-base-100 rounded-lg w-52 p-3 mt-2 shadow-lg absolute z-50 left-0">
+                  <li className="mb-2">
+                    <a
+                      href="/about"
+                      className="btn btn-sm btn-primary rounded-full w-full flex items-center justify-center"
+                    >
                       About
                     </a>
                   </li>
-                  <li className="hover:bg-purple rounded-md">
-                    <a href="/findmatches" className="block px-4 py-2">
+                  <li className="mb-2">
+                    <a
+                      href="/findmatches"
+                      className="btn btn-sm btn-secondary rounded-full w-full flex items-center justify-center"
+                    >
                       Find Matches!
                     </a>
+                  </li>
+                  <li>
+                    <FeatureVote
+                      userInfo={userInfo}
+                      className="btn btn-sm btn-outline btn-accent rounded-full w-full"
+                      title="Suggest a feature!"
+                    >
+                      <FaLightbulb className="" />
+                      Suggest a feature
+                    </FeatureVote>
                   </li>
                 </ul>
               </details>
@@ -166,7 +193,7 @@ const Navbar = ({ token }) => {
           </div>
 
           {/* 右侧部分 - 登录/头像 */}
-          <div className="flex-none mr-4 lg:mr-24">
+          <div className="flex-none mr-4 lg:mr-24 flex items-center">
             <ul className="menu menu-horizontal px-1">
               {token ? (
                 <li className="flex items-center">

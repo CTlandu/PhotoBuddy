@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useCallback } from "react";
 
-const FeaturesVote = ({ userInfo }) => {
+const FeaturesVote = ({ userInfo, children, className, ...props }) => {
   const buttonRef = useRef(null);
 
   const handleClick = useCallback((event) => {
@@ -38,7 +38,7 @@ const FeaturesVote = ({ userInfo }) => {
         buttonRef.current.removeEventListener("click", handleClick);
       }
     };
-  }, [handleClick]);
+  }, [handleClick, userInfo]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -59,11 +59,12 @@ const FeaturesVote = ({ userInfo }) => {
 
   return (
     <button
-      className="btn bg-green-200 text-black hover:bg-green-300"
       ref={buttonRef}
       aria-haspopup="dialog"
+      className={className}
+      {...props}
     >
-      Suggest a feature
+      {children}
     </button>
   );
 };
