@@ -1,15 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import Cookies from "universal-cookie";
-const cookies = new Cookies();
 import { signOut } from "supertokens-auth-react/recipe/session";
 import { redirectToAuth } from "supertokens-auth-react";
 import Session from "supertokens-auth-react/recipe/session";
 import emptyAvatar from "../assets/empty_avatar.jpg";
+import FeatureVote from "./FeaturesVote";
 
 const Navbar = ({ token }) => {
   const [avatar, setAvatar] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [userInfo, setUserInfo] = useState(null);
 
   const menuRef = useRef(null); // 头像部分的菜单
   const mobileMenuRef = useRef(null); // 小屏幕下的菜单
@@ -18,7 +18,7 @@ const Navbar = ({ token }) => {
   useEffect(() => {
     if (token) {
       console.log("Navbar收到了Token");
-      fetchAvatar();
+      fetchUserInfo();
     } else {
       setTimeout(() => {
         // 如果1秒后还没有收到token，则应该是真的没有了，遂呈现未登录状态的Navbar
@@ -28,7 +28,7 @@ const Navbar = ({ token }) => {
     }
   }, [token]);
 
-  async function fetchAvatar() {
+  async function fetchUserInfo() {
     try {
       const userId = await Session.getUserId();
 
@@ -39,13 +39,22 @@ const Navbar = ({ token }) => {
           params: { id: userId },
         }
       );
-
       // 设置头像
       setAvatar(response.data.avatar);
+
+      // 设置用户信息
+      setUserInfo({
+        userId: userId,
+        email: response.data.email,
+        name: `${response.data.preferredName || ""} ${
+          response.data.lastName || ""
+        }`.trim(),
+        imgUrl: response.data.avatar || emptyAvatar,
+      });
     } catch (error) {
       console.log(error);
     } finally {
-      setLoading(false); // 结束loading状态
+      setLoading(false);
     }
   }
 
@@ -116,6 +125,9 @@ const Navbar = ({ token }) => {
                     Find Matches!
                   </a>
                 </li>
+                <li>
+                  <FeatureVote userInfo={userInfo} />
+                </li>
               </ul>
             </div>
 
@@ -180,8 +192,11 @@ const Navbar = ({ token }) => {
                       <li>
                         <a href="/profile">Profile</a>
                       </li>
-                      <li>
+                      {/* <li>
                         <a href="/portfolio">Portfolio</a>
+                      </li> */}
+                      <li>
+                        <a href="/portfolio">Favorites & Likes</a>
                       </li>
                       <li>
                         <a href="/usersettings">Settings</a>
