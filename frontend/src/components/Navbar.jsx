@@ -111,8 +111,8 @@ const Navbar = ({ token }) => {
             </a>
 
             {/* 中间部分 - 菜单项 */}
-            <div className="hidden lg:flex md:flex ml-4 ">
-              <ul className="menu menu-horizontal px-1">
+            <div className="hidden lg:flex md:flex ml-4 items-center">
+              <ul className="menu menu-horizontal px-1 flex items-center">
                 <li>
                   <a href="/about" className="btn btn-primary text-md mx-2">
                     About
@@ -126,18 +126,16 @@ const Navbar = ({ token }) => {
                     Find Matches!
                   </a>
                 </li>
-                <li>
+                <li className="flex items-center">
                   {/* Suggest Feature 按钮 */}
-                  <div className="mr-4">
-                    <FeatureVote
-                      userInfo={userInfo}
-                      className="btn btn-sm btn-outline btn-accent rounded-full"
-                      title="Suggest a feature!"
-                    >
-                      <FaLightbulb className="mr-2" />
-                      Suggest a feature
-                    </FeatureVote>
-                  </div>
+                  <FeatureVote
+                    userInfo={userInfo}
+                    className="btn btn-sm btn-outline btn-accent rounded-full h-full flex items-center justify-center ml-4"
+                    title="Suggest a feature!"
+                  >
+                    <FaLightbulb className="mr-2" />
+                    Suggest a feature
+                  </FeatureVote>
                 </li>
               </ul>
             </div>
