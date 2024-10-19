@@ -1,17 +1,17 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
+import { loadGoogleMapsApi } from "../../utils/googleMapsLoader";
 
 const libraries = ["places"];
 
 const AddressAutocomplete = ({ addresses, setAddresses }) => {
   const [address, setAddress] = useState("");
   const autocompleteRef = useRef(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  // 使用 useJsApiLoader 加载 Google Maps API
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: `${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}`,
-    libraries,
-  });
+  useEffect(() => {
+    loadGoogleMapsApi().then(() => setIsLoaded(true));
+  }, []);
 
   const handlePlaceChanged = () => {
     if (autocompleteRef.current) {

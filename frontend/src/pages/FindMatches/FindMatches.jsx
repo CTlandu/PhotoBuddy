@@ -17,10 +17,11 @@ function FindMatches({ token }) {
   const fetchProfiles = async (role, city = "") => {
     setIsLoading(true);
     try {
+      const cityQuery = city ? `&city=${encodeURIComponent(city)}` : "";
       const response = await fetch(
-        `${import.meta.env.VITE_API_DOMAIN}/api/fetchAll?role=${role}${
-          city ? `&city=${city}` : ""
-        }`
+        `${
+          import.meta.env.VITE_API_DOMAIN
+        }/api/fetchAll?role=${role}${cityQuery}`
       );
       if (!response.ok)
         throw new Error(`HTTP error! status: ${response.status}`);
