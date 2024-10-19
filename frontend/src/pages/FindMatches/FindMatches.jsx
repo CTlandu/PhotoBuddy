@@ -5,6 +5,7 @@ import RoleSelector from "./RoleSelector";
 import CitySearch from "./CitySearch";
 import ProfileGrid from "./ProfileGrid";
 import Pagination from "./Pagination";
+import NoProfilesPrompt from "./NoProfilesPrompt";
 
 function FindMatches({ token }) {
   const [profiles, setProfiles] = useState([]);
@@ -68,7 +69,7 @@ function FindMatches({ token }) {
         <div className="flex justify-center items-center mt-16">
           <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
         </div>
-      ) : (
+      ) : profiles.length > 0 ? (
         <>
           <ProfileGrid profiles={displayProfiles} selectedRole={selectedRole} />
           <Pagination
@@ -77,6 +78,8 @@ function FindMatches({ token }) {
             onPageChange={(selected) => setCurrentPage(selected)}
           />
         </>
+      ) : (
+        <NoProfilesPrompt city={selectedCity} />
       )}
     </div>
   );
