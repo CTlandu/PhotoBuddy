@@ -9,7 +9,7 @@ const AddressAutocomplete = ({ addresses, setAddresses }) => {
 
   // 使用 useJsApiLoader 加载 Google Maps API
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyAb93DCAS5kRcLsqtkJ3gjqYsz7gQcorXY", // 替换为你的 API Key
+    googleMapsApiKey: `${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}`,
     libraries,
   });
 
@@ -59,7 +59,7 @@ const AddressAutocomplete = ({ addresses, setAddresses }) => {
   };
 
   const handleRemoveAddress = (e, placeId) => {
-    e.preventDefault(); // 阻止事件冒泡和默认行为
+    e.preventDefault(); // 止事件冒泡和默认行为
     e.stopPropagation();
     setAddresses(addresses.filter((addr) => addr.placeId !== placeId));
   };

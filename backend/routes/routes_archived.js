@@ -56,7 +56,7 @@ router.get("/fetchAll", async (req, res) => {
 });
 
 // 更新ModelInfo或PhotographerInfo
-router.put("/updateProfile", async (req, res) => {
+router.put("/updatePortfolio", async (req, res) => {
   const { id, model_info, photographer_info } = req.body;
 
   try {
