@@ -18,48 +18,42 @@ router.post("/saveUserInfo", async (req, res) => {
 
 // 获取所有用户信息
 router.get("/fetchAll", async (req, res) => {
-  const { role } = req.query;
+  const { role, city } = req.query;
   try {
-    let users;
+    let query = {};
+    let projection = {
+      preferredName: 1,
+      email: 1,
+      avatar: 1,
+      pronouns: 1,
+      birthday: 1,
+      zipcode: 1,
+      contact: 1,
+      addresses: 1,
+      showEmailOnCard: 1,
+      showAgeOnCard: 1,
+    };
+
     if (role === "model") {
-      users = await User.find(
-        { "model_info.model_images": { $ne: [] } },
-        {
-          model_info: 1,
-          preferredName: 1,
-          email: 1,
-          avatar: 1,
-          pronouns: 1,
-          birthday: 1,
-          zipcode: 1,
-          contact: 1,
-          addresses: 1,
-          showEmailOnCard: 1,
-          showAgeOnCard: 1,
-        }
-      );
+      query["model_info.model_images"] = { $ne: [] };
+      projection.model_info = 1;
     } else if (role === "photographer") {
-      users = await User.find(
-        { "photographer_info.photographer_images": { $ne: [] } },
-        {
-          photographer_info: 1,
-          preferredName: 1,
-          email: 1,
-          avatar: 1,
-          pronouns: 1,
-          birthday: 1,
-          zipcode: 1,
-          contact: 1,
-          addresses: 1,
-          showEmailOnCard: 1,
-          showAgeOnCard: 1,
-        }
-      );
+      query["photographer_info.photographer_images"] = { $ne: [] };
+      projection.photographer_info = 1;
     } else {
       return res.status(400).json({
         message: "Invalid role parameter. Must be 'model' or 'photographer'.",
       });
     }
+
+    // 更新城市筛选逻辑
+    if (city && city.trim() !== "") {
+      query["addresses.formattedCity"] = city.trim();
+    }
+
+    console.log("Received query params:", { role, city });
+
+    const users = await User.find(query, projection);
     res.status(200).json(users);
   } catch (error) {
     console.error("Error fetching users:", error);

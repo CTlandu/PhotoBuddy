@@ -1,65 +1,65 @@
-import React, { useState, useRef } from "react";
-import { Autocomplete, useJsApiLoader } from "@react-google-maps/api";
-
-const libraries = ["places"];
+import React, { useState, useRef, useEffect } from "react";
+import { loadGoogleMapsApi } from "../../utils/googleMapsLoader";
 
 const AddressAutocomplete = ({ addresses, setAddresses }) => {
   const [address, setAddress] = useState("");
   const autocompleteRef = useRef(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  // 使用 useJsApiLoader 加载 Google Maps API
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyAb93DCAS5kRcLsqtkJ3gjqYsz7gQcorXY", // 替换为你的 API Key
-    libraries,
-  });
+  useEffect(() => {
+    loadGoogleMapsApi().then(() => setIsLoaded(true));
+  }, []);
 
-  const handlePlaceChanged = () => {
-    if (autocompleteRef.current) {
-      const place = autocompleteRef.current.getPlace();
-      if (place) {
-        const formattedAddress = place.formatted_address;
-        const placeId = place.place_id;
-        const lat = place.geometry.location.lat();
-        const lng = place.geometry.location.lng();
+  useEffect(() => {
+    if (isLoaded && autocompleteRef.current) {
+      const autocomplete = new window.google.maps.places.Autocomplete(
+        autocompleteRef.current,
+        { types: ["(cities)"] }
+      );
 
-        // 提取城市、州和国家信息
-        let city = "",
-          state = "",
-          country = "";
-        for (const component of place.address_components) {
-          if (component.types.includes("locality")) {
-            city = component.long_name;
-          } else if (component.types.includes("administrative_area_level_1")) {
-            state = component.short_name;
-          } else if (component.types.includes("country")) {
-            country = component.long_name;
+      autocomplete.addListener("place_changed", () => {
+        const place = autocomplete.getPlace();
+        if (place && place.address_components) {
+          let city = "",
+            state = "",
+            country = "";
+          for (const component of place.address_components) {
+            if (component.types.includes("locality")) {
+              city = component.long_name;
+            } else if (
+              component.types.includes("administrative_area_level_1")
+            ) {
+              state = component.short_name;
+            } else if (component.types.includes("country")) {
+              country = component.long_name;
+            }
           }
+
+          const formattedCity = [city, state, country]
+            .filter(Boolean)
+            .join(", ");
+          const newAddress = {
+            formattedCity,
+            placeId: place.place_id,
+            lat: place.geometry?.location.lat(),
+            lng: place.geometry?.location.lng(),
+          };
+
+          if (
+            addresses.length < 3 &&
+            !addresses.some((addr) => addr.placeId === newAddress.placeId)
+          ) {
+            setAddresses([...addresses, newAddress]);
+          }
+
+          setAddress("");
         }
-
-        const newAddress = {
-          formattedAddress,
-          placeId,
-          lat,
-          lng,
-          city,
-          state,
-          country,
-        };
-
-        if (
-          addresses.length < 3 &&
-          !addresses.some((addr) => addr.placeId === placeId)
-        ) {
-          setAddresses([...addresses, newAddress]);
-        }
-
-        setAddress("");
-      }
+      });
     }
-  };
+  }, [isLoaded, addresses, setAddresses]);
 
   const handleRemoveAddress = (e, placeId) => {
-    e.preventDefault(); // 阻止事件冒泡和默认行为
+    e.preventDefault();
     e.stopPropagation();
     setAddresses(addresses.filter((addr) => addr.placeId !== placeId));
   };
@@ -68,32 +68,26 @@ const AddressAutocomplete = ({ addresses, setAddresses }) => {
 
   return (
     <div>
-      <Autocomplete
-        onLoad={(autocomplete) => {
-          autocompleteRef.current = autocomplete;
-        }}
-        onPlaceChanged={handlePlaceChanged}
-      >
-        <input
-          type="text"
-          placeholder={
-            addresses.length >= 3
-              ? "You can only put 3 addresses max"
-              : "Around where are you gonna take photos?"
-          }
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray text-white mb-2"
-          disabled={addresses.length >= 3}
-        />
-      </Autocomplete>
+      <input
+        ref={autocompleteRef}
+        type="text"
+        placeholder={
+          addresses.length >= 3
+            ? "You can only add 3 cities max"
+            : "Enter a city where you want to take photos"
+        }
+        value={address}
+        onChange={(e) => setAddress(e.target.value)}
+        className="border rounded w-full py-2 px-3 leading-tight bg-dark-gray text-white mb-2"
+        disabled={addresses.length >= 3}
+      />
       <ul className="list-none p-0 flex flex-wrap gap-2">
         {addresses.map((addr, index) => (
           <li
             key={index}
             className="flex items-center bg-blue-500 text-white p-2 rounded-full text-sm"
           >
-            <span className="mr-2">{addr.formattedAddress}</span>
+            <span className="mr-2">{addr.formattedCity}</span>
             <button
               onClick={(e) => handleRemoveAddress(e, addr.placeId)}
               className="bg-white text-red-500 rounded-full w-5 h-5 flex items-center justify-center hover:bg-red-100"

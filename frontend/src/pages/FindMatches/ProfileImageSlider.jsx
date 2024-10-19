@@ -12,12 +12,12 @@ const ProfileImageSlider = ({ profile, role }) => {
 
   const settings = {
     dots: false,
-    infinite: true,
+    infinite: images.length > 1, // 只有当有多于一张图片时才设置为 true
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
+    nextArrow: images.length > 1 ? <NextArrow /> : null, // 只有多张图片时才显示箭头
+    prevArrow: images.length > 1 ? <PrevArrow /> : null,
     afterChange: (index) => setCurrentIndex(index),
   };
 
@@ -32,7 +32,7 @@ const ProfileImageSlider = ({ profile, role }) => {
 
   return (
     <div className="relative w-full overflow-hidden mt-4">
-      <style jsx>{`
+      <style>{`
         .arrow-button {
           position: absolute;
           top: 50%;
@@ -91,11 +91,13 @@ const ProfileImageSlider = ({ profile, role }) => {
           </div>
         ))}
       </Slider>
-      <div className="text-center mt-2">
-        <p>
-          {currentIndex + 1} / {images.length}
-        </p>
-      </div>
+      {images.length > 1 && ( // 只有多张图片时才显示页码
+        <div className="text-center mt-2">
+          <p>
+            {currentIndex + 1} / {images.length}
+          </p>
+        </div>
+      )}
       <div className="flex justify-center mt-4 space-x-2 overflow-x-auto">
         {images.map((image, index) => (
           <div

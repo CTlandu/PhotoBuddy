@@ -25,6 +25,17 @@ const ProfileCard = ({ profile, isLoading, modal_index, role }) => {
   const experience = roleInfo[`${role}_experience`] || "";
   const lookingFor = roleInfo[`${role}_lookingfor`] || [];
 
+  // 获取所有地址的城市名称
+  const cities = profile.addresses
+    ? profile.addresses
+        .filter((address) => address && address.formattedCity) // 过滤掉无效的地址
+        .map((address) => {
+          const cityParts = address.formattedCity.split(",");
+          return cityParts.length > 0 ? cityParts[0].trim() : "";
+        })
+        .filter((city) => city !== "") // 过滤掉空字符串
+    : [];
+
   return (
     <>
       <div className="card bg-base-100 w-full h-full shadow-xl m-2">
@@ -56,8 +67,18 @@ const ProfileCard = ({ profile, isLoading, modal_index, role }) => {
               </li>
             ))}
           </ul>
-          <p>Distance from you:</p>
-          <div className="badge badge-info">1.4 miles</div>
+          {cities.length > 0 && (
+            <div>
+              <p>Locations:</p>
+              <div className="flex flex-wrap gap-1">
+                {cities.map((city, index) => (
+                  <div key={index} className="badge badge-info">
+                    {city}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
           <div className="card-actions justify-end">
             <div className="badge badge-outline">{experience}</div>
             <div className="badge badge-outline">3 years</div>

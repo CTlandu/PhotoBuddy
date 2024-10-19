@@ -1,15 +1,16 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import Cookies from "universal-cookie";
-const cookies = new Cookies();
 import { signOut } from "supertokens-auth-react/recipe/session";
 import { redirectToAuth } from "supertokens-auth-react";
 import Session from "supertokens-auth-react/recipe/session";
 import emptyAvatar from "../assets/empty_avatar.jpg";
+import FeatureVote from "./FeaturesVote";
+import { FaLightbulb } from "react-icons/fa"; // 导入灯泡图标
 
 const Navbar = ({ token }) => {
   const [avatar, setAvatar] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [userInfo, setUserInfo] = useState(null);
 
   const menuRef = useRef(null); // 头像部分的菜单
   const mobileMenuRef = useRef(null); // 小屏幕下的菜单
@@ -18,7 +19,7 @@ const Navbar = ({ token }) => {
   useEffect(() => {
     if (token) {
       console.log("Navbar收到了Token");
-      fetchAvatar();
+      fetchUserInfo();
     } else {
       setTimeout(() => {
         // 如果1秒后还没有收到token，则应该是真的没有了，遂呈现未登录状态的Navbar
@@ -28,7 +29,7 @@ const Navbar = ({ token }) => {
     }
   }, [token]);
 
-  async function fetchAvatar() {
+  async function fetchUserInfo() {
     try {
       const userId = await Session.getUserId();
 
@@ -39,13 +40,22 @@ const Navbar = ({ token }) => {
           params: { id: userId },
         }
       );
-
       // 设置头像
       setAvatar(response.data.avatar);
+
+      // 设置用户信息
+      setUserInfo({
+        userId: userId,
+        email: response.data.email,
+        name: `${response.data.preferredName || ""} ${
+          response.data.lastName || ""
+        }`.trim(),
+        imgUrl: response.data.avatar || emptyAvatar,
+      });
     } catch (error) {
       console.log(error);
     } finally {
-      setLoading(false); // 结束loading状态
+      setLoading(false);
     }
   }
 
@@ -116,6 +126,19 @@ const Navbar = ({ token }) => {
                     Find Matches!
                   </a>
                 </li>
+                <li>
+                  {/* Suggest Feature 按钮 */}
+                  <div className="mr-4">
+                    <FeatureVote
+                      userInfo={userInfo}
+                      className="btn btn-sm btn-outline btn-accent rounded-full"
+                      title="Suggest a feature!"
+                    >
+                      <FaLightbulb className="mr-2" />
+                      Suggest a feature
+                    </FeatureVote>
+                  </div>
+                </li>
               </ul>
             </div>
 
@@ -137,16 +160,32 @@ const Navbar = ({ token }) => {
                     ></path>
                   </svg>
                 </summary>
-                <ul className="dropdown-content bg-base-100 rounded-lg w-44 p-3 mt-2 shadow-lg absolute z-50 left-0">
-                  <li className="hover:bg-green rounded-md">
-                    <a href="/about" className="block px-4 py-2">
+                <ul className="dropdown-content bg-base-100 rounded-lg w-52 p-3 mt-2 shadow-lg absolute z-50 left-0">
+                  <li className="mb-2">
+                    <a
+                      href="/about"
+                      className="btn btn-sm btn-primary rounded-full w-full flex items-center justify-center"
+                    >
                       About
                     </a>
                   </li>
-                  <li className="hover:bg-purple rounded-md">
-                    <a href="/findmatches" className="block px-4 py-2">
+                  <li className="mb-2">
+                    <a
+                      href="/findmatches"
+                      className="btn btn-sm btn-secondary rounded-full w-full flex items-center justify-center"
+                    >
                       Find Matches!
                     </a>
+                  </li>
+                  <li>
+                    <FeatureVote
+                      userInfo={userInfo}
+                      className="btn btn-sm btn-outline btn-accent rounded-full w-full"
+                      title="Suggest a feature!"
+                    >
+                      <FaLightbulb className="" />
+                      Suggest a feature
+                    </FeatureVote>
                   </li>
                 </ul>
               </details>
@@ -154,7 +193,7 @@ const Navbar = ({ token }) => {
           </div>
 
           {/* 右侧部分 - 登录/头像 */}
-          <div className="flex-none mr-4 lg:mr-24">
+          <div className="flex-none mr-4 lg:mr-24 flex items-center">
             <ul className="menu menu-horizontal px-1">
               {token ? (
                 <li className="flex items-center">
@@ -180,8 +219,11 @@ const Navbar = ({ token }) => {
                       <li>
                         <a href="/profile">Profile</a>
                       </li>
-                      <li>
+                      {/* <li>
                         <a href="/portfolio">Portfolio</a>
+                      </li> */}
+                      <li>
+                        <a href="/portfolio">Favorites & Likes</a>
                       </li>
                       <li>
                         <a href="/usersettings">Settings</a>
