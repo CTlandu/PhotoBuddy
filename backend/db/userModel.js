@@ -28,13 +28,10 @@ const ContactSchema = new mongoose.Schema({
 });
 
 const AddressSchema = new mongoose.Schema({
-  formattedAddress: String,
+  formattedCity: String,
   placeId: String,
   lat: Number,
   lng: Number,
-  city: String,
-  state: String,
-  country: String,
 });
 
 const UserSchema = new mongoose.Schema(

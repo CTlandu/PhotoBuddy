@@ -16,13 +16,7 @@ const AddressAutocomplete = ({ addresses, setAddresses }) => {
   const handlePlaceChanged = () => {
     if (autocompleteRef.current) {
       const place = autocompleteRef.current.getPlace();
-      if (place) {
-        const formattedAddress = place.formatted_address;
-        const placeId = place.place_id;
-        const lat = place.geometry.location.lat();
-        const lng = place.geometry.location.lng();
-
-        // 提取城市、州和国家信息
+      if (place && place.address_components) {
         let city = "",
           state = "",
           country = "";
@@ -36,19 +30,17 @@ const AddressAutocomplete = ({ addresses, setAddresses }) => {
           }
         }
 
+        const formattedCity = [city, state, country].filter(Boolean).join(", ");
         const newAddress = {
-          formattedAddress,
-          placeId,
-          lat,
-          lng,
-          city,
-          state,
-          country,
+          formattedCity,
+          placeId: place.place_id,
+          lat: place.geometry?.location.lat(),
+          lng: place.geometry?.location.lng(),
         };
 
         if (
           addresses.length < 3 &&
-          !addresses.some((addr) => addr.placeId === placeId)
+          !addresses.some((addr) => addr.placeId === newAddress.placeId)
         ) {
           setAddresses([...addresses, newAddress]);
         }
@@ -59,7 +51,7 @@ const AddressAutocomplete = ({ addresses, setAddresses }) => {
   };
 
   const handleRemoveAddress = (e, placeId) => {
-    e.preventDefault(); // 止事件冒泡和默认行为
+    e.preventDefault();
     e.stopPropagation();
     setAddresses(addresses.filter((addr) => addr.placeId !== placeId));
   };
@@ -73,13 +65,14 @@ const AddressAutocomplete = ({ addresses, setAddresses }) => {
           autocompleteRef.current = autocomplete;
         }}
         onPlaceChanged={handlePlaceChanged}
+        options={{ types: ["(cities)"] }}
       >
         <input
           type="text"
           placeholder={
             addresses.length >= 3
-              ? "You can only put 3 addresses max"
-              : "Around where are you gonna take photos?"
+              ? "You can only add 3 cities max"
+              : "Enter a city where you want to take photos"
           }
           value={address}
           onChange={(e) => setAddress(e.target.value)}
@@ -93,7 +86,7 @@ const AddressAutocomplete = ({ addresses, setAddresses }) => {
             key={index}
             className="flex items-center bg-blue-500 text-white p-2 rounded-full text-sm"
           >
-            <span className="mr-2">{addr.formattedAddress}</span>
+            <span className="mr-2">{addr.formattedCity}</span>
             <button
               onClick={(e) => handleRemoveAddress(e, addr.placeId)}
               className="bg-white text-red-500 rounded-full w-5 h-5 flex items-center justify-center hover:bg-red-100"
