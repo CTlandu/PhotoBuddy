@@ -32,7 +32,7 @@ const ProfileImageSlider = ({ profile, role }) => {
 
   return (
     <div className="relative w-full overflow-hidden mt-4">
-      <style jsx>{`
+      <style>{`
         .arrow-button {
           position: absolute;
           top: 50%;
