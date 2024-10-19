@@ -79,7 +79,7 @@ function FindMatches({ token }) {
           />
         </>
       ) : (
-        <NoProfilesPrompt city={selectedCity} />
+        <NoProfilesPrompt city={selectedCity} selectedRole={selectedRole} />
       )}
     </div>
   );
