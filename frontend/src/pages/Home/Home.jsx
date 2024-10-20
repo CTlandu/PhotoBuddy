@@ -10,7 +10,11 @@ function Home({ token }) {
         <Navbar token={token} />
       </div>
 
-      <IntroBlock></IntroBlock>
+      <div className="flex justify-center bg-base-200">
+        <div className="w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+          <IntroBlock />
+        </div>
+      </div>
 
       {/* <Carousel></Carousel> */}
       <div className="text-center mt-8">
