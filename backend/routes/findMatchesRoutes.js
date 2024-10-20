@@ -13,6 +13,7 @@ router.get("/popularCities", async (req, res) => {
           count: { $sum: 1 },
         },
       },
+      { $match: { _id: { $ne: null, $ne: "" } } }, // 添加这行来过滤掉 null 和空字符串
       { $sort: { count: -1 } },
       { $limit: 5 },
       {
@@ -24,7 +25,9 @@ router.get("/popularCities", async (req, res) => {
       },
     ]);
 
-    res.status(200).json(popularCities.map((item) => item.city));
+    res
+      .status(200)
+      .json(popularCities.map((item) => item.city).filter(Boolean));
   } catch (error) {
     console.error("Error fetching popular cities:", error);
     res.status(500).json({ message: "Internal server error" });

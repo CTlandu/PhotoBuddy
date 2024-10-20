@@ -43,13 +43,24 @@ const CitySearch = ({ onCityChange }) => {
         throw new Error(`HTTP error! status: ${response.status}`);
       const data = await response.json();
       setPopularCities(
-        data.slice(0, 5).map((city) => ({
-          displayName: city.split(",")[0].trim(),
-          fullName: city,
-        }))
+        data
+          .filter(Boolean) // 过滤掉可能的 null 或 undefined 值
+          .map((city) => {
+            if (typeof city === "string" && city.includes(",")) {
+              return {
+                displayName: city.split(",")[0].trim(),
+                fullName: city,
+              };
+            }
+            return {
+              displayName: city,
+              fullName: city,
+            };
+          })
       );
     } catch (error) {
       console.error("Error fetching popular cities:", error);
+      setPopularCities([]); // 在错误情况下设置为空数组
     }
   };
 
