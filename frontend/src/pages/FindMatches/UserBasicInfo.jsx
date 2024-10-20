@@ -12,6 +12,8 @@ import {
   FaMapMarkerAlt,
 } from "react-icons/fa";
 
+import emptyAvatar from "../../assets/empty_avatar.jpg";
+
 const UserBasicInfo = ({ profile, calculateAge, role }) => {
   const roleInfo = profile[`${role}_info`] || {};
   const experience = roleInfo[`${role}_experience`] || "";
@@ -55,13 +57,11 @@ const UserBasicInfo = ({ profile, calculateAge, role }) => {
       <div className="flex items-center justify-center mb-4">
         <div className="avatar mr-4">
           <div className="w-24 h-24 rounded-full overflow-hidden">
-            {profile.avatar && (
-              <img
-                src={profile.avatar}
-                alt="Avatar"
-                className="w-full h-full object-cover"
-              />
-            )}
+            <img
+              src={profile.avatar || emptyAvatar}
+              alt="Avatar"
+              className="w-full h-full object-cover"
+            />
           </div>
         </div>
         <div>
@@ -130,12 +130,14 @@ const UserBasicInfo = ({ profile, calculateAge, role }) => {
         </a>
       )}
 
-      <div className="mt-4 text-center w-full">
-        <h3 className="text-xl font-semibold mb-2">About Me</h3>
-        <p className="italic bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
-          {roleInfo[`${role}_bio`] || ""}
-        </p>
-      </div>
+      {roleInfo[`${role}_bio`] && (
+        <div className="mt-4 text-center w-full">
+          <h3 className="text-xl font-semibold mb-2">About Me</h3>
+          <p className="italic bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
+            {roleInfo[`${role}_bio`] || ""}
+          </p>
+        </div>
+      )}
     </div>
   );
 };

@@ -61,12 +61,14 @@ function FindMatches({ token }) {
       </div>
       <div className="min-h-screen flex flex-col items-center bg-base-200">
         <SlowLoadBanner />
-        <div className="flex flex-col items-center mt-16 bg-base">
-          <RoleSelector
-            selectedRole={selectedRole}
-            onRoleChange={handleRoleChange}
-          />
-          <CitySearch onCityChange={handleCityChange} />
+        <div className="flex flex-col items-center mt-16 bg-base w-full max-w-4xl mx-auto">
+          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-8 w-full">
+            <RoleSelector
+              selectedRole={selectedRole}
+              onRoleChange={handleRoleChange}
+            />
+            <CitySearch onCityChange={handleCityChange} />
+          </div>
         </div>
         {isLoading ? (
           <div className="flex justify-center items-center mt-16">

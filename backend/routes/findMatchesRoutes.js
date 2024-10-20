@@ -2,17 +2,33 @@ const express = require("express");
 const User = require("../db/userModel");
 const router = express.Router();
 
-// 用户注册
-router.post("/saveUserInfo", async (req, res) => {
-  const userInfo = req.body;
+// 获取热门城市
+router.get("/popularCities", async (req, res) => {
   try {
-    const newUser = new User(userInfo);
-    await newUser.save();
-    console.log("User information saved:", userInfo);
-    res.status(200).send("User information saved successfully");
+    const popularCities = await User.aggregate([
+      { $unwind: "$addresses" },
+      {
+        $group: {
+          _id: "$addresses.formattedCity",
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { count: -1 } },
+      { $limit: 5 },
+      {
+        $project: {
+          _id: 0,
+          city: "$_id",
+          count: 1,
+        },
+      },
+    ]);
+
+    res.status(200).json(popularCities.map((item) => item.city));
+    console.log("Popular cities:", popularCities);
   } catch (error) {
-    console.error("Error saving user information:", error);
-    res.status(500).send("Internal server error");
+    console.error("Error fetching popular cities:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 

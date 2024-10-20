@@ -60,4 +60,18 @@ router.put("/profile", async (req, res) => {
   }
 });
 
+// 用户注册
+router.post("/saveUserInfo", async (req, res) => {
+  const userInfo = req.body;
+  try {
+    const newUser = new User(userInfo);
+    await newUser.save();
+    console.log("User information saved:", userInfo);
+    res.status(200).send("User information saved successfully");
+  } catch (error) {
+    console.error("Error saving user information:", error);
+    res.status(500).send("Internal server error");
+  }
+});
+
 module.exports = router;
