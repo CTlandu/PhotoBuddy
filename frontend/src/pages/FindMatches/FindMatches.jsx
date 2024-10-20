@@ -4,30 +4,42 @@ import SlowLoadBanner from "./SlowLoadBanner";
 import RoleSelector from "./RoleSelector";
 import CitySearch from "./CitySearch";
 import ProfileGrid from "./ProfileGrid";
-import Pagination from "./Pagination";
 import NoProfilesPrompt from "./NoProfilesPrompt";
 
 function FindMatches({ token }) {
   const [profiles, setProfiles] = useState([]);
   const [selectedRole, setSelectedRole] = useState("model");
-  const [currentPage, setCurrentPage] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedCity, setSelectedCity] = useState("");
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [totalCount, setTotalCount] = useState(0);
   const profilesPerPage = 6;
 
-  const fetchProfiles = async (role, city = "") => {
+  const fetchProfiles = async (
+    role,
+    city = "",
+    currentPage = 1,
+    append = false
+  ) => {
     setIsLoading(true);
     try {
       const cityQuery = city ? `&city=${encodeURIComponent(city)}` : "";
       const response = await fetch(
         `${
           import.meta.env.VITE_API_DOMAIN
-        }/api/fetchAll?role=${role}${cityQuery}`
+        }/api/fetchAll?role=${role}${cityQuery}&page=${currentPage}&limit=${profilesPerPage}`
       );
       if (!response.ok)
         throw new Error(`HTTP error! status: ${response.status}`);
       const data = await response.json();
-      setProfiles(data);
+      if (append) {
+        setProfiles((prev) => [...prev, ...data.users]);
+      } else {
+        setProfiles(data.users);
+      }
+      setHasMore(data.hasMore);
+      setTotalCount(data.totalCount);
     } catch (error) {
       console.error("Error fetching profiles:", error);
     } finally {
@@ -41,18 +53,21 @@ function FindMatches({ token }) {
 
   const handleRoleChange = (role) => {
     setSelectedRole(role);
-    setCurrentPage(0);
+    setPage(1);
+    fetchProfiles(role, selectedCity, 1);
   };
 
   const handleCityChange = (city) => {
     setSelectedCity(city);
-    setCurrentPage(0);
+    setPage(1);
+    fetchProfiles(selectedRole, city, 1);
   };
 
-  const displayProfiles = profiles.slice(
-    currentPage * profilesPerPage,
-    (currentPage + 1) * profilesPerPage
-  );
+  const handleLoadMore = () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    fetchProfiles(selectedRole, selectedCity, nextPage, true);
+  };
 
   return (
     <>
@@ -70,21 +85,27 @@ function FindMatches({ token }) {
             <CitySearch onCityChange={handleCityChange} />
           </div>
         </div>
-        {isLoading ? (
+        {isLoading && profiles.length === 0 ? (
           <div className="flex justify-center items-center mt-16">
             <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
           </div>
         ) : profiles.length > 0 ? (
           <>
-            <ProfileGrid
-              profiles={displayProfiles}
-              selectedRole={selectedRole}
-            />
-            <Pagination
-              pageCount={Math.ceil(profiles.length / profilesPerPage)}
-              currentPage={currentPage}
-              onPageChange={(selected) => setCurrentPage(selected)}
-            />
+            <ProfileGrid profiles={profiles} selectedRole={selectedRole} />
+            {hasMore ? (
+              <button
+                className="btn btn-primary mt-4"
+                onClick={handleLoadMore}
+                disabled={isLoading}
+              >
+                {isLoading ? "Loading..." : "Load More"}
+              </button>
+            ) : (
+              <div className="mt-4 text-center">
+                <p>You have reached the end.</p>
+                <p>Total Profiles: {totalCount}</p>
+              </div>
+            )}
           </>
         ) : (
           <NoProfilesPrompt city={selectedCity} selectedRole={selectedRole} />

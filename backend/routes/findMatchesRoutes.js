@@ -25,16 +25,15 @@ router.get("/popularCities", async (req, res) => {
     ]);
 
     res.status(200).json(popularCities.map((item) => item.city));
-    console.log("Popular cities:", popularCities);
   } catch (error) {
     console.error("Error fetching popular cities:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 });
 
-// 获取所有用户信息
+// 修改 fetchAll 路由以支持分页
 router.get("/fetchAll", async (req, res) => {
-  const { role, city } = req.query;
+  const { role, city, page = 1, limit = 6 } = req.query;
   try {
     let query = {};
     let projection = {
@@ -62,15 +61,22 @@ router.get("/fetchAll", async (req, res) => {
       });
     }
 
-    // 更新城市筛选逻辑
     if (city && city.trim() !== "") {
       query["addresses.formattedCity"] = city.trim();
     }
 
-    console.log("Received query params:", { role, city });
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const users = await User.find(query, projection)
+      .skip(skip)
+      .limit(parseInt(limit));
 
-    const users = await User.find(query, projection);
-    res.status(200).json(users);
+    const totalCount = await User.countDocuments(query);
+
+    res.status(200).json({
+      users,
+      totalCount,
+      hasMore: skip + users.length < totalCount,
+    });
   } catch (error) {
     console.error("Error fetching users:", error);
     res.status(500).json({ message: "Internal server error" });
