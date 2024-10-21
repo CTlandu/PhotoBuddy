@@ -3,10 +3,10 @@ import ProfileCard from "./ProfileCard";
 
 const ProfileGrid = ({ profiles, selectedRole }) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-8 w-full">
+    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4 mt-8 w-full">
       {profiles.map((profile, index) => (
         <ProfileCard
-          key={profile.id}
+          key={`${profile.id}_${index}`}
           profile={profile}
           modal_index={`modal_${index}`}
           role={selectedRole}

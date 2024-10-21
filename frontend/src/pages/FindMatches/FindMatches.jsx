@@ -77,7 +77,7 @@ function FindMatches({ token }) {
       <div className="min-h-screen flex flex-col items-center bg-base-200">
         <div className="w-full max-w-6xl px-4 sm:px-6 lg:px-8">
           <SlowLoadBanner />
-          <div className="flex flex-col items-center mt-16 bg-base w-full">
+          <div className="flex flex-col items-center mt-4 bg-base w-full">
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-8 w-full">
               <RoleSelector
                 selectedRole={selectedRole}

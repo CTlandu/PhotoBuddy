@@ -1,45 +1,56 @@
 import React from "react";
 import ProfileModal from "./ProfileModal";
+import {
+  FaMapMarkerAlt,
+  FaStar,
+  FaInstagram,
+  FaLinkedin,
+  FaTwitter,
+  FaFacebook,
+  FaCamera,
+  FaUserAlt,
+  FaHandshake,
+  FaBriefcase,
+  FaGraduationCap,
+  FaUserFriends,
+} from "react-icons/fa";
 
 const ProfileCard = ({ profile, isLoading, modal_index, role }) => {
-  if (isLoading) {
-    return null; // 加载时不显示任何内容
-  }
-
-  const calculateAge = (birthday) => {
-    const birthDate = new Date(birthday);
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (
-      monthDiff < 0 ||
-      (monthDiff === 0 && today.getDate() < birthDate.getDate())
-    ) {
-      age--;
-    }
-    return age;
-  };
+  if (isLoading) return null;
 
   const roleInfo = profile[`${role}_info`] || {};
   const images = roleInfo[`${role}_images`] || [];
   const experience = roleInfo[`${role}_experience`] || "";
   const lookingFor = roleInfo[`${role}_lookingfor`] || [];
-
-  // 获取所有地址的城市名称
   const cities = profile.addresses
     ? profile.addresses
-        .filter((address) => address && address.formattedCity) // 过滤掉无效的地址
-        .map((address) => {
-          const cityParts = address.formattedCity.split(",");
-          return cityParts.length > 0 ? cityParts[0].trim() : "";
-        })
-        .filter((city) => city !== "") // 过滤掉空字符串
+        .filter((address) => address && address.formattedCity)
+        .map((address) => address.formattedCity.split(",")[0].trim())
+        .filter((city) => city !== "")
     : [];
+
+  const socialMedia = [
+    { icon: FaInstagram, link: profile.instagram },
+    { icon: FaLinkedin, link: profile.linkedin },
+    { icon: FaTwitter, link: profile.twitter },
+    { icon: FaFacebook, link: profile.facebook },
+  ].filter((item) => item.link);
+
+  const handleCardClick = () => {
+    document.getElementById(modal_index).showModal();
+  };
 
   return (
     <>
-      <div className="card bg-base-100 w-full h-full shadow-xl m-2">
-        <figure className="h-96">
+      <div
+        className="card bg-base-100 w-full shadow-xl cursor-pointer 
+                   transition-all duration-300 
+                   hover:shadow-2xl hover:scale-105 hover:bg-base-200
+                   active:scale-95 active:bg-base-300
+                   h-[32rem] sm:h-[30rem] overflow-hidden"
+        onClick={handleCardClick}
+      >
+        <figure className="h-2/5 sm:h-1/2 overflow-hidden">
           {images[0] && (
             <img
               src={images[0]}
@@ -48,51 +59,95 @@ const ProfileCard = ({ profile, isLoading, modal_index, role }) => {
             />
           )}
         </figure>
-        <div className="card-body">
-          <button
-            className="btn btn-link"
-            onClick={() => document.getElementById(modal_index).showModal()}
-          >
-            See profile
-          </button>
-          <h2 className="card-title">
-            {profile.preferredName}
-            <div className="badge badge-secondary">{images.length} photos</div>
-          </h2>
-          <p>Looking for:</p>
-          <ul>
-            {lookingFor.map((string, index) => (
-              <li key={index}>
-                <div className="badge badge-primary">{string}</div>
-              </li>
-            ))}
-          </ul>
-          {cities.length > 0 && (
-            <div>
-              <p>Locations:</p>
-              <div className="flex flex-wrap gap-1">
-                {cities.map((city, index) => (
-                  <div key={index} className="badge badge-info">
-                    {city}
-                  </div>
-                ))}
+        <div className="card-body p-2 sm:p-3 h-3/5 sm:h-1/2 flex flex-col justify-between">
+          <div className="flex flex-col h-full justify-between">
+            <div className="min-h-[2rem] flex items-center">
+              <h2 className="card-title text-sm sm:text-base">
+                {profile.preferredName}
+                <div className="badge badge-secondary text-xs">
+                  {images.length} photos
+                </div>
+              </h2>
+            </div>
+            <div className="min-h-[4rem]">
+              <LookingForSection items={lookingFor} />
+            </div>
+            <div className="min-h-[2rem]">
+              <LocationSection items={cities} maxItems={2} />
+            </div>
+            <div className="min-h-[2rem] flex items-center justify-end text-xs">
+              <FaStar className="text-yellow-500 mr-1" />
+              Experience:
+              <div className="badge badge-outline badge-sm h-auto flex items-center gap-1 ml-1">
+                {experience || "New"}
               </div>
             </div>
-          )}
-          <div className="card-actions justify-end">
-            <div className="badge badge-outline">{experience}</div>
-            <div className="badge badge-outline">3 years</div>
           </div>
         </div>
       </div>
 
-      <ProfileModal
-        profile={profile}
-        modal_index={modal_index}
-        role={role}
-        calculateAge={calculateAge}
-      />
+      <ProfileModal profile={profile} modal_index={modal_index} role={role} />
     </>
+  );
+};
+
+const LookingForSection = ({ items }) => {
+  if (items.length === 0) return null;
+
+  const getIcon = (item) => {
+    const lowerItem = item.toLowerCase();
+    if (lowerItem.includes("photographer"))
+      return <FaCamera className="mr-1" />;
+    if (lowerItem.includes("model")) return <FaUserAlt className="mr-1" />;
+    if (lowerItem.includes("network") || lowerItem.includes("friend"))
+      return <FaUserFriends className="mr-1" />;
+    if (lowerItem.includes("business") || lowerItem.includes("opportunity"))
+      return <FaBriefcase className="mr-1" />;
+    if (lowerItem.includes("trade") || lowerItem.includes("portfolio"))
+      return <FaHandshake className="mr-1" />;
+    return null;
+  };
+
+  return (
+    <div className="flex flex-col">
+      <span className="text-sm font-semibold mb-1">I'm looking for:</span>
+      <ul className="list-disc list-inside text-sm">
+        {items.map((item, index) => (
+          <li key={index} className="flex items-center">
+            {getIcon(item)}
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+const LocationSection = ({ items, maxItems }) => {
+  if (items.length === 0) return null;
+
+  const displayItems = items.slice(0, maxItems);
+  const remainingCount = items.length - maxItems;
+
+  return (
+    <div className="flex items-center">
+      <FaMapMarkerAlt className="text-red-500 mr-1 text-xs" />
+      <div className="flex flex-wrap gap-1">
+        {displayItems.map((item, index) => (
+          <span
+            key={index}
+            className="badge badge-info badge-sm text-[10px] py-1 px-2 leading-tight"
+          >
+            <span className="truncate max-w-[60px]">{item}</span>
+          </span>
+        ))}
+        {remainingCount > 0 && (
+          <span className="badge badge-info badge-sm text-[10px] py-1 px-2 leading-tight">
+            +{remainingCount}
+          </span>
+        )}
+      </div>
+    </div>
   );
 };
 

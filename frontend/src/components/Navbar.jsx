@@ -135,7 +135,7 @@ const Navbar = ({ token }) => {
                       title="Suggest a feature!"
                     >
                       <FaLightbulb className="mr-2" />
-                      Suggest a feature
+                      Suggest Anything!
                     </FeatureVote>
                   </li>
                 </ul>
@@ -221,9 +221,9 @@ const Navbar = ({ token }) => {
                         {/* <li>
                           <a href="/portfolio">Portfolio</a>
                         </li> */}
-                        <li>
+                        {/* <li>
                           <a href="/portfolio">Favorites & Likes</a>
-                        </li>
+                        </li> */}
                         <li>
                           <a href="/usersettings">Settings</a>
                         </li>
