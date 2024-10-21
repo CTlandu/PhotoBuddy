@@ -8,7 +8,7 @@ const IntroBlock = () => {
   }
 
   return (
-    <div className="hero pt-14 pb-14">
+    <div className="hero pt-4 pb-14">
       <div className="hero-content flex flex-col lg:flex-row items-center justify-between w-full">
         <div className="text-center lg:text-left lg:w-1/2">
           <h1 className="text-3xl lg:text-5xl font-bold">
